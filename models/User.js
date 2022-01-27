@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import UserValidation from './User.validation.js'
 
 export const schema = new mongoose.Schema({
-	name: {
+	username: {
 		type: String,
 		unique: [true, 'Username is taken'],
 		required: [true, 'Username is required']
