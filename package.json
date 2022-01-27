@@ -7,6 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "nodemonConfig": {
+    "ignore": ["client/*"]
+  },
   "author": "Osama Islam",
   "license": "ISC",
   "dependencies": {
@@ -20,7 +23,6 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.7.0",
-    "eslint-plugin-react": "^7.28.0"
+    "eslint": "^8.7.0"
   }
 }
