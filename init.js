@@ -1,11 +1,11 @@
 import express from 'express'
-import db from './config/db.js'
+import db from './lib/db.js'
 import session from 'express-session'
 import passport from 'passport'
 import MongoStore from 'connect-mongo'
 import cors from 'cors'
 
-import passportConfig from './config/passport.js'
+import passportConfig from './lib/passport.js'
 
 export default app => {
 	app.use(express.json())

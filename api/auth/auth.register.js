@@ -1,5 +1,5 @@
 import User from '../../models/User.js'
-import strings from '../../config/strings.js'
+import strings from '../../lib/strings.js'
 
 export default async (req, res) => {
 	User.create({
