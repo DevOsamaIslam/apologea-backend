@@ -9,7 +9,12 @@ const schema = new mongoose.Schema({
 	body: {
 		type: Object,
 		required: true
+	},
+	author: {
+		type: mongoose.SchemaTypes.ObjectId,
+		ref: 'User',
+		required: true	
 	}
 })
 
-export default mongoose.model('User', schema)
+export default mongoose.model('Blog', schema)
