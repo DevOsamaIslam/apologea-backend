@@ -11,9 +11,17 @@ export const schema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Email is required']
 	},
-	birthDate: {
-		type: Date,
-		index: true
+	phone: {
+		type: String,
+		default: ''
+	},
+	xp: {
+		type: Number,
+		default: 0
+	},
+	languages: {
+		type: Array,
+		default: []
 	},
 	following: [
 		{
@@ -29,8 +37,32 @@ export const schema = new mongoose.Schema({
 			default: []
 		}
 	],
-	password: String,
-	salt: String
+	personal: {
+		name: {
+			type: String,
+			default: ''
+		},
+		bio: {
+			type: String,
+			default: ''
+		},
+		pic: {
+			type: String,
+			default: ''
+		},
+		exprience: {
+			type: String,
+			default: ''
+		},
+		socials: {
+			type: Array,
+			default: []
+		},
+		affiliations: {
+			type: Array,
+			default: []
+		},
+	},
 }, { timeseries: true })
 
 schema.pre('save', UserValidation)
