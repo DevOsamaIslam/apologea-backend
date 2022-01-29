@@ -1,24 +1,24 @@
 import strings from '../../lib/strings.js'
+import { returnHandler } from '../../lib/utils.js'
 import Blog from '../../models/Blog.js'
 
 export default (req, res, next) => {
 	let {
 		title,
-		body
+		body,
+		excerpt
 	} = req.body
 
 	Blog.create({
 		title,
 		body,
+		excerpt,
 		author: req.user.id
 	})
 		.then(data => {
-			return res.json({
-				message: strings.successKey,
-				blog: data
-			})
+			return next(returnHandler(200, data, strings.successKey))
 		})
 		.catch(error => {
-			return res.status(500).json(error)
+			return next(returnHandler(500, error, strings.SWR))
 		})
 }

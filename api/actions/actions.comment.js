@@ -1,6 +1,7 @@
 import Blog from '../../models/Blog.js'
 import strings from '../../lib/strings.js'
 import mongoose from 'mongoose'
+import { returnHandler } from '../../lib/utils.js'
 
 export default (req, res, next) => {
 	let {
@@ -28,8 +29,8 @@ export default (req, res, next) => {
 		action,
 		{ new: true },
 		(err, data) => {
-			if(err) return res.status(500).json({message: strings.SWR})
-			return res.json(data)
+			if(err) return next(returnHandler(500, err, strings.SWR))
+			return next(returnHandler(200, data, strings.successKey))
 		}
 	)
 }
