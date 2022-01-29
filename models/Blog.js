@@ -17,12 +17,17 @@ const commentSchema = new mongoose.Schema({
 const schema = new mongoose.Schema({
 	title: {
 		type: String,
-		unique: true,
 		required: true
 	},
 	body: {
 		type: Object,
 		required: true
+	},
+	excerpt: {
+		type: String,
+		default: function() {
+			return this.body.substr(0, 100) + '...'
+		} 
 	},
 	author: {
 		type: ObjectId,
