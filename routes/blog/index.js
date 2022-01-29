@@ -10,6 +10,6 @@ const rt = express.Router()
 rt.use('/new', create)
 rt.use('/update', update)
 rt.use('/view', view)
-rt.use('/view', del)
+rt.use('/delete', del)
 
 export default rt
