@@ -4,10 +4,10 @@ import Blog from '../../models/Blog.js'
 
 
 export default async (req, res, next) => {
-	let id = req.params.id
+	let id = req.query.id
 
 	let data = await asyncHandler(
-		Blog.findById(id).lean()
+		Blog.findById(id).populate('author', ['username']).lean()
 	)
 
 	if(!data) return next(returnHandler(404, null, strings.noData)) 
