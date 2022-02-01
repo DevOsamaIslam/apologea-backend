@@ -12,6 +12,10 @@ import Feed from './components/feed'
 import fetch from './controllers/api/fetch'
 import asyncHandler from './lib/utils'
 import blog from './state/actions/blog'
+import auth from './state/actions/auth'
+import routes from './lib/routes'
+import View from './components/blog/view'
+import CreateBlog from './components/blog/editBlog/create'
 
 const blogs = async () => {
 	let data = await asyncHandler(
@@ -20,12 +24,23 @@ const blogs = async () => {
 	return data
 }
 
+const isAuthed = async () => {
+	let data = await asyncHandler(
+		fetch.isAuthed()
+	)
+	return data
+}
+
 const App = () => {
 
 	let dispatch = useDispatch()
 
-	blogs().then(({data}) => {
+	blogs().then(data => {
 		dispatch(blog.getFeed(data))
+	})
+
+	isAuthed().then(data => {
+		dispatch(auth.authenticate(data))
 	})
 
 	return (
@@ -36,6 +51,8 @@ const App = () => {
 					<Route path="/" element={<Feed />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
+					<Route path={`/${routes.blog}/:id`} element={<View />} />
+					<Route path={'/blog/new'} element={<CreateBlog />} />
 				</Routes>
 			</BrowserRouter>
 		</Fragment>
