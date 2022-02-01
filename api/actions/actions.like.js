@@ -15,6 +15,6 @@ export default (req, res, next) => {
 		(err, data) => {
 			if(err) return next(returnHandler(500, err, strings.SWR))
 			if(!data) return next(returnHandler(404, err, strings.noData))
-			return next(returnHandler(200, data, strings.successKey))
+			return next(returnHandler(200, null, strings.successKey))
 		})		
 }
