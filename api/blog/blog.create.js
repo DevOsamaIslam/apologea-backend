@@ -15,8 +15,9 @@ export default (req, res, next) => {
 		excerpt,
 		author: req.user.id
 	})
-		.then(data => {
-			return next(returnHandler(200, data, strings.successKey))
+		.then(async data => {
+			data = await data.populate('author', ['username'])
+			return next(returnHandler(200, data._doc))
 		})
 		.catch(error => {
 			return next(returnHandler(500, error, strings.SWR))
