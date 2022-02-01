@@ -9,7 +9,7 @@ loginService.onSubmit = async (e, formData, dispatch) => {
 	let data = await fetch.loginUser(formData)
 	if(!data) console.log('No data returned')
 	if(data.error) console.log(data.error)
-	else dispatch(auth.isAuthed(true))
+	else dispatch(auth.authenticate(data))
 }
 
 export default loginService
