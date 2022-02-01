@@ -5,13 +5,3 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100vw;
-  height: 80px;
-  padding: 16px;
-
-  background-color: coral;
-}
