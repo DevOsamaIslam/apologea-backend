@@ -1,6 +1,7 @@
 const api = 'http://localhost:5000/api'
 
 export default {
+	isAuthed: api + '/auth/isAuthed',
 	registerUser: api + '/auth/register',
 	loginUser: api + '/auth/login',
 
