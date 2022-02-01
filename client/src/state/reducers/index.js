@@ -1,13 +1,12 @@
 import { combineReducers } from 'redux'
 
-import isAuthed from './auth/isAuthed'
+import auth from './auth'
 import user from './user'
-import blog from './blog'
+import blogs from './blog'
 
-const { feed } = blog
 
 export default combineReducers({
-	isAuthed,
+	auth,
 	user,
-	feed
+	blogs
 })
