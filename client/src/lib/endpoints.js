@@ -4,6 +4,7 @@ export default {
 	isAuthed: api + '/auth/isAuthed',
 	registerUser: api + '/auth/register',
 	loginUser: api + '/auth/login',
+	logoutUser: api + '/auth/logout',
 
 	getUser: api + '/user',
 	getFeed: api + '/feed',
