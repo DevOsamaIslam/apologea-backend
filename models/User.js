@@ -11,6 +11,10 @@ export const schema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Email is required']
 	},
+	password: {
+		type: String,
+		required: true
+	},
 	phone: {
 		type: String,
 		default: ''
