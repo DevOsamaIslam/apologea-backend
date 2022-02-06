@@ -4,12 +4,11 @@ import fetch from '../../api/fetch'
 const loginService = {}
 
 
-loginService.onSubmit = async (e, formData, dispatch) => {
+loginService.onSubmit = async (e, formData, dispatch, navigate) => {
 	e.preventDefault()
 	let data = await fetch.loginUser(formData)
-	if(!data) console.log('No data returned')
-	if(data.error) console.log(data.error)
-	else dispatch(auth.authenticate(data))
+	dispatch(auth.authenticate(data))
+	navigate('/')
 }
 
 export default loginService
