@@ -31,7 +31,20 @@ export const POST = async (url, {query=null, body={}, headers=defaultHeaders}) =
 	return result.data
 }
 
+export const PATCH = async (url, {query=null, body={}, headers=defaultHeaders}) => {
+	if(query) {
+		url += `?${query.join('&')}` 
+	}
+	body = JSON.stringify(body)
+	let result = await asyncHandler(axios.patch(url, body, {
+		headers,
+	}))
+	console.log('PATCH', result.data)
+	return result.data
+}
+
 export default {
 	GET,
-	POST
+	POST,
+	PATCH
 }

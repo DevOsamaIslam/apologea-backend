@@ -5,7 +5,6 @@ const calls = {}
 
 calls.isAuthed = async () => {
 	let result = await request.GET(endpoints.isAuthed, {})
-	console.log('isauthed fetch', result)
 	return result
 }
 
@@ -23,9 +22,14 @@ calls.loginUser = async data => {
 	return result
 }
 
-calls.getUser = async data => {
-	let result = await request.POST(endpoints.loginUser, {
-		body: data
+calls.logoutUser = async () => {
+	let result = await request.GET(endpoints.logoutUser, {})
+	return result
+}
+
+calls.getUser = async id => {
+	let result = await request.GET(endpoints.getUser, {
+		query: [`id=${id}`]
 	})
 	return result
 }
@@ -49,9 +53,44 @@ calls.getBlog = async id => {
 	return result
 }
 
-calls.like = async (id, action) => {
-	let result = await request.POST(endpoints.like, {
-		body: {id, action},
+calls.updateBlog = async data => {
+	let result = await request.PATCH(endpoints.updateBlog, {
+		body: data,
+	})
+	return result
+}
+
+calls.like = async id => {
+	let result = await request.PATCH(endpoints.like, {
+		body: {id, action: 'add'},
+	})
+	return result
+}
+
+calls.unlike = async id => {
+	let result = await request.PATCH(endpoints.like, {
+		body: {id, action: 'remove'},
+	})
+	return result
+}
+
+calls.affirm = async id => {
+	let result = await request.PATCH(endpoints.affirm, {
+		body: {id, action: 'add'},
+	})
+	return result
+}
+
+calls.unaffirm = async id => {
+	let result = await request.PATCH(endpoints.affirm, {
+		body: {id, action: 'remove'},
+	})
+	return result
+}
+
+calls.comment = async (id, comment) => {
+	let result = await request.POST(endpoints.comment, {
+		body: {id, action: 'add', comment},
 	})
 	return result
 }
