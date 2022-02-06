@@ -3,7 +3,8 @@ export default {
 		actions: {
 			auth: {
 				authenticate: 'AUTHENTICATE',
-				isAuthed: 'IS_AUTHENTICATED'
+				isAuthed: 'IS_AUTHENTICATED',
+				logout: 'LOGOUT'
 			},
 			blog: {
 				getFeed: 'GET_FEED',
@@ -18,6 +19,10 @@ export default {
 				comment: 'COMMENT',
 			},
 			getUser: 'GET_USER',
+			alert: {
+				set: 'SET_ALERT',
+				clear: 'CLEAR_ALERT'
+			} 
 		}
 	}
 }
