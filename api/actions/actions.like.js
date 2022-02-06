@@ -1,5 +1,5 @@
 import strings from '../../lib/strings.js'
-import { returnHandler } from '../../lib/utils.js'
+import { returnHandler, feedback } from '../../lib/utils.js'
 import Blog from '../../models/Blog.js'
 
 export default (req, res, next) => {
@@ -13,8 +13,8 @@ export default (req, res, next) => {
 		},
 		{ new: true },
 		(err, data) => {
-			if(err) return next(returnHandler(500, err, strings.SWR))
-			if(!data) return next(returnHandler(404, err, strings.noData))
-			return next(returnHandler(200, null, strings.successKey))
+			if(err) return next(returnHandler(500, err, feedback(strings.error.key, strings.error.SWR)))
+			if(!data) return next(returnHandler(404, null, feedback(strings.warning.key, strings.warning.noData)))
+			return next(returnHandler(200, null, feedback(strings.success.key, strings.success.like)))
 		})		
 }

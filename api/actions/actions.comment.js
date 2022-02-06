@@ -1,7 +1,7 @@
 import Blog from '../../models/Blog.js'
 import strings from '../../lib/strings.js'
 import mongoose from 'mongoose'
-import { returnHandler } from '../../lib/utils.js'
+import { feedback, returnHandler } from '../../lib/utils.js'
 
 export default (req, res, next) => {
 	let {
@@ -28,9 +28,10 @@ export default (req, res, next) => {
 		id,
 		action,
 		{ new: true },
-		(err, data) => {
-			if(err) return next(returnHandler(500, err, strings.SWR))
-			return next(returnHandler(200, data, strings.successKey))
+		async (err, data) => {
+			if(err) return next(returnHandler(500, err, feedback(strings.error.key, strings.error.SWR)))
+			data = await data.populate('comments.author', ['username'])
+			return next(returnHandler(200, data, feedback(strings.success.comment)))
 		}
 	)
 }

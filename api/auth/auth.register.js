@@ -1,6 +1,6 @@
 import User from '../../models/User.js'
 import strings from '../../lib/strings.js'
-import { returnHandler } from '../../lib/utils.js'
+import { feedback, returnHandler } from '../../lib/utils.js'
 
 export default async (req, res, next) => {
 	User.create({
@@ -9,9 +9,9 @@ export default async (req, res, next) => {
 		password: req.body.password
 	})
 		.then(data => {
-			return next(returnHandler(200, data._id, strings.successKey))
+			return next(returnHandler(200, data.id, feedback(strings.success.key, strings.success.registered)))
 		})
 		.catch(error => {
-			next(returnHandler(500, error, strings.SWR))
+			return next(returnHandler(500, error, feedback(strings.error.key, strings.error.SWR)))
 		})
 }

@@ -12,10 +12,11 @@ app.use('/api', routes)
 app.use((pack, req, res, next) => {
 	let {
 		status,
-		data	
+		data,
+		feedback
 	} = pack
 
-	res.status(status).json(data)
+	res.status(status).json({data, feedback})
 })
 
 app.listen(process.env.PORT || 5000, () => 'Server is running...')
