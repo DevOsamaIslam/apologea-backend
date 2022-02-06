@@ -1,14 +1,13 @@
 import fetch from '../../api/fetch'
+import alert from '../../../state/actions/alert'
 
 const registerService = {}
 
 
-registerService.onSubmit = async (e, formData) => {
+registerService.onSubmit = async (e, formData, dispatch) => {
 	e.preventDefault()
 	let data = await fetch.registerUser(formData)
-	if(!data) console.log('No data returned')
-	if(data.error) console.log(data.error)
-	else console.log(data)
+	dispatch(alert.set(data.feedback.type, data.feedback.message))
 }
 
 export default registerService
