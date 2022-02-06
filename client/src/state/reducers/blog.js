@@ -17,6 +17,13 @@ export default (state = [], { type, data }) => {
 	case blog.create:
 		return [...state, data]
 
+	case blog.update:
+		return state.map(blog => {
+			if(blog._id === data._id)
+				blog = data
+			return blog
+		})
+
 	case blog.like:
 		return state.map(blog => {
 			if(blog._id === data.blogId)
@@ -25,9 +32,28 @@ export default (state = [], { type, data }) => {
 		})
 
 	case blog.unlike:
-		console.log('data.userId', data.userId)
 		return state.map(blog => {
 			blog.likes = blog.likes.filter(id => id !== data.userId)
+			return blog
+		})
+
+	case blog.affirm:
+		return state.map(blog => {
+			if(blog._id === data.blogId)
+				blog.affirms.push(data.userId)
+			return blog
+		})
+	
+	case blog.unaffirm:
+		return state.map(blog => {
+			blog.affirms = blog.affirms.filter(id => id !== data.userId)
+			return blog
+		})
+
+	case blog.comment:
+		return state.map(blog => {
+			if(blog._id === data._id)
+				blog = data
 			return blog
 		})
 
