@@ -3,7 +3,7 @@ import actionsLike from '../../api/actions/actions.like.js'
 const rt = express.Router()
 
 
-rt.post('/', actionsLike)
+rt.patch('/', actionsLike)
 
 
 export default rt
