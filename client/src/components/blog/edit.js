@@ -1,4 +1,4 @@
-import EditBlog from '../../forms/editBlog'
+import EditBlog from '../forms/editBlog'
 
 
 export default () => {

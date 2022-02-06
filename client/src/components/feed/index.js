@@ -14,7 +14,8 @@ export default () => {
 			<div className='feed'>
 				{	feed.map(blog => <BlogCard 
 					key={blog._id} 
-					data={blog} />)}
+					data={blog} 
+					feed={true}/>)}
 			</div>
 		)
 	else return (<h1>Loading...</h1>)

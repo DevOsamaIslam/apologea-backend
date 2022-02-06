@@ -1,0 +1,95 @@
+.view-container {
+	display: flex;
+	justify-content: center;
+}
+
+.blog-card {
+	box-shadow: #555 5px 5px 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin: 16px;
+	padding: 8px;
+	min-width: 50vw;
+	max-width: 70vw;
+}
+
+.meta {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.meta .actions {
+	display: flex;
+	justify-content: space-between;
+}
+
+.meta .actions button {
+	margin: 0 8px;
+	flex: 1;
+}
+
+.blog-card .content {
+	margin: 16px 0px;
+}
+
+.like {
+	background: aquamarine;
+	border-color: cyan;
+	padding: 8px;
+	border-radius: 2px;
+	cursor: pointer;
+	}
+
+.liked {
+	background: darkblue;
+	color: white;
+	border-color: transparent;
+}
+
+.affirm {
+	background: yellow;
+	border-color: orange;
+	padding: 8px;
+	border-radius: 2px;
+	cursor: pointer;
+	}
+
+.affirmed {
+	background: darkgoldenrod;
+	color: white;
+	border-color: transparent;
+}
+
+hr {
+	margin: 16px 8px;
+}
+
+.comments-container {
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+}
+
+.comment {
+	display: flex;
+	margin: 8px;
+	flex-direction: column;
+	justify-content: space-between;
+	border: 1px solid midnightblue;
+}
+
+.comment a {
+	margin: 0 0 8px 0;
+	color: white;
+	text-decoration: none;
+	background-color: midnightblue;
+	padding: 5px;
+	text-align: center;
+}
+
+.comment p {
+	padding: 8px;
+	color: #111;
+	font-size: 0.8rem;
+}

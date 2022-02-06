@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import registerService from '../../controllers/services/auth/register.service'
 
 const register = () => {
+
+	let dispatch = useDispatch()
 
 	const [formData, setFormData] = useState({
 		username: '',
@@ -14,7 +17,7 @@ const register = () => {
 	const onChange = e => setFormData({ ... formData, [e.target.name]: e.target.value })
 
 	return (
-		<form onSubmit={e => registerService.onSubmit(e, formData)} >
+		<form onSubmit={e => registerService.onSubmit(e, formData, dispatch)} >
 			<input 
 				type="text" 
 				name="username" 
