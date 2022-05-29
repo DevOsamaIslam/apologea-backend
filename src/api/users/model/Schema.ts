@@ -1,5 +1,7 @@
 import AuthSchema, { IUserAuth } from '#/api/auth/model/Schema'
+import { SCHEMAS } from '#lib/constants'
 import mongoose from 'mongoose'
+
 // import UserValidation from './User.validation.js'
 
 export const UserSchema = new mongoose.Schema(
@@ -20,14 +22,7 @@ export const UserSchema = new mongoose.Schema(
 			following: [
 				{
 					type: mongoose.SchemaTypes.ObjectId,
-					ref: 'User',
-					default: [],
-				},
-			],
-			followers: [
-				{
-					type: mongoose.SchemaTypes.ObjectId,
-					ref: 'User',
+					ref: SCHEMAS.user,
 					default: [],
 				},
 			],
@@ -68,7 +63,6 @@ export interface IUserProfile {
 	xp?: number
 	languages?: string[]
 	following?: string[]
-	followers?: string[]
 	name?: string
 	bio?: string
 	pic?: string
@@ -84,7 +78,7 @@ export interface IUser extends mongoose.Model<null> {
 	id: string
 	profile: IUserProfile
 	auth: IUserAuth
-	error?: ErrorEvent
+	error?: Error
 }
 
 export default UserSchema

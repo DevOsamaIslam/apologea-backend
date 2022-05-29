@@ -1,14 +1,21 @@
 import User from '#/api/users/model/User'
+import { AUTH } from '#lib/constants'
 import AuthSchema, { IUserAuth } from './Schema'
 import { hash } from 'bcrypt'
-import { auth } from '#/config/settings'
+import { HydratedDocument } from 'mongoose'
 
 // hash the password
-AuthSchema.pre('save', async function (this: IUserAuth, next) {
-	this.password = await hash(this.password, auth.saltRounds)
-	next()
-})
+AuthSchema.pre(
+	'save',
+	async function (this: HydratedDocument<IUserAuth>, next) {
+		this.reset = undefined
+		this.password = await hash(this.password, AUTH.saltRounds)
+		next()
+	}
+)
 
-export const createUser = (user: Partial<IUserAuth>) => {
-	return User.create({ auth: user })
+export const createUser = (auth: Partial<IUserAuth>) => {
+	return User.create({ auth })
 }
+
+export default User

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-
 export type feedbackType = 'success' | 'error' | 'warning'
 
 export interface IFeedback {
@@ -18,3 +16,12 @@ export type $jwtPayload = {
 	iat: Date
 	exp: Date
 }
+
+export type $role =
+	| 'Guest'
+	| 'Reader'
+	| 'Reader+'
+	| 'Moderator'
+	| 'Debater'
+	| 'Publisher'
+	| 'Admin'

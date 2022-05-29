@@ -1,10 +1,10 @@
-import { basePath } from '#lib/constants'
-import express, { Express } from 'express'
-import router from '#/router'
+import passportConfig from '#/config/passport'
 import database from '#/db/config'
+import router from '#/router'
+import { BASE_PATH } from '#lib/constants'
+import express, { Express } from 'express'
 import { Mongoose } from 'mongoose'
 import passport from 'passport'
-import passportConfig from '#/config/passport'
 
 export default (server: Express) => {
 	server.use(express.json())
@@ -15,5 +15,5 @@ export default (server: Express) => {
 	})
 	server.use(passport.initialize())
 	passportConfig(passport)
-	server.use(basePath, router)
+	server.use(BASE_PATH, router)
 }

@@ -1,6 +1,6 @@
 import { IUser } from '#/api/users/model/Schema'
 import User from '#/api/users/model/User'
-import { error, success } from '#lib/constants'
+import { ERROR, SUCCESS } from '#lib/constants'
 import { asyncHandler, feedback, returnHandler, signJWT } from '#lib/helpers'
 import { compare } from 'bcrypt'
 import { NextFunction, Request, Response } from 'express'
@@ -33,7 +33,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 			returnHandler(
 				StatusCodes.UNAUTHORIZED,
 				null,
-				feedback('error', error.wrongUsernamePassword)
+				feedback('error', ERROR.wrongUsernamePassword)
 			)
 		)
 	}
@@ -42,7 +42,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 			returnHandler(
 				StatusCodes.INTERNAL_SERVER_ERROR,
 				user.error,
-				feedback('error', error.SWR)
+				feedback('error', ERROR.SWR)
 			)
 		)
 	}
@@ -53,7 +53,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 			returnHandler(
 				StatusCodes.OK,
 				{ token: signJWT({ id: user.id }) },
-				feedback('success', success.login)
+				feedback('success', SUCCESS.login)
 			)
 		)
 	}
@@ -62,7 +62,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 		returnHandler(
 			StatusCodes.UNAUTHORIZED,
 			null,
-			feedback('error', error.wrongUsernamePassword)
+			feedback('error', ERROR.wrongUsernamePassword)
 		)
 	)
 }

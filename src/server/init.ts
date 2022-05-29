@@ -1,16 +1,16 @@
-import express, { Express } from 'express'
 import addMiddleware from './middleware'
+import express from 'express'
 
 export const server = () => {
-  const app = express()
+	const app = express()
 
-  addMiddleware(app)
+	addMiddleware(app)
 
-  const port = process.env.PORT || 4500
+	const port = process.env.PORT || 4500
 
-  const cb = () => console.log(`Server started on port ${port}`)
+	const cb = () => console.log(`Server started on port ${port}`)
 
-  app.listen(port, cb)
+	app.listen(port, cb)
 
-  return app
+	return app
 }

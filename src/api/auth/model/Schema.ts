@@ -1,4 +1,6 @@
 import mongoose from 'mongoose'
+import { ROLES } from '#lib/constants'
+import { $role } from '#lib/types'
 
 const AuthSchema = new mongoose.Schema(
 	{
@@ -17,14 +19,25 @@ const AuthSchema = new mongoose.Schema(
 			required: true,
 			select: false,
 		},
+		role: {
+			type: String,
+			default: ROLES.READER.label,
+		},
+		reset: {
+			token: String,
+		},
 	},
-	{ _id: false, timestamps: true, selectPopulatedPaths: false }
+	{ _id: false, timestamps: true }
 )
 
 export interface IUserAuth extends mongoose.Document {
 	username: string
 	email: string
 	password: string
+	role: $role
+	reset?: {
+		token: string
+	}
 }
 
 export default AuthSchema

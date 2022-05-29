@@ -1,11 +1,16 @@
 import { IUser } from '#/api/users/model/Schema'
-import { error, warning } from '#lib/constants'
-import { feedback, protectedRoute, returnHandler } from '#lib/helpers'
+import { ERROR, WARNING } from '#lib/constants'
+import {
+	feedback,
+	permissioned,
+	protectedRoute,
+	returnHandler,
+} from '#lib/helpers'
+import Blog from '../../model/Blog'
+import { IBlog } from '../../model/BlogSchema'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import Blog from '../../model/Blog'
 import { HydratedDocument } from 'mongoose'
-import { IBlog } from '../../model/BlogSchema'
 
 type body = {
 	id: string
@@ -27,7 +32,7 @@ const mainTask = (
 				returnHandler(
 					StatusCodes.NOT_FOUND,
 					null,
-					feedback('warning', warning.noData)
+					feedback('warning', WARNING.noData)
 				)
 			)
 		if (err)
@@ -35,7 +40,7 @@ const mainTask = (
 				returnHandler(
 					StatusCodes.INTERNAL_SERVER_ERROR,
 					err,
-					feedback('error', error.SWR)
+					feedback('error', ERROR.SWR)
 				)
 			)
 
@@ -46,7 +51,7 @@ const mainTask = (
 				returnHandler(
 					StatusCodes.UNAUTHORIZED,
 					null,
-					feedback('warning', warning.unauthorized)
+					feedback('warning', WARNING.unauthorized)
 				)
 			)
 		data.title = title || data.title
@@ -57,4 +62,4 @@ const mainTask = (
 	})
 }
 
-export default [protectedRoute, mainTask]
+export default [protectedRoute, permissioned(2), mainTask]

@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from 'express'
-import { feedback, protectedRoute, returnHandler } from '#helpers'
-import Blog from '../../model/Blog'
 import { IUser } from '#/api/users/model/Schema'
+import { feedback, permissioned, protectedRoute, returnHandler } from '#helpers'
+import { ERROR, SUCCESS } from '#lib/constants'
+import Blog from '../../model/Blog'
+import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { error, success } from '#lib/constants'
 
 type IBody = {
 	title: string
@@ -26,9 +26,9 @@ const mainTask = (
 		.then(async (data) => {
 			return next(
 				returnHandler(
-					StatusCodes.OK,
+					StatusCodes.CREATED,
 					data,
-					feedback('success', success.blogCreated)
+					feedback('success', SUCCESS.created)
 				)
 			)
 		})
@@ -37,9 +37,9 @@ const mainTask = (
 				returnHandler(
 					StatusCodes.INTERNAL_SERVER_ERROR,
 					err,
-					feedback('error', error.SWR)
+					feedback('error', ERROR.SWR)
 				)
 			)
 		})
 }
-export default [protectedRoute, mainTask]
+export default [protectedRoute, permissioned(2), mainTask]

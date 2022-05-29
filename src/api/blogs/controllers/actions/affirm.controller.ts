@@ -1,22 +1,56 @@
-import { NextFunction, Request, Response } from 'express'
-import { returnHandler } from '#helpers'
+import { IUser } from '#/api/users/model/Schema'
+import { ERROR, SUCCESS, WARNING } from '#lib/constants'
+import {
+	asyncHandler,
+	feedback,
+	protectedRoute,
+	returnHandler,
+} from '../../../../lib/helpers'
 import Blog from '../../model/Blog'
+import { NextFunction, Request, Response } from 'express'
+import { StatusCodes } from 'http-status-codes'
 
-export default (req: Request, res: Response, next: NextFunction) => {
-  let action = req.body.action === 'add' ? '$addToSet' : '$pull'
-  Blog.findByIdAndUpdate(
-    req.body.id,
-    {
-      [action]: {
-        // @ts-ignore
-        affirms: req.user.id,
-      },
-    },
-    { new: true },
-    (err, data) => {
-      if (err) return next(returnHandler(500, err))
-      if (!data) return next(returnHandler(404, null))
-      return next(returnHandler(200, data))
-    }
-  )
+interface IRequest extends Request {
+	user: IUser
+	body: {
+		id: string
+		action: 'add' | 'remove'
+	}
 }
+
+const mainTask = async (req: IRequest, _res: Response, next: NextFunction) => {
+	const action = req.body.action === 'add' ? '$addToSet' : '$pull'
+
+	const data = await asyncHandler(
+		Blog.findByIdAndUpdate(
+			req.body.id,
+			{
+				[action]: {
+					affirms: req.user.id,
+				},
+			},
+			{ new: true }
+		)
+	)
+	if (!data)
+		return next(
+			returnHandler(
+				StatusCodes.NOT_FOUND,
+				null,
+				feedback('warning', WARNING.noData)
+			)
+		)
+	if (data.error)
+		return next(
+			returnHandler(
+				StatusCodes.INTERNAL_SERVER_ERROR,
+				data.error,
+				feedback('error', ERROR.SWR)
+			)
+		)
+	return next(
+		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.like))
+	)
+}
+
+export default [protectedRoute, mainTask]

@@ -1,12 +1,11 @@
 import { IUser } from '#/api/users/model/Schema'
-import { schemaNames } from '#lib/constants'
-import mongoose from 'mongoose'
-import { Schema, SchemaTypes, Model } from 'mongoose'
+import { SCHEMAS } from '#lib/constants'
 import commentSchema, { IComment } from './CommentSchema'
+import mongoose, { Model, Schema, SchemaTypes } from 'mongoose'
 
 const { ObjectId } = SchemaTypes
 
-export interface IBlog extends Model<null> {
+export interface IBlog extends Model<Document> {
 	title: string
 	body: string
 	excerpt?: string
@@ -16,6 +15,7 @@ export interface IBlog extends Model<null> {
 	affirms?: string[]
 	comments: IComment[]
 	visible?: boolean
+	error?: Error
 }
 
 const schema = new Schema<IBlog>(
@@ -36,24 +36,24 @@ const schema = new Schema<IBlog>(
 		},
 		author: {
 			type: ObjectId,
-			ref: schemaNames.user,
+			ref: SCHEMAS.user,
 			required: true,
 		},
 		responseTo: {
 			type: ObjectId,
-			ref: schemaNames.blog,
+			ref: SCHEMAS.blog,
 		},
 		likes: [
 			{
 				type: ObjectId,
-				ref: schemaNames.user,
+				ref: SCHEMAS.user,
 				default: [],
 			},
 		],
 		affirms: [
 			{
 				type: ObjectId,
-				ref: schemaNames.user,
+				ref: SCHEMAS.user,
 				default: [],
 			},
 		],

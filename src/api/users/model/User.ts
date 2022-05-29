@@ -1,6 +1,7 @@
-import { schemaNames } from '#lib/constants'
-import mongoose from 'mongoose'
+import { SCHEMAS } from '#lib/constants'
 import Schema from './Schema'
+import mongoose from 'mongoose'
+
 // import UserValidation from './User.validation.js'
 
-export default mongoose.model(schemaNames.user, Schema)
+export default mongoose.model(SCHEMAS.user, Schema)

@@ -1,28 +1,30 @@
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
-import {
-	asyncHandler,
-	feedback,
-	protectedRoute,
-	returnHandler,
-} from '#lib/helpers'
-import Blog from '../../model/Blog'
+import { asyncHandler, feedback, returnHandler } from '#lib/helpers'
+import { IUser, IUserProfile } from '../model/Schema'
+import User from '../model/User'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { HydratedDocument } from 'mongoose'
 
-export const getAll = async (
-	_req: Request,
-	_res: Response,
-	next: NextFunction
-) => {
-	console.log(_req.body)
+interface IRequest extends Request {
+	body: {
+		filters: IUserProfile
+	}
+}
 
-	const data = await asyncHandler(
-		Blog.find({})
-			.select('-body -comments')
-			.populate('author', 'profile.name')
-			.limit(10)
+export default async (req: IRequest, _res: Response, next: NextFunction) => {
+	const filters: { [x: string]: unknown } = {}
+	Object.keys(req.body.filters).forEach((element: string) => {
+		filters[`profile.${element}`] =
+			req.body.filters[element as keyof IUserProfile]
+	})
+	console.log(filters)
+
+	const data: HydratedDocument<IUser> = await asyncHandler(
+		User.find(filters, 'profile')
 	)
-	if (!data)
+
+	if (data.length < 1)
 		return next(
 			returnHandler(
 				StatusCodes.NOT_FOUND,
@@ -43,18 +45,13 @@ export const getAll = async (
 	)
 }
 
-const _getOneById = async (
-	req: Request<{ id: string }>,
+export const getUserById = async (
+	req: Request,
 	_res: Response,
 	next: NextFunction
 ) => {
-	const id = req.params.id
-
-	const data = await asyncHandler(
-		Blog.findById(id)
-			.populate('author', 'profile.name')
-			.populate('comments.author', 'profile.name')
-	)
+	const id = req.params.id as string
+	const data = await asyncHandler(User.findById(id, 'profile'))
 
 	if (!data)
 		return next(
@@ -72,10 +69,7 @@ const _getOneById = async (
 				feedback('error', ERROR.SWR)
 			)
 		)
-
 	return next(
 		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found))
 	)
 }
-
-export const getOneById = [protectedRoute, _getOneById]

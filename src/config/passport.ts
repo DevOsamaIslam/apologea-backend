@@ -1,18 +1,13 @@
-import {
-	Strategy,
-	ExtractJwt,
-	VerifiedCallback,
-	VerifyCallback,
-	StrategyOptions,
-} from 'passport-jwt'
-import { PassportStatic } from 'passport'
 import User from '#/api/users/model/User'
-import { $jwtPayload } from '#lib/types'
+import { AUTH } from '#lib/constants'
 import { asyncHandler } from '#lib/helpers'
+import { $jwtPayload } from '#lib/types'
+import { PassportStatic } from 'passport'
+import { ExtractJwt, Strategy, StrategyOptions, VerifiedCallback, VerifyCallback } from 'passport-jwt'
 
 const options: StrategyOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-	secretOrKey: process.env.AUTH_SECRET,
+	secretOrKey: AUTH.secret,
 }
 
 const jwtStrategy: VerifyCallback = async (
@@ -20,10 +15,11 @@ const jwtStrategy: VerifyCallback = async (
 	done: VerifiedCallback
 ) => {
 	const user = await asyncHandler(User.findById(payload.id))
-	if (user.error) return done(user.error, false)
 	if (!user) return done(null, false)
+	if (user.error) return done(user.error, false)
 	return done(null, user)
 }
 
-export default (passport: PassportStatic) =>
+export default (passport: PassportStatic) => {
 	passport.use(new Strategy(options, jwtStrategy))
+}

@@ -1,8 +1,14 @@
-import { NextFunction, Request, Response } from 'express'
-import { error, success, warning } from '#lib/constants'
-import { asyncHandler, feedback, protectedRoute, returnHandler } from '#helpers'
-import Blog from '../../model/Blog'
 import { IUser } from '#/api/users/model/Schema'
+import {
+	asyncHandler,
+	feedback,
+	permissioned,
+	protectedRoute,
+	returnHandler,
+} from '#helpers'
+import { ERROR, SUCCESS, WARNING } from '#lib/constants'
+import Blog from '../../model/Blog'
+import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
 type body = {
@@ -29,7 +35,7 @@ const mainTask = async (
 			returnHandler(
 				StatusCodes.NOT_FOUND,
 				data,
-				feedback('warning', warning.noData)
+				feedback('warning', WARNING.noData)
 			)
 		)
 	}
@@ -39,17 +45,13 @@ const mainTask = async (
 			returnHandler(
 				StatusCodes.INTERNAL_SERVER_ERROR,
 				data.error,
-				feedback('error', error.SWR)
+				feedback('error', ERROR.SWR)
 			)
 		)
 
 	return next(
-		returnHandler(
-			StatusCodes.OK,
-			data,
-			feedback('success', success.blogDeleted)
-		)
+		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.deleted))
 	)
 }
 
-export default [protectedRoute, mainTask]
+export default [protectedRoute, permissioned(2), mainTask]

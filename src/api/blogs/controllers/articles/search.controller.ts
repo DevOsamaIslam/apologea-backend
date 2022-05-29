@@ -1,8 +1,8 @@
-import { error, success, warning } from '#lib/constants'
+import { ERROR, SUCCESS, WARNING } from '#lib/constants'
 import { asyncHandler, feedback, returnHandler } from '#lib/helpers'
+import Blog from '../../model/Blog'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import Blog from '../../model/Blog'
 
 export default async (
 	req: Request<null, null, null, { term: string }>,
@@ -22,7 +22,7 @@ export default async (
 			returnHandler(
 				StatusCodes.NOT_FOUND,
 				null,
-				feedback('warning', warning.noData)
+				feedback('warning', WARNING.noData)
 			)
 		)
 	if (data.error)
@@ -30,10 +30,10 @@ export default async (
 			returnHandler(
 				StatusCodes.INTERNAL_SERVER_ERROR,
 				data.error,
-				feedback('error', error.SWR)
+				feedback('error', ERROR.SWR)
 			)
 		)
 	return next(
-		returnHandler(StatusCodes.OK, data, feedback('success', success.search))
+		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.search))
 	)
 }

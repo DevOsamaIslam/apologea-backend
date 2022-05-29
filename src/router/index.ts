@@ -1,14 +1,14 @@
-import { Router, Request, Response, NextFunction } from 'express'
-import authRoutes from '../api/auth/routes'
-import userRoutes from '../api/users/routes'
-import blogRoutes from '../api/blogs/routes'
 import { IReturnHandler } from '#lib/types'
-import { sanitizeRequest } from '#lib/helpers'
+import authRoutes from '../api/auth/routes'
+import blogRoutes from '../api/blogs/routes'
+import userRoutes from '../api/users/routes'
+import { NextFunction, Request, Response, Router } from 'express'
+
 // import debateRoutes from '../api/debate/routes'
 
 const router = Router()
 
-router.use(sanitizeRequest)
+// router.use(sanitizeRequest)
 
 router.use('/auth', authRoutes)
 

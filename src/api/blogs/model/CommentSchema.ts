@@ -1,11 +1,13 @@
 import { IUser } from '#/api/users/model/Schema'
-import { schemaNames } from '#lib/constants'
+import { SCHEMAS } from '#lib/constants'
 import mongoose from 'mongoose'
+
 const { ObjectId } = mongoose.SchemaTypes
 
 export interface IComment {
+	_id?: mongoose.Types.ObjectId
 	contents: string
-	author: IUser
+	author: IUser['id']
 }
 
 const commentSchema = new mongoose.Schema({
@@ -15,7 +17,7 @@ const commentSchema = new mongoose.Schema({
 	},
 	author: {
 		type: ObjectId,
-		ref: schemaNames.user,
+		ref: SCHEMAS.user,
 		required: true,
 	},
 })
