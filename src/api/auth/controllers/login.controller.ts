@@ -1,5 +1,5 @@
-import { IUser } from '#/api/users/model/Schema'
 import User from '#/api/users/model/User'
+import { IUser } from '#/api/users/types'
 import { ERROR, SUCCESS } from '#lib/constants'
 import { asyncHandler, feedback, returnHandler, signJWT } from '#lib/helpers'
 import { compare } from 'bcrypt'

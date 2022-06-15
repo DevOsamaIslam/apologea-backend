@@ -5,19 +5,27 @@ import {
 	protectedRoute,
 	returnHandler,
 } from '#lib/helpers'
-import Blog from '../../model/Blog'
+import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { IUserProfile } from '#/api/users/types'
+
+type $body = {
+	filters: IUserProfile
+}
 
 export const getAll = async (
-	_req: Request,
+	req: Request<null, null, $body>,
 	_res: Response,
 	next: NextFunction
 ) => {
-	console.log(_req.body)
-
+	const filters: { [x: string]: unknown } = {}
+	Object.keys(req.body.filters).forEach((element: string) => {
+		filters[`profile.${element}`] =
+			req.body.filters[element as keyof IUserProfile]
+	})
 	const data = await asyncHandler(
-		Blog.find({})
+		Article.find({})
 			.select('-body -comments')
 			.populate('author', 'profile.name')
 			.limit(10)
@@ -51,7 +59,7 @@ const _getOneById = async (
 	const id = req.params.id
 
 	const data = await asyncHandler(
-		Blog.findById(id)
+		Article.findById(id)
 			.populate('author', 'profile.name')
 			.populate('comments.author', 'profile.name')
 	)

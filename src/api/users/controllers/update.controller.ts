@@ -1,9 +1,14 @@
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
-import { asyncHandler, feedback, patchObject, returnHandler } from '#lib/helpers'
-import { IUserProfile } from '../model/Schema'
+import {
+	asyncHandler,
+	feedback,
+	patchObject,
+	returnHandler,
+} from '#lib/helpers'
 import User from '../model/User'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { IUserProfile } from '../types'
 
 interface IRequest extends Request {
 	body: {

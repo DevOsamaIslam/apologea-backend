@@ -6,11 +6,11 @@ import {
 	protectedRoute,
 	returnHandler,
 } from '#lib/helpers'
-import { IUser } from '../model/Schema'
 import User from '../model/User'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
+import { IUser } from '../types'
 
 type $body = {
 	userID: string

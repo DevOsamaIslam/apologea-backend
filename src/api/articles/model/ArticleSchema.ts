@@ -1,24 +1,11 @@
-import { IUser } from '#/api/users/model/Schema'
 import { SCHEMAS } from '#lib/constants'
-import commentSchema, { IComment } from './CommentSchema'
-import mongoose, { Model, Schema, SchemaTypes } from 'mongoose'
+import commentSchema from './CommentSchema'
+import { Schema, SchemaTypes } from 'mongoose'
+import { IArticle } from '../types'
 
 const { ObjectId } = SchemaTypes
 
-export interface IBlog extends Model<Document> {
-	title: string
-	body: string
-	excerpt?: string
-	author: mongoose.Types.ObjectId
-	responseTo?: IUser
-	likes?: string[]
-	affirms?: string[]
-	comments: IComment[]
-	visible?: boolean
-	error?: Error
-}
-
-const schema = new Schema<IBlog>(
+const schema = new Schema<IArticle>(
 	{
 		title: {
 			type: String,
@@ -30,7 +17,7 @@ const schema = new Schema<IBlog>(
 		},
 		excerpt: {
 			type: String,
-			default: function (this: IBlog) {
+			default: function (this: IArticle) {
 				return this.body.slice(0, 100) + '...'
 			},
 		},
@@ -43,6 +30,13 @@ const schema = new Schema<IBlog>(
 			type: ObjectId,
 			ref: SCHEMAS.blog,
 		},
+		responses: [
+			{
+				type: ObjectId,
+				ref: SCHEMAS.blog,
+				default: [],
+			},
+		],
 		likes: [
 			{
 				type: ObjectId,

@@ -1,4 +1,3 @@
-import { IUser } from '#/api/users/model/Schema'
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
 import {
 	asyncHandler,
@@ -6,9 +5,10 @@ import {
 	protectedRoute,
 	returnHandler,
 } from '../../../../lib/helpers'
-import Blog from '../../model/Blog'
+import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { IUser } from '#/api/users/types'
 
 interface IRequest extends Request {
 	user: IUser
@@ -21,7 +21,7 @@ interface IRequest extends Request {
 const mainTask = async (req: IRequest, _res: Response, next: NextFunction) => {
 	const action = req.body.action === 'add' ? '$addToSet' : '$pull'
 	const data = await asyncHandler(
-		Blog.findByIdAndUpdate(
+		Article.findByIdAndUpdate(
 			req.body.id,
 			{
 				[action]: {

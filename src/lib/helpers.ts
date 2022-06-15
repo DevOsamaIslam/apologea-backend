@@ -4,8 +4,6 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import passport from 'passport'
-import { IUser } from '#/api/users/model/Schema'
-import { IUserAuth } from '#/api/auth/model/Schema'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const asyncHandler = async (fn: any) => {

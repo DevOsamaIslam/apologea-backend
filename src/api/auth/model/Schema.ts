@@ -30,14 +30,4 @@ const AuthSchema = new mongoose.Schema(
 	{ _id: false, timestamps: true }
 )
 
-export interface IUserAuth extends mongoose.Document {
-	username: string
-	email: string
-	password: string
-	role: $role
-	reset?: {
-		token: string
-	}
-}
-
 export default AuthSchema

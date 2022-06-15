@@ -1,4 +1,3 @@
-import { IUser } from '#/api/users/model/Schema'
 import { ERROR, WARNING } from '#lib/constants'
 import {
 	feedback,
@@ -6,11 +5,12 @@ import {
 	protectedRoute,
 	returnHandler,
 } from '#lib/helpers'
-import Blog from '../../model/Blog'
-import { IBlog } from '../../model/BlogSchema'
+import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
+import { IUser } from '#/api/users/types'
+import { IArticle } from '../../types'
 
 type body = {
 	id: string
@@ -26,7 +26,7 @@ const mainTask = (
 ) => {
 	const user = req.user as IUser
 	const { id, title, body, visible } = req.body
-	Blog.findById(id, (err: ErrorEvent, data: HydratedDocument<IBlog>) => {
+	Article.findById(id, (err: ErrorEvent, data: HydratedDocument<IArticle>) => {
 		if (!data)
 			return next(
 				returnHandler(

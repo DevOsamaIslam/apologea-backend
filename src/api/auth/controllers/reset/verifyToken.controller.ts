@@ -1,4 +1,3 @@
-import { IUser } from '#/api/users/model/Schema'
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
 import { asyncHandler, feedback, returnHandler } from '#lib/helpers'
 import User from '../../model/Auth'
@@ -6,6 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
 import check from 'validator'
+import { IUser } from '#/api/users/types'
 
 type $body = {
 	email: string

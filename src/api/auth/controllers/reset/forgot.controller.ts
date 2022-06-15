@@ -1,5 +1,5 @@
-import { IUser } from '#/api/users/model/Schema'
 import User from '#/api/users/model/User'
+import { IUser } from '#/api/users/types'
 import { asyncHandler, feedback, getCode, returnHandler } from '#helpers'
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
 import { NextFunction, Request, Response } from 'express'

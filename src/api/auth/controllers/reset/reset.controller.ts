@@ -1,10 +1,10 @@
-import { IUser } from '#/api/users/model/Schema'
 import { ERROR, SUCCESS } from '#lib/constants'
 import { asyncHandler, feedback, returnHandler, signJWT } from '#lib/helpers'
 import verifyTokenController from './verifyToken.controller'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
+import { IUser } from '#/api/users/types'
 
 type $body = {
 	email: string

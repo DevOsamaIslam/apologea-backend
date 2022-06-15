@@ -1,4 +1,3 @@
-import { IUser } from '#/api/users/model/Schema'
 import {
 	asyncHandler,
 	feedback,
@@ -7,9 +6,10 @@ import {
 	returnHandler,
 } from '#helpers'
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
-import Blog from '../../model/Blog'
+import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { IUser } from '#/api/users/types'
 
 type body = {
 	id: string
@@ -24,7 +24,7 @@ const mainTask = async (
 	const id = req.body.id
 
 	const data = await asyncHandler(
-		Blog.deleteOne({
+		Article.deleteOne({
 			_id: id,
 			author: user.id,
 		})

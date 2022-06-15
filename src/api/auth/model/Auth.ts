@@ -1,8 +1,9 @@
 import User from '#/api/users/model/User'
 import { AUTH } from '#lib/constants'
-import AuthSchema, { IUserAuth } from './Schema'
+import AuthSchema from './Schema'
 import { hash } from 'bcrypt'
 import { HydratedDocument } from 'mongoose'
+import { IUserAuth } from '../types'
 
 // hash the password
 AuthSchema.pre(

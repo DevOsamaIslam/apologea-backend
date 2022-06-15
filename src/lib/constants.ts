@@ -44,7 +44,7 @@ export const WARNING = {
 
 export const SCHEMAS = {
 	user: 'User',
-	blog: 'Blog',
+	blog: 'Article',
 	debate: 'Debate',
 }
 

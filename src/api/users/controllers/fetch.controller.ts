@@ -1,10 +1,10 @@
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
 import { asyncHandler, feedback, returnHandler } from '#lib/helpers'
-import { IUser, IUserProfile } from '../model/Schema'
 import User from '../model/User'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
+import { IUserProfile, IUser } from '../types'
 
 interface IRequest extends Request {
 	body: {
@@ -18,7 +18,6 @@ export default async (req: IRequest, _res: Response, next: NextFunction) => {
 		filters[`profile.${element}`] =
 			req.body.filters[element as keyof IUserProfile]
 	})
-	console.log(filters)
 
 	const data: HydratedDocument<IUser> = await asyncHandler(
 		User.find(filters, 'profile')

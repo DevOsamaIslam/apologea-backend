@@ -1,12 +1,11 @@
-import { IUser } from '#/api/users/model/Schema'
 import { asyncHandler, feedback, protectedRoute, returnHandler } from '#helpers'
 import { ERROR, SUCCESS, WARNING } from '#lib/constants'
-import Blog from '../../model/Blog'
-import { IBlog } from '../../model/BlogSchema'
-import { IComment } from '../../model/CommentSchema'
+import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
+import { IUser } from '#/api/users/types'
+import { IArticle, IComment } from '../../types'
 
 interface _Request extends Request {
 	body: {
@@ -21,7 +20,9 @@ const mainTask = async (req: _Request, res: Response, next: NextFunction) => {
 	const action = req.body.action
 	const id = req.body.id
 	const comment = req.body.comment
-	const data: HydratedDocument<IBlog> = await asyncHandler(Blog.findById(id))
+	const data: HydratedDocument<IArticle> = await asyncHandler(
+		Article.findById(id)
+	)
 
 	if (!data)
 		return next(

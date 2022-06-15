@@ -1,6 +1,7 @@
-import AuthSchema, { IUserAuth } from '#/api/auth/model/Schema'
+import AuthSchema from '#/api/auth/model/Schema'
 import { SCHEMAS } from '#lib/constants'
 import mongoose from 'mongoose'
+import { IUser } from '../types'
 
 // import UserValidation from './User.validation.js'
 
@@ -57,28 +58,5 @@ export const UserSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
-
-export interface IUserProfile {
-	phone?: string
-	xp?: number
-	languages?: string[]
-	following?: string[]
-	name?: string
-	bio?: string
-	pic?: string
-	experience?: string
-	social?: {
-		name: string
-		link: string
-	}
-	affiliations?: string[]
-}
-
-export interface IUser extends mongoose.Model<null> {
-	id: string
-	profile: IUserProfile
-	auth: IUserAuth
-	error?: Error
-}
 
 export default UserSchema

@@ -87,7 +87,7 @@
 			]
 		},
 		{
-			"name": "Blogs",
+			"name": "Articles",
 			"item": [
 				{
 					"name": "Actions",
@@ -107,7 +107,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/blogs/like",
+									"raw": "http://localhost:5000/api/articles/like",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -115,7 +115,7 @@
 									"port": "5000",
 									"path": [
 										"api",
-										"blogs",
+										"articles",
 										"like"
 									]
 								}
@@ -137,7 +137,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/blogs/comment",
+									"raw": "http://localhost:5000/api/articles/comment",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -145,7 +145,7 @@
 									"port": "5000",
 									"path": [
 										"api",
-										"blogs",
+										"articles",
 										"comment"
 									]
 								}
@@ -167,7 +167,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5000/api/blogs/affirm",
+									"raw": "http://localhost:5000/api/articles/affirm",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -175,7 +175,7 @@
 									"port": "5000",
 									"path": [
 										"api",
-										"blogs",
+										"articles",
 										"affirm"
 									]
 								}
@@ -199,7 +199,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/blogs/",
+							"raw": "http://localhost:5000/api/articles/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -207,7 +207,7 @@
 							"port": "5000",
 							"path": [
 								"api",
-								"blogs",
+								"articles",
 								""
 							]
 						}
@@ -232,7 +232,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/blogs/search?term=sport",
+							"raw": "http://localhost:5000/api/articles/search?term=sport",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -240,7 +240,7 @@
 							"port": "5000",
 							"path": [
 								"api",
-								"blogs",
+								"articles",
 								"search"
 							],
 							"query": [
@@ -266,7 +266,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/blogs/",
+							"raw": "http://localhost:5000/api/articles/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -274,7 +274,7 @@
 							"port": "5000",
 							"path": [
 								"api",
-								"blogs",
+								"articles",
 								""
 							]
 						}
@@ -287,7 +287,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/blogs/",
+							"raw": "http://localhost:5000/api/articles/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -295,7 +295,7 @@
 							"port": "5000",
 							"path": [
 								"api",
-								"blogs",
+								"articles",
 								""
 							]
 						}
@@ -317,7 +317,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/blogs",
+							"raw": "http://localhost:5000/api/articles",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -325,7 +325,7 @@
 							"port": "5000",
 							"path": [
 								"api",
-								"blogs"
+								"articles"
 							]
 						}
 					},
@@ -346,7 +346,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/blogs",
+							"raw": "http://localhost:5000/api/articles",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -354,7 +354,7 @@
 							"port": "5000",
 							"path": [
 								"api",
-								"blogs"
+								"articles"
 							]
 						}
 					},
