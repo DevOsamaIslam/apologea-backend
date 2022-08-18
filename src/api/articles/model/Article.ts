@@ -1,4 +1,4 @@
-import { SCHEMAS } from '#lib/constants'
+import { SCHEMAS } from '@constants'
 import ArticleSchema from './ArticleSchema'
 import { model, HydratedDocument } from 'mongoose'
 import { IArticle } from '../types'

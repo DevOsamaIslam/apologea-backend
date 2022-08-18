@@ -1,5 +1,5 @@
-import { ERROR, SUCCESS, WARNING } from '#lib/constants'
-import { asyncHandler, feedback, returnHandler } from '#lib/helpers'
+import { ERROR, SUCCESS, WARNING } from '@constants'
+import { asyncHandler, feedback, returnHandler } from '@helpers'
 import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'

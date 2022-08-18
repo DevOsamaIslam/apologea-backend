@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
-import { ROLES } from '#lib/constants'
-import { $role } from '#lib/types'
+import { ROLES } from '@constants'
 
 const AuthSchema = new mongoose.Schema(
 	{

@@ -1,4 +1,4 @@
-import { SCHEMAS } from '#lib/constants'
+import { SCHEMAS } from '@constants'
 import mongoose from 'mongoose'
 
 const { ObjectId } = mongoose.SchemaTypes

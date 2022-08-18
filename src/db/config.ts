@@ -1,4 +1,4 @@
-import { asyncHandler } from '#lib/helpers'
+import { asyncHandler } from '@helpers'
 import mongoose, { Mongoose } from 'mongoose'
 
 type tDatabase = {

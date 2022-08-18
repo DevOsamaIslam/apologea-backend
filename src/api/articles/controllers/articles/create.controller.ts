@@ -4,8 +4,8 @@ import {
 	permissioned,
 	protectedRoute,
 	returnHandler,
-} from '#helpers'
-import { ERROR, SUCCESS } from '#lib/constants'
+} from '@helpers'
+import { ERROR, SUCCESS } from '@constants'
 import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'

@@ -1,14 +1,9 @@
-import { ERROR, SUCCESS, WARNING } from '#lib/constants'
-import {
-	asyncHandler,
-	feedback,
-	protectedRoute,
-	returnHandler,
-} from '../../../../lib/helpers'
+import { ERROR, SUCCESS, WARNING } from '@constants'
+import { asyncHandler, feedback, protectedRoute, returnHandler } from '@helpers'
 import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { IUser } from '#/api/users/types'
+import { IUser } from 'api/users/types'
 
 interface IRequest extends Request {
 	user: IUser

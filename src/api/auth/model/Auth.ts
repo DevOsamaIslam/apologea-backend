@@ -1,5 +1,5 @@
-import User from '#/api/users/model/User'
-import { AUTH } from '#lib/constants'
+import User from 'api/users/model/User'
+import { AUTH } from '@constants'
 import AuthSchema from './Schema'
 import { hash } from 'bcrypt'
 import { HydratedDocument } from 'mongoose'

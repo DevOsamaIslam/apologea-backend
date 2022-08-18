@@ -1,15 +1,10 @@
-import { ERROR, WARNING } from '#lib/constants'
-import {
-	feedback,
-	permissioned,
-	protectedRoute,
-	returnHandler,
-} from '#lib/helpers'
+import { ERROR, WARNING } from '@constants'
+import { feedback, permissioned, protectedRoute, returnHandler } from '@helpers'
 import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
-import { IUser } from '#/api/users/types'
+import { IUser } from 'api/users/types'
 import { IArticle } from '../../types'
 
 type body = {

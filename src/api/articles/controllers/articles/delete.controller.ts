@@ -4,12 +4,12 @@ import {
 	permissioned,
 	protectedRoute,
 	returnHandler,
-} from '#helpers'
-import { ERROR, SUCCESS, WARNING } from '#lib/constants'
+} from '@helpers'
+import { ERROR, SUCCESS, WARNING } from '@constants'
 import Article from '../../model/Article'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { IUser } from '#/api/users/types'
+import { IUser } from 'api/users/types'
 
 type body = {
 	id: string

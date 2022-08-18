@@ -1,5 +1,5 @@
-import AuthSchema from '#/api/auth/model/Schema'
-import { SCHEMAS } from '#lib/constants'
+import AuthSchema from 'api/auth/model/Schema'
+import { SCHEMAS } from '@constants'
 import mongoose from 'mongoose'
 import { IUser } from '../types'
 

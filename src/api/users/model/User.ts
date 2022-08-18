@@ -1,4 +1,4 @@
-import { SCHEMAS } from '#lib/constants'
+import { SCHEMAS } from '@constants'
 import Schema from './Schema'
 import mongoose from 'mongoose'
 

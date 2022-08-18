@@ -1,4 +1,4 @@
-import { $role } from '#lib/types'
+import { $role } from '@types'
 import mongoose from 'mongoose'
 
 export interface IUserAuth extends mongoose.Document {

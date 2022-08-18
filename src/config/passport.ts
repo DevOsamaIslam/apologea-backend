@@ -1,9 +1,15 @@
-import User from '#/api/users/model/User'
-import { AUTH } from '#lib/constants'
-import { asyncHandler } from '#lib/helpers'
-import { $jwtPayload } from '#lib/types'
+import User from 'api/users/model/User'
+import { AUTH } from '@constants'
+import { asyncHandler } from '@helpers'
+import { $jwtPayload } from '@types'
 import { PassportStatic } from 'passport'
-import { ExtractJwt, Strategy, StrategyOptions, VerifiedCallback, VerifyCallback } from 'passport-jwt'
+import {
+	ExtractJwt,
+	Strategy,
+	StrategyOptions,
+	VerifiedCallback,
+	VerifyCallback,
+} from 'passport-jwt'
 
 const options: StrategyOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

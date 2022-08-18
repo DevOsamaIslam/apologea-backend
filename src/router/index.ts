@@ -1,4 +1,4 @@
-import { IReturnHandler } from '#lib/types'
+import { IReturnHandler } from '@types'
 import authRoutes from '../api/auth/routes'
 import blogRoutes from '../api/articles/routes'
 import userRoutes from '../api/users/routes'

@@ -1,4 +1,4 @@
-import { SCHEMAS } from '#lib/constants'
+import { SCHEMAS } from '@constants'
 import commentSchema from './CommentSchema'
 import { Schema, SchemaTypes } from 'mongoose'
 import { IArticle } from '../types'

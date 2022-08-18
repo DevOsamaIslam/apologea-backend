@@ -10,18 +10,3 @@ export interface IReturnHandler {
 	data?: unknown
 	feedback?: IFeedback
 }
-
-export type $jwtPayload = {
-	id: string
-	iat: Date
-	exp: Date
-}
-
-export type $role =
-	| 'Guest'
-	| 'Reader'
-	| 'Reader+'
-	| 'Moderator'
-	| 'Debater'
-	| 'Publisher'
-	| 'Admin'
