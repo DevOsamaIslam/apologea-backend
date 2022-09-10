@@ -1,7 +1,7 @@
 import { IReturnHandler } from '@types'
 import authRoutes from '../api/auth/routes'
 import blogRoutes from '../api/articles/routes'
-import userRoutes from '../api/users/routes'
+import PublisherRoutes from '../api/users/routes'
 import { NextFunction, Request, Response, Router } from 'express'
 
 // import debateRoutes from '../api/debate/routes'
@@ -12,7 +12,7 @@ const router = Router()
 
 router.use('/auth', authRoutes)
 
-router.use('/users', userRoutes)
+router.use('/publishers', PublisherRoutes)
 
 router.use('/articles', blogRoutes)
 

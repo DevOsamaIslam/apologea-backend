@@ -12,7 +12,11 @@ interface IRequest extends Request {
 	}
 }
 
-export default async (req: IRequest, _res: Response, next: NextFunction) => {
+export const getPublishers = async (
+	req: IRequest,
+	_res: Response,
+	next: NextFunction
+) => {
 	const filters: { [x: string]: unknown } = {}
 	Object.keys(req.body.filters).forEach((element: string) => {
 		filters[`profile.${element}`] =
@@ -44,7 +48,7 @@ export default async (req: IRequest, _res: Response, next: NextFunction) => {
 	)
 }
 
-export const getUserById = async (
+export const getPublisherById = async (
 	req: Request,
 	_res: Response,
 	next: NextFunction
