@@ -56,7 +56,7 @@ export const UserSchema = new mongoose.Schema(
 		},
 		auth: AuthSchema,
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 )
 
 export default UserSchema

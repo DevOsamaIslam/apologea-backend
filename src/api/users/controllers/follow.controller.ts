@@ -1,11 +1,5 @@
 import { ERROR, SUCCESS, WARNING } from '@constants'
-import {
-	asyncHandler,
-	feedback,
-	permissioned,
-	protectedRoute,
-	returnHandler,
-} from '@helpers'
+import { asyncHandler, feedback, returnHandler } from '@helpers'
 import User from '../model/User'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
@@ -17,12 +11,7 @@ type $body = {
 	action: 'add' | 'remove'
 }
 
-export const mainTask = async (
-	req: Request<null, null, $body>,
-	_res: Response,
-	next: NextFunction
-) => {
-	// const user = req.user as $user
+export default async (req: Request<any, any, $body>, _res: Response, next: NextFunction) => {
 	const userID = req.body.userID
 	const action = req.body.action === 'add' ? '$addToSet' : '$pull'
 	// add the logged in user to the list of followers of the passed in user
@@ -34,31 +23,15 @@ export const mainTask = async (
 					'profile.following': userID,
 				},
 			},
-			{ new: true }
-		)
+			{ new: true },
+		),
 	)
 	// check if the user exists
 	if (!data) {
-		return next(
-			returnHandler(
-				StatusCodes.NOT_FOUND,
-				null,
-				feedback('warning', WARNING.noData)
-			)
-		)
+		return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
 	}
 	if (data.error) {
-		return next(
-			returnHandler(
-				StatusCodes.INTERNAL_SERVER_ERROR,
-				data.error,
-				feedback('error', ERROR.SWR)
-			)
-		)
+		return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, data.error, feedback('error', ERROR.SWR)))
 	}
-	return next(
-		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.updated))
-	)
+	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.updated)))
 }
-
-export default [protectedRoute, mainTask]

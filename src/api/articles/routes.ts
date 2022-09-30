@@ -1,35 +1,38 @@
-import affirmController from './controllers/actions/affirm.controller'
 import commentController from './controllers/actions/comment.controller'
 import likeController from './controllers/actions/like.controller'
-import create from './controllers/articles/create.controller'
-import _Delete from './controllers/articles/delete.controller'
+import { createArticle } from './controllers/articles/create.controller'
 import { getAll, getOneById } from './controllers/articles/fetch.controller'
 import search from './controllers/articles/search.controller'
 import update from './controllers/articles/update.controller'
 import { Router } from 'express'
+import ensureFilters from 'api/middleware/ensureFilters'
+import { protectedRoute, permissioned } from 'api/middleware/auth'
+import affirmController from './controllers/actions/affirm.controller'
+import deleteController from './controllers/articles/delete.controller'
+import updateController from './controllers/articles/update.controller'
 
 const router = Router()
 
 // Article routes
 
-router.get('/', getAll)
+router.get('/', ensureFilters, getAll)
 
 router.get('/search', search)
 
-router.get('/@:id', getOneById)
+router.get('/@:id', protectedRoute, getOneById)
 
-router.post('/', create)
+router.post('/', protectedRoute, permissioned(2), createArticle)
 
-router.patch('/', update)
+router.patch('/', protectedRoute, permissioned(2), updateController)
 
-router.delete('/', _Delete)
+router.delete('/', protectedRoute, permissioned(2), deleteController)
 
 // Action Routes
 
-router.patch('/like', likeController)
+router.patch('/like', protectedRoute, likeController)
 
-router.patch('/affirm', affirmController)
+router.patch('/affirm', protectedRoute, affirmController)
 
-router.patch('/comment', commentController)
+router.patch('/comment', protectedRoute, commentController)
 
 export default router
