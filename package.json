@@ -5,7 +5,7 @@
 	"main": "src/boot.ts",
 	"private": true,
 	"scripts": {
-		"start": "node dist/boot.js",
+		"start": "node build/boot.js",
 		"dev": "nodemon src/boot.ts",
 		"tsw": "tsc -w",
 		"build": "tsc"
