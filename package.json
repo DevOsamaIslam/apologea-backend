@@ -49,8 +49,13 @@
 		"validator": "^13.7.0"
 	},
 	"_moduleAliases": {
-		"#lib": "build/src/lib",
-		"#helpers": "build/src/lib/helpers.js",
-		"#": "build/src"
+		"lib": "build/lib",
+		"@helpers": "build/lib/helpers/index.js",
+		"@constants": "build/lib/constants/index.js",
+		"@tyles": "build/lib/types/index.js",
+		"config": "build/config",
+		"api": "build/api",
+		"router": "build/router",
+		"server": "build/server"
 	}
 }
