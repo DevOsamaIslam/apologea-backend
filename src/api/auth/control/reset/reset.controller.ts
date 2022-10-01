@@ -13,44 +13,22 @@ type $body = {
 	doc: HydratedDocument<IUser>
 }
 
-const mainTask = async (
-	req: Request<null, null, $body>,
-	_res: Response,
-	next: NextFunction
-) => {
+const mainTask = async (req: Request<null, null, $body>, _res: Response, next: NextFunction) => {
 	const password = req.body.password
 
 	// check if the new password exists
 	if (!password) {
-		return next(
-			returnHandler(
-				StatusCodes.BAD_REQUEST,
-				null,
-				feedback('error', ERROR.invalidParams)
-			)
-		)
+		return next(returnHandler(StatusCodes.BAD_REQUEST, null, feedback('error', ERROR.invalidParams)))
 	}
 	const user: HydratedDocument<IUser> = req.body.doc
 
 	user.auth.password = password
-	const result = await asyncHandler(user.save())
-	if (result.error) {
-		return next(
-			returnHandler(
-				StatusCodes.INTERNAL_SERVER_ERROR,
-				result.error,
-				feedback('error', ERROR.SWR)
-			)
-		)
+	const [_, error] = await asyncHandler(user.save())
+	if (error) {
+		return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
 	} else {
 		// login user
-		return next(
-			returnHandler(
-				StatusCodes.OK,
-				{ token: signJWT({ id: user.id }) },
-				feedback('success', SUCCESS.passwordChanged)
-			)
-		)
+		return next(returnHandler(StatusCodes.OK, { token: signJWT({ id: user.id }) }, feedback('success', SUCCESS.passwordChanged)))
 	}
 }
 

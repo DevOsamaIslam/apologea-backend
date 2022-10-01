@@ -1,9 +1,8 @@
 import { ERROR, SUCCESS, WARNING } from '@constants'
-import { asyncHandler, feedback, returnHandler } from '@helpers'
-import { IUser } from 'api/users/types'
+import { feedback, returnHandler } from '@helpers'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import Article from '../../model/Article'
+import affirmService from './affirm.service'
 
 type $body = {
 	id: string
@@ -11,19 +10,9 @@ type $body = {
 }
 
 export default async (req: Request<any, any, $body>, _res: Response, next: NextFunction) => {
-	const action = req.body.action === 'add' ? '$addToSet' : '$pull'
-	const data = await asyncHandler(
-		Article.findByIdAndUpdate(
-			req.body.id,
-			{
-				[action]: {
-					likes: req.user?.id,
-				},
-			},
-			{ new: true },
-		),
-	)
+	const [data, error] = await affirmService(req.body.id, req.body.action, req.user!)
+
+	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
 	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
-	if (data.error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, data.error, feedback('error', ERROR.SWR)))
 	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.like)))
 }

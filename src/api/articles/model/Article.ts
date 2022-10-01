@@ -7,7 +7,7 @@ ArticleSchema.post('save', function (this: HydratedDocument<IArticle>) {
 	console.log(this.id)
 
 	if (this.responseTo) {
-		_model.findById(this.responseTo).then(data => {
+		Article.findById(this.responseTo).then(data => {
 			if (data) {
 				data.responses = [...(data.responses || []), this.id]
 			}
@@ -16,10 +16,6 @@ ArticleSchema.post('save', function (this: HydratedDocument<IArticle>) {
 	}
 })
 
-const _model = model<IArticle>(SCHEMAS.blog, ArticleSchema)
+const Article = model<IArticle>(SCHEMAS.blog, ArticleSchema)
 
-export default _model
-// _model.createIndexes({
-// 	title: 'text',
-// 	body: 'text',
-// })
+export default Article

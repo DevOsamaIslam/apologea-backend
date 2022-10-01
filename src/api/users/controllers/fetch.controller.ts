@@ -12,67 +12,24 @@ interface IRequest extends Request {
 	}
 }
 
-export const getPublishers = async (
-	req: IRequest,
-	_res: Response,
-	next: NextFunction
-) => {
+export const getPublishers = async (req: IRequest, _res: Response, next: NextFunction) => {
 	const filters: { [x: string]: unknown } = {}
 	Object.keys(req.body.filters).forEach((element: string) => {
-		filters[`profile.${element}`] =
-			req.body.filters[element as keyof IUserProfile]
+		filters[`profile.${element}`] = req.body.filters[element as keyof IUserProfile]
 	})
 
-	const data: HydratedDocument<IUser> = await asyncHandler(
-		User.find(filters, 'profile')
-	)
+	const [data, error] = await asyncHandler<HydratedDocument<IUser[]>>(User.find(filters, 'profile'))
 
-	if (data.length < 1)
-		return next(
-			returnHandler(
-				StatusCodes.NOT_FOUND,
-				null,
-				feedback('warning', WARNING.noData)
-			)
-		)
-	if (data.error)
-		return next(
-			returnHandler(
-				StatusCodes.INTERNAL_SERVER_ERROR,
-				data.error,
-				feedback('error', ERROR.SWR)
-			)
-		)
-	return next(
-		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found))
-	)
+	if (data.length < 1) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found)))
 }
 
-export const getPublisherById = async (
-	req: Request,
-	_res: Response,
-	next: NextFunction
-) => {
+export const getPublisherById = async (req: Request, _res: Response, next: NextFunction) => {
 	const id = req.params.id as string
-	const data = await asyncHandler(User.findById(id, 'profile'))
+	const [data, error] = await asyncHandler(User.findById(id, 'profile'))
 
-	if (!data)
-		return next(
-			returnHandler(
-				StatusCodes.NOT_FOUND,
-				null,
-				feedback('warning', WARNING.noData)
-			)
-		)
-	if (data.error)
-		return next(
-			returnHandler(
-				StatusCodes.INTERNAL_SERVER_ERROR,
-				data.error,
-				feedback('error', ERROR.SWR)
-			)
-		)
-	return next(
-		returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found))
-	)
+	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found)))
 }

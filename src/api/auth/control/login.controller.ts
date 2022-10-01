@@ -19,50 +19,22 @@ type query = {
 
 export default async (req: Request, res: Response, next: NextFunction) => {
 	const { identifier, password }: body = req.body
-	const query: query = check.isEmail(identifier)
-		? { email: identifier }
-		: { username: identifier }
+	const query: query = check.isEmail(identifier) ? { email: identifier } : { username: identifier }
 
 	// check if the credentials are correct
-	const user: IUser = await asyncHandler(
-		User.findOne(query).select('auth.password')
-	)
+	const [user, error] = await asyncHandler<IUser>(User.findOne(query).select('auth.password'))
 	// check if the function returned error or nothing
 	if (!user) {
-		return next(
-			returnHandler(
-				StatusCodes.UNAUTHORIZED,
-				null,
-				feedback('error', ERROR.wrongUsernamePassword)
-			)
-		)
+		return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.wrongUsernamePassword)))
 	}
-	if (user.error) {
-		return next(
-			returnHandler(
-				StatusCodes.INTERNAL_SERVER_ERROR,
-				user.error,
-				feedback('error', ERROR.SWR)
-			)
-		)
+	if (error) {
+		return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
 	}
 	// if code reached here then we have a match
 	// compare passwords
 	if (await compare(password, user.auth.password)) {
-		return next(
-			returnHandler(
-				StatusCodes.OK,
-				{ token: signJWT({ id: user.id }) },
-				feedback('success', SUCCESS.login)
-			)
-		)
+		return next(returnHandler(StatusCodes.OK, { token: signJWT({ id: user.id }) }, feedback('success', SUCCESS.login)))
 	}
 	// if passwords do not match
-	return next(
-		returnHandler(
-			StatusCodes.UNAUTHORIZED,
-			null,
-			feedback('error', ERROR.wrongUsernamePassword)
-		)
-	)
+	return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.wrongUsernamePassword)))
 }

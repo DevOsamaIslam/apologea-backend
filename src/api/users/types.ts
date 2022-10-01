@@ -21,5 +21,4 @@ export interface IUser extends mongoose.Model<null> {
 	id: string
 	profile: IUserProfile
 	auth: IUserAuth
-	error?: Error
 }

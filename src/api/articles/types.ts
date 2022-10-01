@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { IUser } from '../users/types'
 
-export interface IArticle extends mongoose.Model<Document> {
+export interface IArticle extends Document {
 	title: string
 	body: string
 	excerpt?: string

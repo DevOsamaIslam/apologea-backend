@@ -4,16 +4,15 @@ import { AUTH, ERROR, SUCCESS } from '@constants'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { sign } from 'jsonwebtoken'
+import { IUser } from 'api/users/types'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-	console.log({ request: req.body })
-
-	const data = await asyncHandler(
+	const [data, error] = await asyncHandler<IUser>(
 		createUser({
 			username: req.body.username as string,
 			email: req.body.email as string,
 			password: req.body.password as string,
-		})
+		}),
 	)
 	if (data)
 		return next(
@@ -24,15 +23,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 						expiresIn: AUTH.expiry,
 					}),
 				},
-				feedback('success', SUCCESS.registered)
-			)
+				feedback('success', SUCCESS.registered),
+			),
 		)
-	if (data.error)
-		return next(
-			returnHandler(
-				StatusCodes.INTERNAL_SERVER_ERROR,
-				data.error,
-				feedback('error', ERROR.SWR)
-			)
-		)
+	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
 }

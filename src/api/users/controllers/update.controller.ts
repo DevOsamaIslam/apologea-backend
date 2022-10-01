@@ -3,7 +3,8 @@ import { asyncHandler, feedback, patchObject, returnHandler } from '@helpers'
 import User from '../model/User'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { IUserProfile } from '../types'
+import { IUser, IUserProfile } from '../types'
+import { HydratedDocument } from 'mongoose'
 
 type $body = {
 	patch: IUserProfile
@@ -15,10 +16,10 @@ type $params = {
 export default async (req: Request<$params, any, $body>, _res: Response, next: NextFunction) => {
 	const id = req.params.id
 	const patch = req.body.patch
-	const data = await asyncHandler(User.findById(id, 'profile'))
+	const [data, error] = await asyncHandler<HydratedDocument<IUser>>(User.findById(id, 'profile'))
 
 	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
-	if (data.error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, data.error, feedback('error', ERROR.SWR)))
+	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
 	if (data) {
 		// change the data object and save it
 		patchObject(data, { profile: patch })

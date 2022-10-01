@@ -1,15 +1,14 @@
-import commentController from './controllers/actions/comment.controller'
-import likeController from './controllers/actions/like.controller'
-import { createArticle } from './controllers/articles/create.controller'
-import { getAll, getOneById } from './controllers/articles/fetch.controller'
-import search from './controllers/articles/search.controller'
-import update from './controllers/articles/update.controller'
+import { getAll, getOneById } from './crud/fetch.controller'
+import search from './crud/search.controller'
 import { Router } from 'express'
 import ensureFilters from 'api/middleware/ensureFilters'
 import { protectedRoute, permissioned } from 'api/middleware/auth'
-import affirmController from './controllers/actions/affirm.controller'
-import deleteController from './controllers/articles/delete.controller'
-import updateController from './controllers/articles/update.controller'
+import deleteController from './crud/delete.controller'
+import updateController from './crud/update.controller'
+import createController, { populateFake } from './crud/create.controller'
+import likeController from './actions/like.controller'
+import affirmController from './actions/affirm.controller'
+import commentController from './actions/comment.controller'
 
 const router = Router()
 
@@ -21,7 +20,9 @@ router.get('/search', search)
 
 router.get('/@:id', protectedRoute, getOneById)
 
-router.post('/', protectedRoute, permissioned(2), createArticle)
+router.post('/', protectedRoute, permissioned(2), createController)
+
+router.post('/fake/:count', populateFake)
 
 router.patch('/', protectedRoute, permissioned(2), updateController)
 

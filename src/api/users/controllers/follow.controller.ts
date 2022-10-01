@@ -15,7 +15,7 @@ export default async (req: Request<any, any, $body>, _res: Response, next: NextF
 	const userID = req.body.userID
 	const action = req.body.action === 'add' ? '$addToSet' : '$pull'
 	// add the logged in user to the list of followers of the passed in user
-	const data: HydratedDocument<IUser> = await asyncHandler(
+	const [data, error] = await asyncHandler<HydratedDocument<IUser>>(
 		User.updateOne(
 			{ _id: req.user?.id },
 			{
@@ -30,8 +30,8 @@ export default async (req: Request<any, any, $body>, _res: Response, next: NextF
 	if (!data) {
 		return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
 	}
-	if (data.error) {
-		return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, data.error, feedback('error', ERROR.SWR)))
+	if (error) {
+		return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
 	}
 	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.updated)))
 }

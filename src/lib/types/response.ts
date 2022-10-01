@@ -5,8 +5,8 @@ export interface IFeedback {
 	message: string
 }
 
-export interface IReturnHandler {
+export interface IReturnHandler<T = unknown> {
 	statusCode: number
-	data?: unknown
+	data?: T
 	feedback?: IFeedback
 }
