@@ -6,6 +6,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node dist/boot.js",
+		"postinstall": "tsc",
 		"dev": "nodemon src/boot.ts",
 		"tsw": "tsc -w",
 		"build": "tsc"
