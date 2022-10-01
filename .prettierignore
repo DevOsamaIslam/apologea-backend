@@ -1,0 +1,4 @@
+public
+build
+*.lock
+tsconfig.json

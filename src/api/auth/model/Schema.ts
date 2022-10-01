@@ -1,0 +1,32 @@
+import mongoose from 'mongoose'
+import { ROLES } from '@constants'
+
+const AuthSchema = new mongoose.Schema(
+	{
+		username: {
+			type: String,
+			unique: [true, 'Username is taken'],
+			required: [true, 'Username is required'],
+		},
+		email: {
+			type: String,
+			unique: [true, 'Email is used'],
+			required: [true, 'Email is required'],
+		},
+		password: {
+			type: String,
+			required: true,
+			select: false,
+		},
+		role: {
+			type: String,
+			default: ROLES.READER.label,
+		},
+		reset: {
+			token: String,
+		},
+	},
+	{ _id: false, timestamps: true }
+)
+
+export default AuthSchema
