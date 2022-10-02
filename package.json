@@ -6,7 +6,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node build/boot.js",
-		"dev": "nodemon src/boot.ts",
+		"dev": "npx tsc-watch --onSuccess \"ts-node src/boot.ts\"",
 		"tsw": "tsc -w",
 		"build": "tsc"
 	},

@@ -12,7 +12,7 @@ import commentController from './actions/comment.controller'
 
 const router = Router()
 
-// Article routes
+// /api/routes/
 
 router.get('/', ensureFilters, getAll)
 

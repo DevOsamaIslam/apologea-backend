@@ -5,13 +5,13 @@ import { BASE_PATH } from '@constants'
 import express, { Express } from 'express'
 import { Mongoose } from 'mongoose'
 import passport from 'passport'
-import { hookCache } from 'config/cache'
+import { useCache } from 'config/cache'
 
 export default (server: Express) => {
 	server.use(express.json())
 	database.connect().then((dbClient: Mongoose) => {
 		// add database depending middleware here
-		hookCache(dbClient)
+		useCache(dbClient)
 		database.setDebug(true)
 	})
 	server.use(passport.initialize())

@@ -12,7 +12,9 @@ export const fetchArticlesService: $fetchArticlesService = filters => {
 	return asyncHandler(
 		Article.find({ ...filters })
 			.select('-body -comments')
-			.populate('author', 'profile.name'),
+			// .populate('author', 'profile.name')
+			.cache()
+			.limit(1),
 	)
 }
 
