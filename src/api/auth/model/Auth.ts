@@ -1,10 +1,10 @@
-import User from 'api/users/model/User'
 import { AUTH } from '@constants'
-import AuthSchema from './Schema'
+import User from 'api/users/model/User'
+import { IUser } from 'api/users/types'
 import { hash } from 'bcrypt'
 import { HydratedDocument } from 'mongoose'
 import { IUserAuth } from '../types'
-import { IUser, IUserProfile } from 'api/users/types'
+import AuthSchema from './Schema'
 
 // hash the password
 AuthSchema.pre('save', async function (this: HydratedDocument<IUserAuth>, next) {

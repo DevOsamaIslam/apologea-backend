@@ -11,4 +11,8 @@ export interface IUserAuth {
 	}
 }
 
-export interface IUserRegistrationFormData extends IUserProfile, IUserAuth {}
+export interface IUserRegistrationFormData
+	extends Pick<IUserProfile, 'name' | 'phone' | 'affiliations' | 'bio' | 'qualifications'>,
+		IUserAuth {
+	confirmPassword: string
+}

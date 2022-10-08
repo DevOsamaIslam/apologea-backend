@@ -36,9 +36,9 @@ export const UserSchema = new mongoose.Schema(
 			],
 			name: {
 				type: String,
-				default: function (this: IUser) {
-					return this.auth.username
-				},
+				// default: function (this: IUser) {
+				// 	return this.auth?.username
+				// },
 			},
 			bio: {
 				type: String,

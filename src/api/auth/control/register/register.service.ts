@@ -1,57 +1,37 @@
-import { ERROR } from '@constants'
 import { asyncHandler } from '@helpers'
 import { createUser } from 'api/auth/model/Auth'
 import { IUserRegistrationFormData } from 'api/auth/types'
 import { IUserDocument } from 'api/users/types'
 
-type $registerService = (formData: Partial<IUserRegistrationFormData>) => ReturnType<typeof asyncHandler<IUserDocument | null>>
-
+type $registerService = (formData: IUserRegistrationFormData) => ReturnType<typeof asyncHandler<IUserDocument | null>>
+/**
+ * @param  {{password:formData.password} createUser({auth
+ * @param  {formData.username} username
+ * @param  {formData.email} email
+ * @param  {formData.role} role
+ * @param  {} }
+ * @param  {{name:formData.name||formData.username} profile
+ * @param  {formData.affiliations} affiliations
+ * @param  {formData.bio} bio
+ * @param  {formData.qualifications} qualifications
+ * @param  {} }
+ * @param  {} }
+ * @param  {} return[user
+ */
 export const registerService: $registerService = async formData => {
-	if (formData.role === 'Publisher') return registerPublisher(formData)
-	return registerReader(formData)
-}
-
-const registerReader = async (formData: Partial<IUserRegistrationFormData>): ReturnType<typeof asyncHandler<IUserDocument>> => {
 	const [user, error] = await asyncHandler<IUserDocument>(
 		createUser({
 			auth: {
-				password: formData.password!,
-				username: formData.username!,
-				email: formData.email!,
-				role: formData.role!,
+				password: formData.password,
+				username: formData.username,
+				email: formData.email,
+				role: formData.role,
 			},
 			profile: {
-				name: formData.name!,
-				affiliations: formData.affiliations!,
-				bio: formData.bio!,
-				qualifications: formData.qualifications!,
-			},
-		}),
-	)
-
-	return [user, error]
-}
-
-const registerPublisher = async (
-	formData: Partial<IUserRegistrationFormData>,
-): ReturnType<typeof asyncHandler<IUserDocument | null>> => {
-	// check required fields
-	if (!formData.name || !formData.qualifications || !formData.bio || !formData.affiliations?.length)
-		return [null, new Error(ERROR.missingFields)]
-
-	const [user, error] = await asyncHandler<IUserDocument | null>(
-		createUser({
-			auth: {
-				password: formData.password!,
-				username: formData.username!,
-				email: formData.email!,
-				role: formData.role!,
-			},
-			profile: {
-				name: formData.name!,
-				affiliations: formData.affiliations!,
-				bio: formData.bio!,
-				qualifications: formData.qualifications!,
+				name: formData.name || formData.username,
+				affiliations: formData.affiliations,
+				bio: formData.bio,
+				qualifications: formData.qualifications,
 			},
 		}),
 	)
