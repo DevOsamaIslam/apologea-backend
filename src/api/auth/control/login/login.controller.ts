@@ -1,5 +1,5 @@
 import User from 'api/users/model/User'
-import { IUser } from 'api/users/types'
+import { IUser, IUserDocument } from 'api/users/types'
 import { ERROR, SUCCESS } from '@constants'
 import { asyncHandler, feedback, returnHandler, signJWT } from '@helpers'
 import { compare } from 'bcrypt'
@@ -22,7 +22,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 	const query: query = check.isEmail(identifier) ? { email: identifier } : { username: identifier }
 
 	// check if the credentials are correct
-	const [user, error] = await asyncHandler<IUser>(User.findOne(query).select('auth.password'))
+	const [user, error] = await asyncHandler<IUserDocument>(User.findOne(query).select('auth.password'))
 	// check if the function returned error or nothing
 	if (!user) {
 		return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.wrongUsernamePassword)))

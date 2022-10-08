@@ -19,11 +19,12 @@ export const ERROR = {
 	SWR: 'Something went wrong  :(',
 	userExists: 'User exists. Please choose a different name',
 	wrongUsernamePassword: 'Username or password wrong',
-	invalidParams: 'Invalid parameters',
+	invalidParams: 'Invalid or missing parameters',
 	tokenExpired: 'Token expired',
+	missingFields: 'Please fill out the required fields',
+	unauthorized: 'Not allowed to access or edit.',
 }
 export const WARNING = {
 	key: 'warning',
 	noData: 'No data found.',
-	unauthorized: 'Not allowed to access.',
 }

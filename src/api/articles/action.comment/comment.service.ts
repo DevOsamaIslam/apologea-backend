@@ -1,12 +1,12 @@
 import { asyncHandler } from '@helpers'
 import { IUser } from 'api/users/types'
 import Article from '../model/Article'
-import { IArticle, IComment } from '../types'
+import { IArticleDocument, IComment } from '../types'
 
 type fn = (articleId: string, action: 'add' | 'remove', user: IUser, comment?: string) => ReturnType<typeof asyncHandler>
 
 const commentService: fn = async (articleId, action, user, comment) => {
-	const [data, error] = await asyncHandler<IArticle>(Article.findById(articleId))
+	const [data, error] = await asyncHandler<IArticleDocument>(Article.findById(articleId))
 
 	if (data) {
 		if (action === 'add' && comment) {

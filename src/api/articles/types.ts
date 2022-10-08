@@ -1,7 +1,8 @@
-import mongoose, { Document } from 'mongoose'
-import { IUser } from '../users/types'
+import mongoose, { Document, HydratedDocument, LeanDocument } from 'mongoose'
 
-export interface IArticle extends Document {
+export interface IArticleDocument extends HydratedDocument<IArticle> {}
+
+export interface IArticle {
 	title: string
 	body: string
 	excerpt?: string
@@ -12,11 +13,11 @@ export interface IArticle extends Document {
 	affirms?: string[]
 	comments: IComment[]
 	visible?: boolean
-	error?: Error
+	isPremium?: boolean
 }
 
 export interface IComment {
 	_id?: mongoose.Types.ObjectId
 	contents: string
-	author: IUser['id']
+	author: string
 }

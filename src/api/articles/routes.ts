@@ -1,14 +1,15 @@
-import { getAll, getOneById } from './crud/fetch.controller'
-import search from './crud/search.controller'
+import { getAll, getOneById } from './read/fetch.controller'
+import search from './read/search.controller'
 import { Router } from 'express'
-import ensureFilters from 'api/middleware/ensureFilters'
-import { protectedRoute, permissioned } from 'api/middleware/auth'
-import deleteController from './crud/delete.controller'
-import updateController from './crud/update.controller'
-import createController, { populateFake } from './crud/create.controller'
-import likeController from './actions/like.controller'
-import affirmController from './actions/affirm.controller'
-import commentController from './actions/comment.controller'
+import ensureFilters from 'middleware/filters.middleware'
+import { protectedRoute, permissioned } from 'middleware/auth'
+import deleteController from './delete/delete.controller'
+import updateController from './update/update.controller'
+import createController, { populateFake } from './create/create.controller'
+import likeController from './action.like/like.controller'
+import affirmController from './action.affirm/affirm.controller'
+import commentController from './action.comment/comment.controller'
+import { ROLES } from '@constants'
 
 const router = Router()
 
@@ -18,15 +19,15 @@ router.get('/', ensureFilters, getAll)
 
 router.get('/search', search)
 
-router.get('/@:id', protectedRoute, getOneById)
+router.get('/@:articleId', protectedRoute, getOneById)
 
-router.post('/', protectedRoute, permissioned(2), createController)
+router.post('/', protectedRoute, permissioned(ROLES.PUBLISHER.permission), createController)
 
-router.post('/fake/:count', populateFake)
+router.post('/fake/:count', protectedRoute, permissioned(ROLES.ADMIN.permission), populateFake)
 
-router.patch('/', protectedRoute, permissioned(2), updateController)
+router.patch('/@:articleId', protectedRoute, permissioned(ROLES.PUBLISHER.permission), updateController)
 
-router.delete('/', protectedRoute, permissioned(2), deleteController)
+router.delete('/@:articleId', protectedRoute, permissioned(ROLES.PUBLISHER.permission), deleteController)
 
 // Action Routes
 

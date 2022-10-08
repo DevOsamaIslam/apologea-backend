@@ -27,6 +27,13 @@ export const UserSchema = new mongoose.Schema(
 					default: [],
 				},
 			],
+			followers: [
+				{
+					type: mongoose.SchemaTypes.ObjectId,
+					ref: SCHEMAS.user,
+					default: [],
+				},
+			],
 			name: {
 				type: String,
 				default: function (this: IUser) {

@@ -1,21 +1,21 @@
-import deleteController from './controllers/delete.controller'
-import { getPublishers, getPublisherById } from './controllers/fetch.controller'
-import followController from './controllers/follow.controller'
-import updateController from './controllers/update.controller'
+import deleteController from './delete/delete.controller'
+import { getPublishers, getPublisherById } from './profile/fetch.controller'
+import followController from './actions.follow/follow.controller'
+import updateController from './update/update.controller'
 import { Router } from 'express'
-import { permissioned, protectedRoute } from 'api/middleware/auth'
-import ensureFilters from 'api/middleware/ensureFilters'
+import { permissioned, protectedRoute } from 'middleware/auth'
+import ensureFilters from 'middleware/filters.middleware'
 
 const publisherRoutes = Router()
 
 publisherRoutes.get('/', ensureFilters, getPublishers)
 
-publisherRoutes.get('/@:id', protectedRoute, getPublisherById)
+publisherRoutes.get('/@:userId', protectedRoute, getPublisherById)
 
-publisherRoutes.patch('/follow', protectedRoute, followController)
+publisherRoutes.patch('/follow/@:userId', protectedRoute, followController)
 
-publisherRoutes.patch('/@:id', protectedRoute, permissioned(2), updateController)
+publisherRoutes.patch('/@:userId', protectedRoute, permissioned(2), updateController)
 
-publisherRoutes.delete('/@:id', protectedRoute, permissioned(2), deleteController)
+publisherRoutes.delete('/@:userId', protectedRoute, permissioned(2), deleteController)
 
 export default publisherRoutes

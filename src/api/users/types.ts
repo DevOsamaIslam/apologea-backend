@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Document, LeanDocument } from 'mongoose'
 import { IUserAuth } from '../auth/types'
 
 export interface IUserProfile {
@@ -9,16 +9,19 @@ export interface IUserProfile {
 	name?: string
 	bio?: string
 	pic?: string
-	experience?: string
-	social?: {
-		name: string
-		link: string
-	}
+	qualifications?: string
+	socials?: [
+		{
+			name: string
+			link: string
+		},
+	]
 	affiliations?: string[]
 }
 
-export interface IUser extends mongoose.Model<null> {
-	id: string
+export interface IUserDocument extends Document {
 	profile: IUserProfile
 	auth: IUserAuth
 }
+
+export interface IUser extends LeanDocument<IUserDocument> {}

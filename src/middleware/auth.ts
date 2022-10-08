@@ -1,4 +1,4 @@
-import { AUTH, ROLES, ERROR } from '@constants'
+import { AUTH, ROLES, ERROR, WARNING } from '@constants'
 import { returnHandler, feedback } from '@helpers'
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
@@ -14,6 +14,6 @@ export const permissioned = (permission: number) => (req: Request, _res: Respons
 	if (role.permission >= permission) {
 		next()
 	} else {
-		next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.SWR)))
+		next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)))
 	}
 }

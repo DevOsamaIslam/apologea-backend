@@ -1,7 +1,7 @@
 import { $role } from '@types'
-import mongoose from 'mongoose'
+import { IUser, IUserProfile } from 'api/users/types'
 
-export interface IUserAuth extends mongoose.Document {
+export interface IUserAuth {
 	username: string
 	email: string
 	password: string
@@ -10,3 +10,5 @@ export interface IUserAuth extends mongoose.Document {
 		token: string
 	}
 }
+
+export interface IUserRegistrationFormData extends IUserProfile, IUserAuth {}

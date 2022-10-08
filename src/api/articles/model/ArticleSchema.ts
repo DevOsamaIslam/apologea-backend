@@ -3,8 +3,6 @@ import commentSchema from './CommentSchema'
 import { Schema, SchemaTypes } from 'mongoose'
 import { IArticle } from '../types'
 
-const { ObjectId } = SchemaTypes
-
 const schema = new Schema<IArticle>(
 	{
 		title: {
@@ -22,31 +20,31 @@ const schema = new Schema<IArticle>(
 			},
 		},
 		author: {
-			type: ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: SCHEMAS.user,
 			required: true,
 		},
 		responseTo: {
-			type: ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: SCHEMAS.blog,
 		},
 		responses: [
 			{
-				type: ObjectId,
+				type: Schema.Types.ObjectId,
 				ref: SCHEMAS.blog,
 				default: [],
 			},
 		],
 		likes: [
 			{
-				type: ObjectId,
+				type: Schema.Types.ObjectId,
 				ref: SCHEMAS.user,
 				default: [],
 			},
 		],
 		affirms: [
 			{
-				type: ObjectId,
+				type: Schema.Types.ObjectId,
 				ref: SCHEMAS.user,
 				default: [],
 			},
@@ -56,8 +54,12 @@ const schema = new Schema<IArticle>(
 			type: Boolean,
 			default: false,
 		},
+		isPremium: {
+			type: Boolean,
+			default: false,
+		},
 	},
-	{ timestamps: true, autoIndex: true }
+	{ timestamps: true, autoIndex: true },
 )
 schema.index({
 	title: 'text',

@@ -4,16 +4,10 @@ import { AUTH, ERROR, SUCCESS } from '@constants'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { sign } from 'jsonwebtoken'
-import { IUser } from 'api/users/types'
+import { registerService } from './register.service'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-	const [data, error] = await asyncHandler<IUser>(
-		createUser({
-			username: req.body.username as string,
-			email: req.body.email as string,
-			password: req.body.password as string,
-		}),
-	)
+	const [data, error] = await registerService(req.body)
 	if (data)
 		return next(
 			returnHandler(

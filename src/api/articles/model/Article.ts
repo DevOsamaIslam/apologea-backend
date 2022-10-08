@@ -4,8 +4,6 @@ import { model, HydratedDocument } from 'mongoose'
 import { IArticle } from '../types'
 
 ArticleSchema.post('save', function (this: HydratedDocument<IArticle>) {
-	console.log(this.id)
-
 	if (this.responseTo) {
 		Article.findById(this.responseTo).then(data => {
 			if (data) {

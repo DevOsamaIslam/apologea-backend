@@ -1,17 +1,18 @@
 import { ERROR, SUCCESS, WARNING } from '@constants'
-import { asyncHandler, feedback, returnHandler } from '@helpers'
-import Article from '../model/Article'
+import { feedback, returnHandler } from '@helpers'
+import { IPaging } from '@types'
+import { IUserProfile } from 'api/users/types'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { IUserProfile } from 'api/users/types'
-import { fetchArticlesService, getOneByIdService } from './fetch.service'
+import { fetchArticlesService, getOneArticleService } from './fetch.service'
 
 type $body = {
 	filters: Partial<IUserProfile>
+	paging: IPaging
 }
 
 export const getAll = async (req: Request<null, null, $body>, _res: Response, next: NextFunction): Promise<void> => {
-	const [data, error] = await fetchArticlesService(req.body.filters)
+	const [data, error] = await fetchArticlesService(req.body.filters, req.body.paging)
 
 	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
 
@@ -21,7 +22,7 @@ export const getAll = async (req: Request<null, null, $body>, _res: Response, ne
 }
 
 export const getOneById = async (req: Request<{ id: string }>, _res: Response, next: NextFunction) => {
-	const [data, error] = await getOneByIdService(req.params.id)
+	const [data, error] = await getOneArticleService(req.params.id)
 
 	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
 

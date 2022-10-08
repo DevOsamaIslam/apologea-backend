@@ -23,14 +23,14 @@ export const createOne: createOneFn = ({ title, body, excerpt, responseTo }, use
 	)
 }
 
-export const fakeData = (count: number): ReturnType<typeof asyncHandler> => {
+export const fakeData = (user: IUser, count: number): ReturnType<typeof asyncHandler> => {
 	const docs = []
 	for (let i = 0; i < count; i++) {
 		docs.push({
 			title: fake.randJobTitle(),
 			body: fake.randTextRange({ min: 100, max: 500 }),
 			excerpt: fake.randTextRange({ min: 50, max: 200 }),
-			author: 515115616515,
+			author: user.id,
 			// responseTo: req.body.responseTo,
 		})
 	}

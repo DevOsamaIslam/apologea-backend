@@ -1,5 +1,5 @@
-import loginController from './control/login.controller'
-import registerController from './control/register.controller'
+import loginController from './control/login/login.controller'
+import registerController from './control/register/register.controller'
 import forgotController from './control/reset/forgot.controller'
 import resetController from './control/reset/reset.controller'
 import verifyTokenController from './control/reset/verifyToken.controller'
