@@ -1,5 +1,5 @@
 import mongoose, { Document, LeanDocument } from 'mongoose'
-import { IUserAuth } from '../auth/types'
+import { IUserAuth } from '../../auth/types'
 
 export interface IUserProfile {
 	phone?: string

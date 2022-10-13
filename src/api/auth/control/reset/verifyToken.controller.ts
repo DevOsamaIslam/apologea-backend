@@ -1,11 +1,11 @@
 import { ERROR, SUCCESS, WARNING } from '@constants'
-import { asyncHandler, feedback, returnHandler } from '@helpers'
+import { asyncHandler, feedback, responses, returnHandler } from '@helpers'
 import User from '../../model/Auth'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { HydratedDocument } from 'mongoose'
 import check from 'validator'
-import { IUser } from 'api/users/types'
+import { IUser } from 'api/users/model/types'
 
 type $body = {
 	email: string
@@ -18,16 +18,15 @@ export default async (req: Request<null, null, $body>, _res: Response, next: Nex
 	const { email, token } = req.body
 
 	// check if email or token don't exist
-	if (!check.isEmail(email) || !token)
-		return next(returnHandler(StatusCodes.BAD_REQUEST, null, feedback('error', ERROR.invalidParams)))
+	if (!check.isEmail(email) || !token) return next(responses.invalidParams({ email, token }))
 
 	// search for a user with the provided email
 	const [user, error] = await asyncHandler<HydratedDocument<IUser>>(User.findOne({ 'profile.email': email }, 'auth'))
 
 	// if no user is found
-	if (!user) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (!user) return next(responses.notFound())
 	// if there was an error
-	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+	if (error) return next(responses.ISE(error))
 	// if we have a user
 	// then look if they have a reset token
 	if (user.auth.reset?.token === token) {

@@ -1,7 +1,7 @@
 import { SCHEMAS } from '@constants'
 import ArticleSchema from './ArticleSchema'
 import { model, HydratedDocument } from 'mongoose'
-import { IArticle } from '../types'
+import { IArticle } from './types'
 
 ArticleSchema.post('save', function (this: HydratedDocument<IArticle>) {
 	if (this.responseTo) {

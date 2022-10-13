@@ -1,8 +1,8 @@
 import { ERROR } from '@constants'
 import { asyncHandler } from '@helpers'
-import { IUser } from 'api/users/types'
+import { IUser } from 'api/users/model/types'
 import Article from '../model/Article'
-import { IArticle, IArticleDocument } from '../types'
+import { IArticle, IArticleDocument } from '../model/types'
 
 type $updateArticleService = (
 	articleId: string,

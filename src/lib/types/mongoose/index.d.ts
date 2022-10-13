@@ -1,4 +1,4 @@
-import { IUser } from 'api/users/types'
+import { IUser } from 'api/users/model/types'
 import { IPaging } from '../request'
 
 export type $cacheOptions = { expiry?: number }

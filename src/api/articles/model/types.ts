@@ -1,4 +1,4 @@
-import mongoose, { Document, HydratedDocument, LeanDocument } from 'mongoose'
+import mongoose, { HydratedDocument } from 'mongoose'
 
 export interface IArticleDocument extends HydratedDocument<IArticle> {}
 
@@ -14,6 +14,7 @@ export interface IArticle {
 	comments: IComment[]
 	visible?: boolean
 	isPremium?: boolean
+	viewCount: number
 }
 
 export interface IComment {

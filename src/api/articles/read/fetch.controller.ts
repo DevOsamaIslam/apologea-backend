@@ -1,32 +1,39 @@
-import { ERROR, SUCCESS, WARNING } from '@constants'
-import { feedback, returnHandler } from '@helpers'
-import { IPaging } from '@types'
-import { IUserProfile } from 'api/users/types'
+import { SUCCESS } from '@constants'
+import { responses } from '@helpers'
 import { NextFunction, Request, Response } from 'express'
-import { StatusCodes } from 'http-status-codes'
-import { fetchArticlesService, getOneArticleService } from './fetch.service'
+import { fetchArticlesService, fetchOneArticleByIdService, fetchTopArticlesService } from './fetch.service'
+import { IFetchAllRequest, IFetchOneRequest } from './types'
 
-type $body = {
-	filters: Partial<IUserProfile>
-	paging: IPaging
-}
-
-export const getAll = async (req: Request<null, null, $body>, _res: Response, next: NextFunction): Promise<void> => {
+export const fetchAllArticlesController = async (req: IFetchAllRequest, _res: Response, next: NextFunction): Promise<void> => {
 	const [data, error] = await fetchArticlesService(req.body.filters, req.body.paging)
 
-	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (!data) return next(responses.notFound([]))
 
-	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+	if (error) return next(responses.ISE(error))
 
-	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found)))
+	return next(responses.success(data, SUCCESS.found))
 }
 
-export const getOneById = async (req: Request<{ id: string }>, _res: Response, next: NextFunction) => {
-	const [data, error] = await getOneArticleService(req.params.id)
+export const fetchOneArticleByIdController = async (req: IFetchOneRequest, _res: Response, next: NextFunction) => {
+	const articleId = req.params.articleId
+	if (!articleId) return next(responses.invalidParams({ articleId }))
+	const [data, error] = await fetchOneArticleByIdService(articleId)
 
-	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (!data) return next(responses.notFound([]))
 
-	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+	if (error) return next(responses.ISE(error))
 
-	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.found)))
+	return next(responses.success(data, SUCCESS.found))
+}
+
+export const fetchTopArticlesController = async (req: Request, _res: Response, next: NextFunction) => {
+	const loggedinUser = req.user
+
+	const [data, error] = await fetchTopArticlesService()
+
+	if (!data) return next(responses.notFound([]))
+
+	if (error) return next(responses.ISE(error))
+
+	return next(responses.success(data, SUCCESS.found))
 }

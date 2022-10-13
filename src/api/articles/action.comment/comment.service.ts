@@ -1,7 +1,7 @@
 import { asyncHandler } from '@helpers'
-import { IUser } from 'api/users/types'
+import { IUser } from 'api/users/model/types'
 import Article from '../model/Article'
-import { IArticleDocument, IComment } from '../types'
+import { IArticleDocument, IComment } from '../model/types'
 
 type fn = (articleId: string, action: 'add' | 'remove', user: IUser, comment?: string) => ReturnType<typeof asyncHandler>
 

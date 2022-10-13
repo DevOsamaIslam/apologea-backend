@@ -3,7 +3,7 @@ import { getPublishers, getPublisherById } from './profile/fetch.controller'
 import followController from './actions.follow/follow.controller'
 import updateController from './update/update.controller'
 import { Router } from 'express'
-import { permissioned, protectedRoute } from 'middleware/auth'
+import { permissioned, protectedRoute } from 'middleware/auth.middleware'
 import ensureFilters from 'middleware/filters.middleware'
 
 const publisherRoutes = Router()

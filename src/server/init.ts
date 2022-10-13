@@ -1,4 +1,4 @@
-import addMiddleware from './middleware'
+import addMiddleware from '../middleware/server.middleware'
 import express from 'express'
 
 export const server = () => {

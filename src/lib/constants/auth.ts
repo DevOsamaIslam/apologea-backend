@@ -1,3 +1,5 @@
+import { $role } from 'lib/types/generic'
+
 export const AUTH = {
 	method: process.env.AUTH_METHOD || 'jwt',
 	secret: process.env.AUTH_SECRET || 'adf54dssd4f56d4ff5ds4ds4f5sd45fds8fd',
@@ -6,7 +8,7 @@ export const AUTH = {
 	passwordResetTokenExpiry: 60 * 60,
 }
 
-export const ROLES = {
+export const ROLES: $role = {
 	GUEST: {
 		permission: 0,
 		label: 'Guest',

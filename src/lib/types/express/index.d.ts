@@ -1,7 +1,8 @@
-import { IUser, IUserDocument } from 'api/users/types'
+import { IUser, IUserDocument } from 'api/users/model/types'
 
 declare module 'express-serve-static-core' {
 	export interface Request {
-		user?: IUser
+		// NOTE if the user object is used, it must have passed through the firewall so we don't need to make it optional
+		user: IUser
 	}
 }

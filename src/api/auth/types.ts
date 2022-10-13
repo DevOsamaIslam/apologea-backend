@@ -1,11 +1,12 @@
-import { $role } from '@types'
-import { IUser, IUserProfile } from 'api/users/types'
+import { $roleLabel } from '@types'
+import { IUser, IUserProfile } from 'api/users/model/types'
 
 export interface IUserAuth {
 	username: string
 	email: string
 	password: string
-	role: $role
+	role: $roleLabel
+	emailVerified?: boolean
 	reset?: {
 		token: string
 	}

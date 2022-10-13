@@ -5,6 +5,6 @@ export type $jwtPayload = {
 }
 
 export interface IPaging {
-	page: number
-	limit: number
+	page?: number
+	limit?: number
 }

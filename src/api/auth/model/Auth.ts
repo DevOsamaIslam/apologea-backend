@@ -1,6 +1,6 @@
 import { AUTH } from '@constants'
 import User from 'api/users/model/User'
-import { IUser } from 'api/users/types'
+import { IUser } from 'api/users/model/types'
 import { hash } from 'bcrypt'
 import { HydratedDocument } from 'mongoose'
 import { IUserAuth } from '../types'

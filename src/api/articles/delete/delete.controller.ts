@@ -1,29 +1,27 @@
 import { ERROR, SUCCESS, WARNING } from '@constants'
-import { feedback, returnHandler } from '@helpers'
+import { feedback, responses, returnHandler } from '@helpers'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { getOneArticleService } from '../read/fetch.service'
+import { fetchOneArticleByIdService } from '../read/fetch.service'
 import deleteService from './delete.service'
+import { IDeleteArticleRequest } from './types'
 
-export default async (req: Request<{ articleId?: string }>, _res: Response, next: NextFunction) => {
+export default async (req: IDeleteArticleRequest, _res: Response, next: NextFunction) => {
 	const articleId = req.params.articleId
 
-	if (!articleId) return next(returnHandler(StatusCodes.BAD_REQUEST, null, feedback('error', ERROR.invalidParams)))
+	if (!articleId) return next(responses.invalidParams({ articleId }))
 
-	const [article, articleError] = await getOneArticleService(articleId)
+	const [article, articleError] = await fetchOneArticleByIdService(articleId)
 
-	if (articleError) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, articleError, feedback('error', ERROR.SWR)))
+	if (articleError) return next(responses.ISE(articleError))
 
-	if (!article) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (!article) return next(responses.notFound())
 
-	if (article.author?.id !== req.user!.id)
-		return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)))
+	const [data, error] = await deleteService(articleId, req.user)
 
-	const [data, error] = await deleteService(articleId, req.user!)
+	if (!data) return next(responses.notFound())
 
-	if (!data) return next(returnHandler(StatusCodes.NOT_FOUND, data, feedback('warning', WARNING.noData)))
+	if (error) return next(responses.ISE(error))
 
-	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
-
-	return next(returnHandler(StatusCodes.OK, data, feedback('success', SUCCESS.deleted)))
+	return next(responses.success(data, SUCCESS.deleted))
 }

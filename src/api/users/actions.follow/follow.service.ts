@@ -1,7 +1,7 @@
 import { asyncHandler } from '@helpers'
 import { $asyncHandlerReturn } from 'lib/types/generic'
 import User from '../model/User'
-import { IUserDocument } from '../types'
+import { IUserDocument } from '../model/types'
 
 export const followUserService = (followerId: string, followedId: string): $asyncHandlerReturn<IUserDocument> => {
 	return asyncHandler<IUserDocument>(

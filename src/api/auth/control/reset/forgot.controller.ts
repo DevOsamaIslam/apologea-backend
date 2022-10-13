@@ -1,6 +1,6 @@
 import User from 'api/users/model/User'
-import { IUser } from 'api/users/types'
-import { asyncHandler, feedback, getCode, returnHandler } from '@helpers'
+import { IUser } from 'api/users/model/types'
+import { asyncHandler, feedback, getCode, responses, returnHandler } from '@helpers'
 import { ERROR, SUCCESS, WARNING } from '@constants'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
@@ -18,9 +18,9 @@ export default async (req: IRequest, _res: Response, next: NextFunction) => {
 	const [user, error] = await asyncHandler<HydratedDocument<IUser>>(User.findOne({ 'profile.email': email }, 'auth'))
 
 	// if no user found with that email
-	if (!user) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+	if (!user) return next(responses.notFound())
 	// if the query returned an error
-	if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+	if (error) return next(responses.ISE(error))
 
 	// if user found
 	// create a password reset token

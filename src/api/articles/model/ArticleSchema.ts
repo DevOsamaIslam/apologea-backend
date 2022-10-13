@@ -1,7 +1,7 @@
 import { SCHEMAS } from '@constants'
 import commentSchema from './CommentSchema'
 import { Schema, SchemaTypes } from 'mongoose'
-import { IArticle } from '../types'
+import { IArticle } from './types'
 
 const schema = new Schema<IArticle>(
 	{
@@ -50,6 +50,10 @@ const schema = new Schema<IArticle>(
 			},
 		],
 		comments: [commentSchema],
+		viewCount: {
+			type: Number,
+			default: 0,
+		},
 		visible: {
 			type: Boolean,
 			default: false,

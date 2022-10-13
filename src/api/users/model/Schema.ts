@@ -1,7 +1,7 @@
 import AuthSchema from 'api/auth/model/Schema'
 import { SCHEMAS } from '@constants'
 import mongoose from 'mongoose'
-import { IUser } from '../types'
+import { IUser } from './types'
 
 // import UserValidation from './User.validation.js'
 
@@ -36,9 +36,9 @@ export const UserSchema = new mongoose.Schema(
 			],
 			name: {
 				type: String,
-				// default: function (this: IUser) {
-				// 	return this.auth?.username
-				// },
+				default: function (this: IUser) {
+					return this.auth?.username
+				},
 			},
 			bio: {
 				type: String,

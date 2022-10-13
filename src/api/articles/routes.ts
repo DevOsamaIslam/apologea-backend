@@ -1,8 +1,8 @@
-import { getAll, getOneById } from './read/fetch.controller'
+import { fetchAllArticlesController, fetchOneArticleByIdController, fetchTopArticlesController } from './read/fetch.controller'
 import search from './read/search.controller'
 import { Router } from 'express'
 import ensureFilters from 'middleware/filters.middleware'
-import { protectedRoute, permissioned } from 'middleware/auth'
+import { protectedRoute, permissioned } from 'middleware/auth.middleware'
 import deleteController from './delete/delete.controller'
 import updateController from './update/update.controller'
 import createController, { populateFake } from './create/create.controller'
@@ -15,11 +15,13 @@ const router = Router()
 
 // /api/routes/
 
-router.get('/', ensureFilters, getAll)
+router.get('/', ensureFilters, fetchAllArticlesController)
 
 router.get('/search', search)
 
-router.get('/@:articleId', protectedRoute, getOneById)
+router.get('/@:articleId', protectedRoute, fetchOneArticleByIdController)
+
+router.get('/top', fetchTopArticlesController)
 
 router.post('/', protectedRoute, permissioned(ROLES.PUBLISHER.permission), createController)
 

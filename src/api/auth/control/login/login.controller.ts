@@ -1,7 +1,7 @@
 import User from 'api/users/model/User'
-import { IUser, IUserDocument } from 'api/users/types'
+import { IUser, IUserDocument } from 'api/users/model/types'
 import { ERROR, SUCCESS } from '@constants'
-import { asyncHandler, feedback, returnHandler, signJWT } from '@helpers'
+import { asyncHandler, feedback, responses, returnHandler, signJWT } from '@helpers'
 import { compare } from 'bcrypt'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
@@ -28,7 +28,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 		return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.wrongUsernamePassword)))
 	}
 	if (error) {
-		return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+		return next(responses.ISE(error))
 	}
 	// if code reached here then we have a match
 	// compare passwords
