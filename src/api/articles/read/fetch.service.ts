@@ -4,9 +4,13 @@ import { $filter } from 'lib/types/generic'
 import Article from '../model/Article'
 import { IArticle, IArticleDocument } from '../model/types'
 
-type $fetchArticlesService = (filters: $filter, paging?: IPaging, sort?: Object) => ReturnType<typeof asyncHandler<IArticle[]>>
+type $fetchArticlesService = (
+	filters: $filter,
+	paging?: IPaging,
+	sort?: { [x in keyof IArticle]?: number },
+) => ReturnType<typeof asyncHandler<IArticle[]>>
 
-export const fetchArticlesService: $fetchArticlesService = async (filters, paging, sort) => {
+export const fetchArticlesService: $fetchArticlesService = async (filters, paging, sort = { createdAt: -1 }) => {
 	Object.keys(filters).forEach((element: string) => {
 		filters[`profile.${element}`] = filters[element]
 	})

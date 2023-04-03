@@ -13,3 +13,8 @@ export type $role = {
 		label: $roleLabel
 	}
 }
+
+export interface IDocumentTimestamp {
+	createdAt: string
+	updatedAt: string
+}

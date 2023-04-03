@@ -8,6 +8,7 @@ export const protectedRoute = (req: Request, _res: Response, next: NextFunction)
 	passport.authenticate(AUTH.method, (error, user, info) => {
 		if (error) return next(responses.ISE(error))
 		if (!user) return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)))
+		req.user = user
 		next()
 	})(req, _res, next)
 }

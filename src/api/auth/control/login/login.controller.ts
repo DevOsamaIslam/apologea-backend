@@ -19,7 +19,7 @@ type query = {
 
 export default async (req: Request, res: Response, next: NextFunction) => {
 	const { identifier, password }: body = req.body
-	const query: query = check.isEmail(identifier) ? { email: identifier } : { username: identifier }
+	const query: query = check.isEmail(identifier || '') ? { email: identifier } : { username: identifier }
 
 	// check if the credentials are correct
 	const [user, error] = await asyncHandler<IUserDocument>(User.findOne(query).select('auth.password'))

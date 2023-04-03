@@ -1,8 +1,9 @@
+import { IDocumentTimestamp } from 'lib/types/generic'
 import mongoose, { HydratedDocument } from 'mongoose'
 
 export interface IArticleDocument extends HydratedDocument<IArticle> {}
 
-export interface IArticle {
+export interface IArticle extends IDocumentTimestamp {
 	title: string
 	body: string
 	excerpt?: string

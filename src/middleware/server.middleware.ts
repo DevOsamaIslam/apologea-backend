@@ -12,8 +12,8 @@ import cors from 'cors'
 
 export default (server: Express) => {
 	server.use(express.json())
-	server.use(helmet())
-	server.use(cors())
+	server.use(helmet({}))
+	server.use(cors({ origin: '*' }))
 	database.connect().then((dbClient: Mongoose) => {
 		// add database depending middleware here
 		cacheMiddleware(dbClient)
