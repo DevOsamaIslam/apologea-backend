@@ -1,8 +1,10 @@
 import { ERROR, PaginationSchema, SUCCESS, WARNING } from '@constants'
 import { feedback, mapToMongooseFilter, returnHandler } from '@helpers'
+import { UserModel } from 'api/users/model/Users.Model'
 import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { runTransaction } from 'lib/helpers/transactions'
 import { z } from 'zod'
 import { TCreateArticle, TUpdateArticle } from './articles.schemas'
 import { ArticleModel } from './model/Articles.Model'
@@ -37,6 +39,8 @@ export default {
       article.views++
       article.save()
     }
+    if (!article) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+
     return next(returnHandler(StatusCodes.OK, article, feedback('success', SUCCESS.found)))
   },
 
@@ -53,7 +57,19 @@ export default {
       slug,
     })
 
-    const [newArticle, error] = await asyncHandler(articleObject.save())
+    const [newArticle, error] = await asyncHandler(
+      runTransaction(async () => {
+        const newArticle = await articleObject.save()
+
+        if (article.responseToId) {
+          const counterArticle = await ArticleModel.findById(article.responseToId)
+          counterArticle?.responsesIds.push(newArticle.id)
+          counterArticle?.save()
+        }
+
+        return newArticle
+      }),
+    )
 
     if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.createFailed)))
 
@@ -74,7 +90,37 @@ export default {
       article[key] = value
     })
     article.save()
-    console.log(article)
+
     return next(returnHandler(StatusCodes.OK, article, feedback('success', SUCCESS.updated)))
+  },
+
+  delete: async (req, res, next) => {
+    const articleId = req.params.id
+
+    const [toDelete, error] = await asyncHandler(ArticleModel.findById(articleId).exec())
+
+    console.log('reached', toDelete, error)
+    if (error || !toDelete) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+    if (req.user.id !== String(toDelete.authorId))
+      return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)))
+
+    const [deleted, deleteError] = await asyncHandler(
+      runTransaction(async () => {
+        await ArticleModel.findByIdAndDelete(toDelete.id).exec()
+
+        const user = await UserModel.findById(req.user.id).exec()
+
+        if (user)
+          user.articleIds = user.articleIds.filter(article => {
+            console.log(article)
+            return article !== toDelete.id
+          })
+        user?.save()
+      }),
+    )
+
+    if (deleteError) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+
+    return next(returnHandler(StatusCodes.OK, deleted, feedback('success', SUCCESS.deleted)))
   },
 } satisfies Record<string, RequestHandler>
