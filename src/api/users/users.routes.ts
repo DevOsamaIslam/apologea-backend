@@ -19,8 +19,8 @@ userRouter.get('/ping', protectedRoute, pingController)
 // get single user
 userRouter
   .use(express.json())
-  .route('/:username')
-  .post(protectedRoute, getOneUserController)
+  .route('/@:username')
+  .post(getOneUserController)
   .patch(protectedRoute, updateUserController)
   .delete(protectedRoute, deleteUserController)
 

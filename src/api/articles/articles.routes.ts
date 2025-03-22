@@ -15,4 +15,6 @@ articlesRouter.post('/:slug', validateRequest(PaginationSchema), articlesControl
 
 articlesRouter.patch('/:id', protectedRoute, validateRequest(updateArticleSchema), articlesControllers.update)
 
+articlesRouter.delete('/:id', protectedRoute, articlesControllers.delete)
+
 export default articlesRouter
