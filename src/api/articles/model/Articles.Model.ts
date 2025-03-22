@@ -16,11 +16,11 @@ export const ArticleDBSchema = new Schema(
     views: { type: Number, default: 0 },
     likes: [{ type: Types.ObjectId, ref: DB_SCHEMAS.user, default: [] }],
     comments: [{ type: Types.ObjectId, ref: DB_SCHEMAS.comment, default: [] }],
-    responseTo: {
+    responseToId: {
       type: Types.ObjectId,
       ref: DB_SCHEMAS.article,
     },
-    responses: [
+    responsesIds: [
       {
         type: Types.ObjectId,
         ref: DB_SCHEMAS.article,
@@ -42,6 +42,20 @@ ArticleDBSchema.virtual('author', {
   localField: 'authorId', // Field from the Post model (authorId) to use as the reference
   foreignField: '_id', // The field from the User model to match (default is _id)
   justOne: true, // One-to-one relationship
+})
+
+ArticleDBSchema.virtual('responseTo', {
+  ref: DB_SCHEMAS.article,
+  localField: 'responseToId',
+  foreignField: '_id',
+  justOne: true,
+})
+
+ArticleDBSchema.virtual('responses', {
+  ref: DB_SCHEMAS.article,
+  localField: 'responsesIds',
+  foreignField: '_id',
+  justOne: false,
 })
 
 // Ensure virtuals are included in JSON responses

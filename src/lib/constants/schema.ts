@@ -25,6 +25,15 @@ const operators = z.enum([
   'contains',
 ])
 
+const populateBaseSchema = z.object({
+  path: z.string(),
+  select: z.array(z.string()).optional(),
+})
+
+const populateSchema = populateBaseSchema.extend({
+  populate: populateBaseSchema.optional(),
+})
+
 export const PaginationSchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   limit: z.coerce.number().int().positive().optional().default(10),
@@ -56,13 +65,5 @@ export const PaginationSchema = z.object({
     )
     .optional()
     .default([]),
-  populate: z
-    .array(
-      z.object({
-        path: z.string(),
-        select: z.array(z.string()).optional(),
-      }),
-    )
-    .optional()
-    .default([]),
+  populate: z.array(populateSchema).optional().default([]),
 })
