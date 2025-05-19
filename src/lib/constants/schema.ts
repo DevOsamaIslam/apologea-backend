@@ -6,6 +6,7 @@ export const DB_SCHEMAS = {
   article: 'Article',
   comment: 'Comment',
   gallery: 'Gallery',
+  debate: 'Debate',
 } as const
 
 // Extract types

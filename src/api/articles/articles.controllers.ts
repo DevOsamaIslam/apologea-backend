@@ -1,13 +1,13 @@
 import { ERROR, PaginationSchema, SUCCESS, WARNING } from '@constants'
 import { feedback, mapToMongooseFilter, returnHandler } from '@helpers'
-import { UserModel } from 'api/users/model/Users.Model'
+import { UserModel } from 'api/users/model/User.Model'
 import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'
 import { z } from 'zod'
 import { TCreateArticle, TUpdateArticle } from './articles.schemas'
-import { ArticleModel } from './model/Articles.Model'
+import { ArticleModel } from './model/Article.Model'
 
 export default {
   getAll: async (req, res, next) => {

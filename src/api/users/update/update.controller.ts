@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { TUserDocument } from '../model/Users.Model'
+import { TUserDocument } from '../model/User.Model'
 import { updateUserService } from './update.service'
 import { StatusCodes } from 'http-status-codes'
 import { ERROR, SUCCESS } from '@constants'

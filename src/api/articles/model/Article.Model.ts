@@ -16,6 +16,7 @@ export const ArticleDBSchema = new Schema(
     views: { type: Number, default: 0 },
     likes: [{ type: Types.ObjectId, ref: DB_SCHEMAS.user, default: [] }],
     comments: [{ type: Types.ObjectId, ref: DB_SCHEMAS.comment, default: [] }],
+    debateId: { type: Types.ObjectId, ref: DB_SCHEMAS.debate },
     responseToId: {
       type: Types.ObjectId,
       ref: DB_SCHEMAS.article,

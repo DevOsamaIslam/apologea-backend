@@ -6,3 +6,4 @@ export const MAX_FILE_SIZE = 50 * 1024 * 1024
 
 export const MAX_TITLE_LENGTH = 100
 export const MAX_EXCERPT_LENGTH = 400
+export const MAX_DESCRIPTION_LENGTH = 1000

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { TUser } from './model/Users.Model'
+import { TUser } from './model/User.Model'
 
 export const loginInput = z.object({
   email: z.string().email(),
@@ -27,3 +27,17 @@ export type TRegistrationPayload = z.infer<typeof registrationInput>
 // DTOs (Data Transfer Objects) for API requests
 export type RegisterUserDTO = Pick<TUser, 'username' | 'email' | 'password'>
 export type LoginUserDTO = Pick<TUser, 'email' | 'password'>
+
+export const userSchema = z.object({
+  id: z.string(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  username: z.string(),
+  email: z.string().email(),
+  photo: z.string().optional(),
+  bio: z.string().optional(),
+  articleIds: z.array(z.string()),
+  debateIds: z.array(z.string()),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+})

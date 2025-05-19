@@ -1,6 +1,6 @@
 import { asyncHandler } from 'async-handler-ts'
-import { UserModel } from '../model/Users.Model'
-import { TUser, TUserDocument } from '../model/Users.Model'
+import { UserModel } from '../model/User.Model'
+import { TUser, TUserDocument } from '../model/User.Model'
 
 interface IProps {
   username: string

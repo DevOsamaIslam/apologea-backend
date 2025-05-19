@@ -2,7 +2,7 @@ import { compare, hash } from 'bcrypt'
 import { Request } from 'express'
 import { AUTH } from '@constants'
 import { getUserByNameService } from '../fetch/fetch.service'
-import { TUserDocument } from '../model/Users.Model'
+import { TUserDocument } from '../model/User.Model'
 
 interface IForgotPasswordServiceParams {
   user: TUserDocument

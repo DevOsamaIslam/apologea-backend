@@ -2,7 +2,7 @@ import { AUTH, DB_SCHEMAS } from '@constants'
 import { hash } from 'bcrypt'
 import mongoose, { HydratedDocument, InferSchemaType, Types, model } from 'mongoose'
 
-export const UserSchema = new mongoose.Schema(
+export const UserDBSchema = new mongoose.Schema(
   {
     firstName: { type: String, trim: true },
     lastName: { type: String, trim: true },
@@ -13,11 +13,12 @@ export const UserSchema = new mongoose.Schema(
     resetPasswordToken: { type: String },
     articleIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.article, default: [] }],
     bio: { type: String, default: '' },
+    debateIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.debate, default: [] }],
   },
   { timestamps: true },
 )
 
-UserSchema.pre('save', async function (next) {
+UserDBSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     this.password = await hash(this.password, AUTH.saltRounds)
     this.resetPasswordToken = undefined
@@ -26,7 +27,7 @@ UserSchema.pre('save', async function (next) {
   next()
 })
 
-export const UserModel = model(DB_SCHEMAS.user, UserSchema)
+export const UserModel = model(DB_SCHEMAS.user, UserDBSchema)
 
-export type TUser = InferSchemaType<typeof UserSchema>
+export type TUser = InferSchemaType<typeof UserDBSchema>
 export type TUserDocument = HydratedDocument<TUser>

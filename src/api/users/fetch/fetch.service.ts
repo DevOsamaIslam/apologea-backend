@@ -1,5 +1,5 @@
 import { asyncHandler } from 'async-handler-ts'
-import { UserModel } from '../model/Users.Model'
+import { UserModel } from '../model/User.Model'
 
 export const getUsersService = async () => {
   return await asyncHandler(UserModel.find().exec())

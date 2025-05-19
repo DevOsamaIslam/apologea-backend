@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 import { z } from 'zod'
-import { ArticleDBSchema, ArticleModel, TArticleSchema } from './model/Articles.Model'
+import { ArticleDBSchema, ArticleModel, TArticleSchema } from './model/Article.Model'
 import { MAX_EXCERPT_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
 import { asyncHandler } from 'async-handler-ts'
 
