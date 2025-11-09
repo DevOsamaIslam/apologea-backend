@@ -1,5 +1,6 @@
 import { ERROR, PaginationSchema, SUCCESS, WARNING } from '@constants'
-import { feedback, mapToMongooseFilter, returnHandler } from '@helpers'
+import { createSlug, feedback, mapToMongooseFilter, returnHandler } from '@helpers'
+import { UserModel } from 'api/users/model/User.Model'
 import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
@@ -7,7 +8,6 @@ import { runTransaction } from 'lib/helpers/transactions'
 import { z } from 'zod'
 import { TCreateDebate, TUpdateDebate } from './debates.schemas'
 import { DebateModel } from './model/Debate.Model'
-import { UserModel } from 'api/users/model/User.Model'
 
 export default {
   getAll: async (req, res, next) => {
@@ -46,15 +46,27 @@ export default {
 
   create: async (req, res, next) => {
     const debate = req.body as TCreateDebate
-    const slug = debate.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
+    const slug = createSlug(debate.title)
+
+    const constructStages =
+      debate.structure
+        ?.map(stage => {
+          if (stage.max > 1) return Array.from({ length: stage.max }, () => ({ name: stage.name, userId: stage.startingUser }))
+          else
+            return {
+              name: stage.name,
+              userId: stage.startingUser,
+            }
+        })
+        .flat() || []
+
+    console.log({ constructStages })
 
     const debateObject = new DebateModel({
       ...debate,
       creatorId: req.user.id,
       slug,
+      stages: constructStages,
     })
 
     const [newDebate, error] = await asyncHandler(

@@ -1,7 +1,7 @@
 import { DB_SCHEMAS } from '@constants'
 import { Document, InferSchemaType, model, PaginateModel, Schema, Types } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
-import { TCreateArticle } from '../articles.schemas'
+import { TCreateArticle } from '../articles.schema'
 
 // Define the Mongoose schema
 export const ArticleDBSchema = new Schema(

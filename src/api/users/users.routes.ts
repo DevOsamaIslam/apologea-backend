@@ -12,7 +12,7 @@ import { pingController } from './auth/ping.controller'
 export const userRouter = Router()
 
 // get all users
-userRouter.get('/', protectedRoute, getUsersController)
+userRouter.post('/', protectedRoute, getUsersController)
 
 userRouter.get('/ping', protectedRoute, pingController)
 
@@ -25,6 +25,6 @@ userRouter
   .delete(protectedRoute, deleteUserController)
 
 // register user
-userRouter.use(express.json()).post('/', validateRequest(registrationInput), RegisterUserController)
+userRouter.use(express.json()).post('/register', validateRequest(registrationInput), RegisterUserController)
 
 userRouter.use(express.json()).post('/login', validateRequest(loginInput), loginController)

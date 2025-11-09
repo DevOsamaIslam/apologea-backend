@@ -2,7 +2,7 @@ import { PaginationSchema } from '@constants'
 import { Router } from 'express'
 import { validateRequest } from 'middleware/request.middleware'
 import articlesControllers from './articles.controllers'
-import { createArticleSchema, updateArticleSchema } from './articles.schemas'
+import { createArticleSchema, updateArticleSchema } from './articles.schema'
 import { protectedRoute } from 'middleware/auth.middleware'
 
 const articlesRouter = Router()

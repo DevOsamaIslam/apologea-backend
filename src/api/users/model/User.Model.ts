@@ -1,6 +1,7 @@
 import { AUTH, DB_SCHEMAS } from '@constants'
 import { hash } from 'bcrypt'
 import mongoose, { HydratedDocument, InferSchemaType, Types, model } from 'mongoose'
+import { USER_ROLES } from '../users.schema'
 
 export const UserDBSchema = new mongoose.Schema(
   {
@@ -13,6 +14,27 @@ export const UserDBSchema = new mongoose.Schema(
     resetPasswordToken: { type: String },
     articleIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.article, default: [] }],
     bio: { type: String, default: '' },
+    reputation: {
+      type: Number,
+      default: 0,
+    },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    roles: {
+      type: [String],
+      enum: Object.values(USER_ROLES.Values),
+      default: [USER_ROLES.enum.reader],
+    },
+    qualification: { type: String, default: '' },
+    socials: {
+      university: String,
+      website: String,
+      facebook: String,
+      twitter: String,
+      others: String,
+    },
     debateIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.debate, default: [] }],
   },
   { timestamps: true },

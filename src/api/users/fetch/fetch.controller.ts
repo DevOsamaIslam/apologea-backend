@@ -6,7 +6,7 @@ import { getUserByNameService, getUsersService } from './fetch.service'
 
 export const getUsersController: RequestHandler = async (req, res, next) => {
   const [users, error] = await getUsersService()
-
+  console.log({ users, error })
   if (error || !users?.length) return next(returnHandler(StatusCodes.NOT_FOUND, users, feedback('error', ERROR.SWR)))
 
   return next(returnHandler(StatusCodes.OK, users, feedback('success', SUCCESS.found)))

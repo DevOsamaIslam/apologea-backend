@@ -8,3 +8,9 @@ export const patchObject = (original, patch) => {
 export const getCode = Math.random().toString(36).toUpperCase().slice(6)
 
 export const getFileExtensionFromName = (name: string) => name.split('.').pop()
+
+export const createSlug = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')

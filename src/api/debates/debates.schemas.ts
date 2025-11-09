@@ -1,17 +1,28 @@
-import { MAX_DESCRIPTION_LENGTH, MAX_EXCERPT_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
-import { Types } from 'mongoose'
-import { z } from 'zod'
-import { TDebateSchema } from './model/Debate.Model'
-import { ArticleSchema } from 'api/articles/articles.schemas'
 import { userSchema } from 'api/users/users.schema'
+import { MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
+import { z } from 'zod'
 
-// Optional: DTO type for creating a new debate (without `_id`)
-export type CreateDebateDTO = Omit<TDebateSchema, '_id' | 'createdAt' | 'updatedAt'> & {
-  author: Types.ObjectId
-}
+const stageNames = z.enum(['introduction', 'rebuttals', 'closing'])
 
-// Validate ObjectId
-const objectIdSchema = z.string().refine(val => Types.ObjectId.isValid(val), { message: 'Invalid ObjectId' })
+export const StageSchema = z.object({
+  name: stageNames,
+  max: z.number().int().positive(),
+  startingUser: z.string(),
+})
+
+const optionalStageSchema = StageSchema.partial({ max: true })
+
+export const DEBATE_STRUCTURE = z.object({
+  introduction: optionalStageSchema,
+  rebuttals: StageSchema,
+  closing: optionalStageSchema,
+})
+
+export const DebateStageSchema = z.object({
+  name: stageNames,
+  userId: z.string(),
+  articleId: z.string().optional(),
+})
 
 // Define Zod schema for an debate
 const DebateBaseSchema = z.object({
@@ -25,12 +36,14 @@ const DebateBaseSchema = z.object({
   contentIds: z.array(z.string()),
   creator: userSchema.optional(),
   challenged: userSchema.optional(),
-  contents: z.array(ArticleSchema).optional(),
+  completed: z.boolean(),
 })
 
 export const DebateSchema = DebateBaseSchema.extend({
   responseTo: DebateBaseSchema.optional(),
   responses: z.array(DebateBaseSchema).optional(),
+  stages: z.array(DebateStageSchema).default([]),
+  next: z.string().optional(),
 })
 
 export const createDebateSchema = DebateSchema.pick({
@@ -38,7 +51,11 @@ export const createDebateSchema = DebateSchema.pick({
   tags: true,
   description: true,
   challengedId: true,
+  next: true,
+}).extend({
+  structure: z.array(StageSchema).optional(),
 })
+
 export const updateDebateSchema = DebateSchema.partial().required({ id: true })
 
 // Infer TypeScript types from Zod

@@ -1,8 +1,7 @@
+import { MAX_EXCERPT_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
 import { Types } from 'mongoose'
 import { z } from 'zod'
-import { ArticleDBSchema, ArticleModel, TArticleSchema } from './model/Article.Model'
-import { MAX_EXCERPT_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
-import { asyncHandler } from 'async-handler-ts'
+import { TArticleSchema } from './model/Article.Model'
 
 // Optional: DTO type for creating a new article (without `_id`)
 export type CreateArticleDTO = Omit<TArticleSchema, '_id' | 'createdAt' | 'updatedAt'> & {

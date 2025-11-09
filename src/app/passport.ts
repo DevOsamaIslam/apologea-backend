@@ -1,6 +1,6 @@
 import { AUTH } from '@constants'
 import { TJWTPayload } from '@types'
-import { UserModel } from 'api/users/model/Users.Model'
+import { UserModel } from 'api/users/model/User.Model'
 import { asyncHandler } from 'async-handler-ts'
 import { PassportStatic } from 'passport'
 import { ExtractJwt, Strategy, StrategyOptions, VerifiedCallback, VerifyCallback } from 'passport-jwt'

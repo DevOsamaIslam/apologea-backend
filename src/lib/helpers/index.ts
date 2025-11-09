@@ -1,4 +1,3 @@
-export * from './async'
 export * from './auth'
 export * from './request'
 export * from './response'

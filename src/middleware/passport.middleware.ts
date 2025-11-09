@@ -1,4 +1,4 @@
-import { UserModel } from 'api/users/model/Users.Model'
+import { UserModel } from 'api/users/model/User.Model'
 import { AUTH } from '../lib/constants'
 import { TJWTPayload } from '../lib/types'
 import { asyncHandler } from 'async-handler-ts'

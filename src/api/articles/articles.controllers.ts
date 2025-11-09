@@ -6,7 +6,7 @@ import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'
 import { z } from 'zod'
-import { TCreateArticle, TUpdateArticle } from './articles.schemas'
+import { TCreateArticle, TUpdateArticle } from './articles.schema'
 import { ArticleModel } from './model/Article.Model'
 
 export default {

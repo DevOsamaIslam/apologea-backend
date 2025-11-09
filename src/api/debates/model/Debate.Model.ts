@@ -12,12 +12,21 @@ export const DebateDBSchema = new Schema(
     challengedId: { type: Types.ObjectId, ref: 'User', required: true },
     tags: { type: [String], default: [] },
     views: { type: Number, default: 0 },
-    contentIds: [
-      {
-        type: Types.ObjectId,
-        ref: DB_SCHEMAS.article,
-      },
-    ],
+    stages: {
+      type: [
+        {
+          name: String,
+          userId: { type: Types.ObjectId, ref: DB_SCHEMAS.user },
+          articleId: { type: Types.ObjectId, ref: DB_SCHEMAS.article },
+        },
+      ],
+      required: true,
+    },
+    next: { type: Types.ObjectId, ref: DB_SCHEMAS.user },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 )
