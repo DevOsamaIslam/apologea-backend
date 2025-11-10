@@ -2,7 +2,7 @@ import { asyncHandler } from 'async-handler-ts'
 import { UserModel } from '../model/User.Model'
 
 export const getUsersService = async () => {
-  return await asyncHandler(UserModel.find().exec())
+  return await asyncHandler(UserModel.find().select('-password -__v').exec())
 }
 
 export const getUserByNameService = async (username: string) => {
