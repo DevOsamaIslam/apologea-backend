@@ -20,6 +20,25 @@
     "url": "https://github.com/DevOsamaIslam/apologea-backend/issues"
   },
   "homepage": "https://github.com/DevOsamaIslam/apologea-backend#readme",
+  "dependencies": {
+    "@ngneat/falso": "^7.3.0",
+    "async-handler-ts": "^1.0.5",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-fileupload": "^1.5.1",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
+    "mongoose": "^6.13.8",
+    "mongoose-paginate-v2": "^1.9.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "random-number": "^0.0.9",
+    "redis": "^4.3.1",
+    "validator": "^13.12.0",
+    "zod": "^3.24.2"
+  },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
@@ -40,25 +59,6 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "@ngneat/falso": "^7.3.0",
-    "async-handler-ts": "^1.0.5",
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "express-fileupload": "^1.5.1",
-    "http-status-codes": "^2.3.0",
-    "jsonwebtoken": "^9.0.2",
-    "module-alias": "^2.2.3",
-    "mongoose": "^6.13.8",
-    "mongoose-paginate-v2": "^1.9.0",
-    "passport": "^0.7.0",
-    "passport-jwt": "^4.0.1",
-    "random-number": "^0.0.9",
-    "redis": "^4.3.1",
-    "validator": "^13.12.0",
-    "zod": "^3.24.2"
   },
   "_moduleAliases": {
     "lib": "src/lib",

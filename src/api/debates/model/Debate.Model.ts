@@ -5,13 +5,44 @@ import paginate from 'mongoose-paginate-v2'
 // Define the Mongoose schema
 export const DebateDBSchema = new Schema(
   {
-    title: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    creatorId: { type: Types.ObjectId, ref: 'User', required: true },
-    challengedId: { type: Types.ObjectId, ref: 'User', required: true },
-    tags: { type: [String], default: [] },
-    views: { type: Number, default: 0 },
+    title: {
+      type: String,
+      required: true,
+    },
+
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+    },
+
+    creatorId: {
+      type: Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+
+    challengedId: {
+      type: Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+
+    tags: {
+      type: [String],
+      default: [],
+    },
+
+    views: {
+      type: Number,
+      default: 0,
+    },
+
     stages: {
       type: [
         {
@@ -22,10 +53,14 @@ export const DebateDBSchema = new Schema(
       ],
       required: true,
     },
-    next: { type: Types.ObjectId, ref: DB_SCHEMAS.user },
-    completed: {
-      type: Boolean,
-      default: false,
+
+    next: {
+      type: Types.ObjectId,
+      ref: DB_SCHEMAS.user,
+    },
+
+    completedAt: {
+      type: String,
     },
   },
   { timestamps: true },
@@ -36,12 +71,11 @@ DebateDBSchema.index({
   challengedId: 'text',
 })
 
-// Virtual field for author (this will be populated on request)
 DebateDBSchema.virtual('creator', {
-  ref: DB_SCHEMAS.user, // Model to populate the author from
-  localField: 'creatorId', // Field from the Post model (authorId) to use as the reference
-  foreignField: '_id', // The field from the User model to match (default is _id)
-  justOne: true, // One-to-one relationship
+  ref: DB_SCHEMAS.user,
+  localField: 'creatorId',
+  foreignField: '_id',
+  justOne: true,
 })
 
 DebateDBSchema.virtual('challenged', {
@@ -58,7 +92,6 @@ DebateDBSchema.virtual('contents', {
   justOne: false,
 })
 
-// Ensure virtuals are included in JSON responses
 DebateDBSchema.set('toJSON', { virtuals: true })
 
 export type TDebateSchema = InferSchemaType<typeof DebateDBSchema>
@@ -66,4 +99,7 @@ export type TDebateDocument = Document<TDebateSchema>
 
 DebateDBSchema.plugin(paginate)
 
-export const DebateModel = model<TDebateDocument, PaginateModel<TDebateSchema>>(DB_SCHEMAS.debate, DebateDBSchema)
+export const DebateModel = model<TDebateDocument, PaginateModel<TDebateSchema>>(
+  DB_SCHEMAS.debate,
+  DebateDBSchema,
+)

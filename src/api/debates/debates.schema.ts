@@ -1,8 +1,8 @@
 import { userSchema } from 'api/users/users.schema'
-import { MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
+import { MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH, MIN_TITLE_LENGTH } from 'app/settings'
 import { z } from 'zod'
 
-const stageNames = z.enum(['introduction', 'rebuttals', 'closing'])
+const stageNames = z.enum(['introduction', 'rebuttal', 'closing'])
 
 export const StageSchema = z.object({
   name: stageNames,
@@ -24,26 +24,21 @@ export const DebateStageSchema = z.object({
   articleId: z.string().optional(),
 })
 
-// Define Zod schema for an debate
-const DebateBaseSchema = z.object({
+export const DebateSchema = z.object({
   id: z.string(),
-  title: z.string().min(3).max(MAX_TITLE_LENGTH),
+  title: z.string().min(MIN_TITLE_LENGTH).max(MAX_TITLE_LENGTH),
   slug: z.string(),
   description: z.string().max(MAX_DESCRIPTION_LENGTH),
   creatorId: z.string(),
   challengedId: z.string(),
-  tags: z.array(z.string()).optional(),
-  contentIds: z.array(z.string()),
+  tags: z.array(z.string()).default([]),
+  views: z.number().default(0),
   creator: userSchema.optional(),
   challenged: userSchema.optional(),
   completed: z.boolean(),
-})
-
-export const DebateSchema = DebateBaseSchema.extend({
-  responseTo: DebateBaseSchema.optional(),
-  responses: z.array(DebateBaseSchema).optional(),
   stages: z.array(DebateStageSchema).default([]),
-  next: z.string().optional(),
+  next: z.string(),
+  completedAt: z.string().datetime().optional(),
 })
 
 export const createDebateSchema = DebateSchema.pick({
@@ -53,10 +48,10 @@ export const createDebateSchema = DebateSchema.pick({
   challengedId: true,
   next: true,
 }).extend({
-  structure: z.array(StageSchema).optional(),
+  structure: z.array(StageSchema),
 })
 
-export const updateDebateSchema = DebateSchema.partial().required({ id: true })
+export const updateDebateSchema = DebateSchema.partial()
 
 // Infer TypeScript types from Zod
 export type TCreateDebate = z.infer<typeof createDebateSchema>
