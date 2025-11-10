@@ -39,6 +39,11 @@ export const loginInput = z.object({
 export type TLoginPayload = z.infer<typeof loginInput>
 
 export const registrationInput = userSchema
+  .pick({
+    username: true,
+    email: true,
+    roles: true,
+  })
   .extend({
     password: z
       .string()
@@ -47,12 +52,6 @@ export const registrationInput = userSchema
       .regex(/[A-Z]/, { message: 'Password must include at least one uppercase letter' })
       .regex(/[0-9]/, { message: 'Password must include at least one number' })
       .regex(/[^a-zA-Z0-9]/, { message: 'Password must include at least one special character' }),
-  })
-  .required({
-    username: true,
-    password: true,
-    email: true,
-    roles: true,
   })
 
 export type TRegistrationPayload = z.infer<typeof registrationInput>
