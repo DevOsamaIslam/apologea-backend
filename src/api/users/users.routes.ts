@@ -25,6 +25,8 @@ userRouter
   .delete(protectedRoute, deleteUserController)
 
 // register user
-userRouter.use(express.json()).post('/register', validateRequest(registrationInput), RegisterUserController)
+userRouter
+  .use(express.json())
+  .post('/register', validateRequest(registrationInput), RegisterUserController)
 
 userRouter.use(express.json()).post('/login', validateRequest(loginInput), loginController)

@@ -1,7 +1,6 @@
 import { DB_SCHEMAS } from '@constants'
 import { Document, InferSchemaType, model, PaginateModel, Schema, Types } from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
-import { TCreateArticle } from '../articles.schema'
 
 // Define the Mongoose schema
 export const ArticleDBSchema = new Schema(
@@ -9,6 +8,7 @@ export const ArticleDBSchema = new Schema(
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     content: { type: String, required: true },
+    html: { type: String, required: true },
     excerpt: { type: String, required: true },
     authorId: { type: Types.ObjectId, ref: 'User', required: true },
     tags: { type: [String], default: [] },
@@ -67,4 +67,7 @@ export type TArticleDocument = Document<TArticleSchema>
 
 ArticleDBSchema.plugin(paginate)
 
-export const ArticleModel = model<TArticleDocument, PaginateModel<TArticleSchema>>(DB_SCHEMAS.article, ArticleDBSchema)
+export const ArticleModel = model<TArticleDocument, PaginateModel<TArticleSchema>>(
+  DB_SCHEMAS.article,
+  ArticleDBSchema,
+)

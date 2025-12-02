@@ -1,18 +1,26 @@
 import { asyncHandler } from 'async-handler-ts'
 import { UserModel } from '../model/User.Model'
 import { TUser, TUserDocument } from '../model/User.Model'
+import { ServerError } from '@types'
+import { StatusCodes } from 'http-status-codes'
+import { runTransaction } from 'lib/helpers/transactions'
 
 interface IProps {
   username: string
   profile: Partial<TUser>
 }
-export const updateUserService = async ({ username, profile }: IProps): Promise<[TUserDocument | undefined, Error | undefined]> => {
-  // check if the user exists
-  const [user, error] = await asyncHandler<TUserDocument | undefined>(UserModel.findOne({ username }) as any)
+export const updateUserService = async ({ username, profile }: IProps) => {
+  return runTransaction(async () => {
+    // check if the user exists
+    const user = await UserModel.findOne({ username })
 
-  if (!user || error) return [user, error]
+    if (!user)
+      throw new ServerError({
+        message: 'User not found',
+        statusCode: StatusCodes.NOT_FOUND,
+        type: 'error',
+      })
 
-  if (user) {
     Object.entries(profile).forEach(([key, value]) => {
       if (key in user) {
         // @ts-expect-error TODO check later
@@ -20,6 +28,6 @@ export const updateUserService = async ({ username, profile }: IProps): Promise<
       }
     })
     await user.save()
-  }
-  return [user, error]
+    return user
+  })
 }

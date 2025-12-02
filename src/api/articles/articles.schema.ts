@@ -9,13 +9,16 @@ export type CreateArticleDTO = Omit<TArticleSchema, '_id' | 'createdAt' | 'updat
 }
 
 // Validate ObjectId
-const objectIdSchema = z.string().refine(val => Types.ObjectId.isValid(val), { message: 'Invalid ObjectId' })
+const objectIdSchema = z
+  .string()
+  .refine(val => Types.ObjectId.isValid(val), { message: 'Invalid ObjectId' })
 
 // Define Zod schema for an article
 const ArticleBaseSchema = z.object({
   id: z.string(),
   title: z.string().min(3).max(MAX_TITLE_LENGTH),
   content: z.string().min(10),
+  html: z.string(),
   excerpt: z.string().max(MAX_EXCERPT_LENGTH),
   likes: z.array(z.string()),
   author: objectIdSchema,
@@ -34,12 +37,14 @@ export const ArticleSchema = ArticleBaseSchema.extend({
 export const createArticleSchema = ArticleSchema.pick({
   title: true,
   content: true,
+  html: true,
   excerpt: true,
   published: true,
   tags: true,
   responseToId: true,
 })
-export const updateArticleSchema = ArticleSchema.partial().required({ id: true })
+
+export const updateArticleSchema = ArticleSchema.partial()
 
 // Infer TypeScript types from Zod
 export type TCreateArticle = z.infer<typeof createArticleSchema>

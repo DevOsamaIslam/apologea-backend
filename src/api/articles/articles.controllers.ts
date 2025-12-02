@@ -23,7 +23,8 @@ export default {
       }),
     )
 
-    if (error) return returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR))
+    if (error)
+      return returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR))
 
     return next(returnHandler(StatusCodes.OK, articles, feedback('success', SUCCESS.found)))
   },
@@ -32,14 +33,20 @@ export default {
     const slug = req.params.slug
     const { populate } = req.body as z.infer<typeof PaginationSchema>
 
-    const [article, error] = await asyncHandler(ArticleModel.findOne({ slug }).populate(populate).exec())
+    const [article, error] = await asyncHandler(
+      ArticleModel.findOne({ slug }).populate(populate).exec(),
+    )
 
-    if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+    if (error)
+      return next(
+        returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
+      )
     if (article) {
       article.views++
       article.save()
     }
-    if (!article) return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
+    if (!article)
+      return next(returnHandler(StatusCodes.NOT_FOUND, null, feedback('warning', WARNING.noData)))
 
     return next(returnHandler(StatusCodes.OK, article, feedback('success', SUCCESS.found)))
   },
@@ -71,20 +78,40 @@ export default {
       }),
     )
 
-    if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.createFailed)))
+    if (error)
+      return next(
+        returnHandler(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          error,
+          feedback('error', ERROR.createFailed),
+        ),
+      )
 
-    return next(returnHandler(StatusCodes.CREATED, newArticle, feedback('success', SUCCESS.created)))
+    return next(
+      returnHandler(StatusCodes.CREATED, newArticle, feedback('success', SUCCESS.created)),
+    )
   },
 
   update: async (req, res, next) => {
     const patch = req.body as TUpdateArticle
+    const id = req.params.id
 
-    const [article, error] = await asyncHandler(ArticleModel.findById(patch.id).exec())
+    const [article, error] = await asyncHandler(ArticleModel.findById(id).exec())
 
-    if (error) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+    if (error)
+      return next(
+        returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
+      )
 
-    if (!article) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('warning', WARNING.noData)))
-    console.log({ patch })
+    if (!article)
+      return next(
+        returnHandler(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          error,
+          feedback('warning', WARNING.noData),
+        ),
+      )
+
     Object.entries(patch).forEach(([key, value]) => {
       // @ts-expect-error
       article[key] = value
@@ -100,9 +127,14 @@ export default {
     const [toDelete, error] = await asyncHandler(ArticleModel.findById(articleId).exec())
 
     console.log('reached', toDelete, error)
-    if (error || !toDelete) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+    if (error || !toDelete)
+      return next(
+        returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
+      )
     if (req.user.id !== String(toDelete.authorId))
-      return next(returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)))
+      return next(
+        returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)),
+      )
 
     const [deleted, deleteError] = await asyncHandler(
       runTransaction(async () => {
@@ -119,7 +151,10 @@ export default {
       }),
     )
 
-    if (deleteError) return next(returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)))
+    if (deleteError)
+      return next(
+        returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
+      )
 
     return next(returnHandler(StatusCodes.OK, deleted, feedback('success', SUCCESS.deleted)))
   },

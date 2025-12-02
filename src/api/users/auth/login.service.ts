@@ -3,20 +3,33 @@ import { compare } from 'bcrypt'
 import { UserModel } from '../model/User.Model'
 import { TLoginPayload } from '../users.schema'
 import { TUserDocument } from '../model/User.Model'
+import { runTransaction } from 'lib/helpers/transactions'
+import { ServerError } from '@types'
+import { StatusCodes } from 'http-status-codes'
+import { ERROR } from '@constants'
 
-export async function loginUser(credentials: TLoginPayload): Promise<[TUserDocument | undefined, Error | undefined]> {
-  const { email, password } = credentials
+export async function loginUser(credentials: TLoginPayload) {
+  return runTransaction(async () => {
+    const { email, password } = credentials
 
-  const [user, error] = await asyncHandler(UserModel.findOne({ email }).exec())
+    const user = await UserModel.findOne({ email })
 
-  if (!user || error) {
-    return [undefined, error]
-  }
+    if (!user)
+      throw new ServerError({
+        message: 'User not found',
+        statusCode: StatusCodes.NOT_FOUND,
+        type: 'error',
+      })
 
-  const isPasswordMatch = await compare(password, user.password)
-  if (!isPasswordMatch) {
-    return [undefined, undefined]
-  }
+    const isPasswordMatch = await compare(password, user.password)
+    if (!isPasswordMatch) {
+      throw new ServerError({
+        message: ERROR.wrongUsernamePassword,
+        statusCode: StatusCodes.NOT_FOUND,
+        type: 'error',
+      })
+    }
 
-  return [user, undefined]
+    return user
+  })
 }

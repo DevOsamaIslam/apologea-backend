@@ -9,7 +9,11 @@ export const DB_SCHEMAS = {
 } as const
 
 // Extract types
-const rangeValueType = [z.tuple([z.number(), z.number()]), z.tuple([z.string(), z.string()]), z.tuple([z.date(), z.date()])]
+const rangeValueType = [
+  z.tuple([z.number(), z.number()]),
+  z.tuple([z.string(), z.string()]),
+  z.tuple([z.date(), z.date()]),
+]
 
 // Define operators that require a value
 const operators = z.enum([
@@ -25,6 +29,8 @@ const operators = z.enum([
   'contains',
 ])
 
+export const OPERATORS = operators.enum
+
 const populateBaseSchema = z.object({
   path: z.string(),
   select: z.array(z.string()).optional(),
@@ -35,35 +41,21 @@ const populateSchema = populateBaseSchema.extend({
 })
 
 export const PaginationSchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1),
-  limit: z.coerce.number().int().positive().optional().default(10),
+  page: z.number().int().positive().optional().default(1),
+  limit: z.number().int().positive().optional().default(10),
   sort: z
-    .string()
-    .refine(val => val.split(',').length === 2, {
-      message: "Sort value must be in the format 'field,direction'",
-    })
-    .transform(val => {
-      const [field, direction] = val.split(',')
-      const parsedDirection = parseInt(direction, 10)
-
-      if (isNaN(parsedDirection) || (parsedDirection !== 1 && parsedDirection !== -1)) {
-        throw new Error('Sort direction must be 1 or -1')
-      }
-
-      return {
-        [field]: parsedDirection,
-      }
-    })
+    .record(z.string(), z.enum(['asc', 'desc']))
+    .default({ createdAt: 'desc' })
     .optional(),
   filters: z
-    .array(
+    .record(
+      z.string(),
       z.object({
-        field: z.string(),
-        operator: operators, // add more operators as necessary
-        value: z.union([z.string(), z.number(), z.date(), ...rangeValueType]),
+        operator: operators,
+        value: z.any(),
       }),
     )
-    .optional()
-    .default([]),
+    .optional(),
+
   populate: z.array(populateSchema).optional().default([]),
 })

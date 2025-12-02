@@ -6,7 +6,7 @@ export const getUsersService = async () => {
 }
 
 export const getUserByNameService = async (username: string) => {
-  return await asyncHandler(UserModel.findOne({ username }).select('-password -__v').exec())
+  return UserModel.findOne({ username }).select('-password -__v')
 }
 
 export const getUserByEmailService = async (email: string) => {
