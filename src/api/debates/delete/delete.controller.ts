@@ -29,7 +29,7 @@ export const deleteController: RequestHandler = async (req, res, next) => {
 
       if (creator)
         creator.debateIds = creator.debateIds.filter(debate => {
-          return debate !== toDelete.id
+          return debate !== toDelete._id
         })
       creator?.save()
 
@@ -37,7 +37,7 @@ export const deleteController: RequestHandler = async (req, res, next) => {
 
       if (challenged)
         challenged.debateIds = challenged.debateIds.filter(debate => {
-          return debate !== toDelete.id
+          return debate !== toDelete._id
         })
       challenged?.save()
     }),

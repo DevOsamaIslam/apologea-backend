@@ -7,7 +7,7 @@ import { asyncHandler } from 'async-handler-ts'
 
 export const unfollowController: RequestHandler = async (req, res, next) => {
   const { userId } = req.params
-  const currentUserId = req.user?._id
+  const currentUserId = req.user?.id
 
   if (!currentUserId) {
     return next(
