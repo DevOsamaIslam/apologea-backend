@@ -1,5 +1,5 @@
 import { asyncHandler } from 'async-handler-ts'
-import { NotificationModel } from '../Notifications.Model'
+import { NotificationModel } from '../model/Notifications.Model'
 import { ServerError } from '@types'
 import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'

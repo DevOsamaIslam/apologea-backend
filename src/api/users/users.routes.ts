@@ -8,6 +8,8 @@ import { deleteUserController } from './delete/delete.controller'
 import { protectedRoute } from 'middleware/auth.middleware'
 import { validateRequest } from 'middleware/request.middleware'
 import { pingController } from './auth/ping.controller'
+import { followController } from './follow/follow.controller'
+import { unfollowController } from './follow/unfollow.controller'
 
 export const userRouter = Router()
 
@@ -27,3 +29,7 @@ userRouter
 userRouter.post('/register', validateRequest(registrationInput), RegisterUserController)
 
 userRouter.use(express.json()).post('/login', validateRequest(loginInput), loginController)
+
+// Follow/unfollow routes
+userRouter.post('/@:userId/follow', protectedRoute, followController)
+userRouter.delete('/@:userId/unfollow', protectedRoute, unfollowController)

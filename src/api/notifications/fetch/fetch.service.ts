@@ -1,5 +1,5 @@
 import { asyncHandler } from 'async-handler-ts'
-import { NotificationModel } from '../Notifications.Model'
+import { NotificationModel } from '../model/Notifications.Model'
 import { Request } from 'express'
 import z from 'zod'
 import { PaginationSchema } from '@constants'
