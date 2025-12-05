@@ -26,6 +26,8 @@ export const userSchema = z.object({
     })
     .optional(),
   debateIds: z.array(z.string()),
+  followerIds: z.array(z.string()),
+  followingIds: z.array(z.string()),
 
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -35,6 +37,8 @@ export const loginInput = z.object({
   email: z.string().email(),
   password: z.string(),
 })
+
+export type TUser = z.infer<typeof userSchema>
 
 export type TLoginPayload = z.infer<typeof loginInput>
 

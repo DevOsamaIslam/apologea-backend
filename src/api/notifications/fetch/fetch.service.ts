@@ -1,12 +1,11 @@
-import { asyncHandler } from 'async-handler-ts'
-import { NotificationModel } from '../model/Notifications.Model'
-import { Request } from 'express'
-import z from 'zod'
 import { PaginationSchema } from '@constants'
 import { mapToMongooseFilter } from '@helpers'
+import z from 'zod'
+import { NotificationModel } from '../model/Notifications.Model'
+import { TNotificationType } from '../notifications.schema'
 
-export const getNotificationsService = async (req: Request) => {
-  const { limit, page, sort, filters, populate } = req.body as z.infer<typeof PaginationSchema>
+export const getNotificationsService = async (params: z.infer<typeof PaginationSchema>) => {
+  const { limit, page, sort, filters, populate } = params
   const mappedFilters = mapToMongooseFilter(filters)
 
   return await NotificationModel.paginate(mappedFilters, {
@@ -18,19 +17,17 @@ export const getNotificationsService = async (req: Request) => {
 }
 
 export const getNotificationByIdService = async (id: string) => {
-  return await asyncHandler(NotificationModel.findById(id).exec())
+  return NotificationModel.findById(id).exec()
 }
 
 export const getNotificationsByUserService = async (userId: string) => {
-  return await asyncHandler(NotificationModel.find({ userId }).sort({ createdAt: -1 }).exec())
+  return NotificationModel.find({ userId }).sort({ createdAt: -1 }).exec()
 }
 
 export const getUnreadNotificationsByUserService = async (userId: string) => {
-  return await asyncHandler(
-    NotificationModel.find({ userId, read: false }).sort({ createdAt: -1 }).exec(),
-  )
+  return NotificationModel.find({ userId, read: false }).sort({ createdAt: -1 }).exec()
 }
 
-export const getNotificationsByTypeService = async (userId: string, type: string) => {
-  return await asyncHandler(NotificationModel.find({ userId, type }).sort({ createdAt: -1 }).exec())
+export const getNotificationsByTypeService = async (userId: string, type: TNotificationType) => {
+  return NotificationModel.find({ userId, type }).sort({ createdAt: -1 }).exec()
 }
