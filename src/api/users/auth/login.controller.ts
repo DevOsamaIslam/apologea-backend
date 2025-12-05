@@ -25,7 +25,7 @@ export const loginController: RequestHandler = async (req, res, next) => {
     sameSite: 'lax',
     maxAge: 1000 * 60 * 60 * 24 * 10,
   })
-  console.log(res.getHeaders())
+
   const payload = {
     token,
     data: user,

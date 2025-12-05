@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import galleryControllers from './gallery.controllers'
+import { getAllController } from './fetch/fetch.controller'
+import { uploadController } from './upload/create.controller'
 
 export const galleryRouter = Router()
 
-galleryRouter.post('/', galleryControllers.getAll)
+galleryRouter.post('/', getAllController)
 
-galleryRouter.post('/upload', galleryControllers.upload)
+galleryRouter.post('/upload', uploadController)

@@ -4,3 +4,4 @@ old
 .env
 .vscode
 .idea
+src/public/uploads

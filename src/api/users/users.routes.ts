@@ -18,15 +18,12 @@ userRouter.get('/ping', protectedRoute, pingController)
 
 // get single user
 userRouter
-  .use(express.json())
   .route('/@:username')
   .post(getOneUserController)
   .patch(protectedRoute, updateUserController)
   .delete(protectedRoute, deleteUserController)
 
 // register user
-userRouter
-  .use(express.json())
-  .post('/register', validateRequest(registrationInput), RegisterUserController)
+userRouter.post('/register', validateRequest(registrationInput), RegisterUserController)
 
 userRouter.use(express.json()).post('/login', validateRequest(loginInput), loginController)

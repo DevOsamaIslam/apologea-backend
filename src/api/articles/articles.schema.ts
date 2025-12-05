@@ -17,12 +17,12 @@ const objectIdSchema = z
 const ArticleBaseSchema = z.object({
   id: z.string(),
   title: z.string().min(3).max(MAX_TITLE_LENGTH),
+  excerpt: z.string().max(MAX_EXCERPT_LENGTH),
   content: z.string().min(10),
   html: z.string(),
-  excerpt: z.string().max(MAX_EXCERPT_LENGTH),
-  likes: z.array(z.string()),
   author: objectIdSchema,
   tags: z.array(z.string()).optional(),
+  likes: z.array(z.string()),
   published: z.boolean().optional(),
   publishedAt: z.date().optional(),
   responseToId: z.string().optional(),
@@ -39,8 +39,8 @@ export const createArticleSchema = ArticleSchema.pick({
   content: true,
   html: true,
   excerpt: true,
-  published: true,
   tags: true,
+  published: true,
   responseToId: true,
 })
 

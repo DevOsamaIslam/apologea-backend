@@ -1,13 +1,13 @@
 import { asyncHandler } from 'async-handler-ts'
 import { UserModel } from '../model/User.Model'
-import { TUser, TUserDocument } from '../model/User.Model'
+import { TUserSchema, TUserDocument } from '../model/User.Model'
 import { ServerError } from '@types'
 import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'
 
 interface IProps {
   username: string
-  profile: Partial<TUser>
+  profile: Partial<TUserSchema>
 }
 export const updateUserService = async ({ username, profile }: IProps) => {
   return runTransaction(async () => {

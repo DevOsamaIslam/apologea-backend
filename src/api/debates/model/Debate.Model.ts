@@ -46,9 +46,9 @@ export const DebateDBSchema = new Schema(
     stages: {
       type: [
         {
-          name: String,
           userId: { type: Types.ObjectId, ref: DB_SCHEMAS.user },
           articleId: { type: Types.ObjectId, ref: DB_SCHEMAS.article },
+          _id: false,
         },
       ],
       required: true,
@@ -57,6 +57,19 @@ export const DebateDBSchema = new Schema(
     next: {
       type: Types.ObjectId,
       ref: DB_SCHEMAS.user,
+      required: true,
+    },
+
+    creatorVotes: {
+      type: [Types.ObjectId],
+      ref: DB_SCHEMAS.user,
+      default: [],
+    },
+
+    challengedVotes: {
+      type: [Types.ObjectId],
+      ref: DB_SCHEMAS.user,
+      default: [],
     },
 
     completedAt: {

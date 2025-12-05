@@ -43,6 +43,9 @@ export const registrationInput = userSchema
     username: true,
     email: true,
     roles: true,
+    bio: true,
+    socials: true,
+    qualification: true,
   })
   .extend({
     password: z
@@ -55,7 +58,3 @@ export const registrationInput = userSchema
   })
 
 export type TRegistrationPayload = z.infer<typeof registrationInput>
-
-// DTOs (Data Transfer Objects) for API requests
-export type RegisterUserDTO = z.infer<typeof registrationInput>
-export type LoginUserDTO = z.infer<typeof loginInput>

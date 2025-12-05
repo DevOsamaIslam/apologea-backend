@@ -1,7 +1,8 @@
 import { AUTH, DB_SCHEMAS } from '@constants'
 import { hash } from 'bcrypt'
-import mongoose, { HydratedDocument, InferSchemaType, Types, model } from 'mongoose'
+import mongoose, { HydratedDocument, InferSchemaType, PaginateModel, Types, model } from 'mongoose'
 import { USER_ROLES } from '../users.schema'
+import paginate from 'mongoose-paginate-v2'
 
 export const UserDBSchema = new mongoose.Schema(
   {
@@ -49,7 +50,12 @@ UserDBSchema.pre('save', async function (next) {
   next()
 })
 
-export const UserModel = model(DB_SCHEMAS.user, UserDBSchema)
+UserDBSchema.plugin(paginate)
 
-export type TUser = InferSchemaType<typeof UserDBSchema>
-export type TUserDocument = HydratedDocument<TUser>
+export type TUserSchema = InferSchemaType<typeof UserDBSchema>
+export type TUserDocument = HydratedDocument<TUserSchema>
+
+export const UserModel = model<TUserDocument, PaginateModel<TUserSchema>>(
+  DB_SCHEMAS.user,
+  UserDBSchema,
+)

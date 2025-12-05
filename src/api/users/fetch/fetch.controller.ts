@@ -6,10 +6,9 @@ import { getUserByNameService, getUsersService } from './fetch.service'
 import { asyncHandler } from 'async-handler-ts'
 
 export const getUsersController: RequestHandler = async (req, res, next) => {
-  const [users, error] = await getUsersService()
+  const [users, error] = await asyncHandler(getUsersService(req))
 
-  if (error || !users?.length)
-    return next(returnHandler(StatusCodes.NOT_FOUND, users, feedback('error', ERROR.SWR)))
+  if (error) return next(returnHandler(StatusCodes.NOT_FOUND, users, feedback('error', ERROR.SWR)))
 
   return next(returnHandler(StatusCodes.OK, users, feedback('success', SUCCESS.found)))
 }
