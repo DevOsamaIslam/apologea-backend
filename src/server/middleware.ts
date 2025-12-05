@@ -1,4 +1,4 @@
-import database from 'app/db'
+import database, { addId2schemas } from 'app/db'
 import passportConfig from 'app/passport'
 import router from 'app/router'
 import { BASE_PATH } from 'app/settings'
@@ -23,6 +23,7 @@ export default (server: Express) => {
   database.connect().then(dbClient => {
     // add database depending middleware here
     // hookCache(dbClient)
+    mongoose.plugin(addId2schemas)
     dbClient?.set('strictQuery', true)
     database.setDebug(true)
   })

@@ -6,7 +6,6 @@ import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'
 import { TCreateArticle } from '../articles.schema'
 import { ArticleModel } from '../model/Article.Model'
-import { UserModel } from 'api/users/model/User.Model'
 
 export const createController: RequestHandler = async (req, res, next) => {
   const article = req.body as TCreateArticle
@@ -27,7 +26,7 @@ export const createController: RequestHandler = async (req, res, next) => {
 
       if (article.responseToId) {
         const counterArticle = await ArticleModel.findById(article.responseToId)
-        counterArticle?.responsesIds.push(newArticle.id)
+        counterArticle?.responsesIds.push(newArticle._id)
         counterArticle?.save()
       }
 

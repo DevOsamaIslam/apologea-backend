@@ -36,7 +36,7 @@ export const UserDBSchema = new mongoose.Schema(
 
     roles: {
       type: [String],
-      enum: Object.values(USER_ROLES.Values),
+      enum: Object.values(USER_ROLES),
       default: [USER_ROLES.enum.reader],
     },
 
@@ -59,13 +59,11 @@ export const UserDBSchema = new mongoose.Schema(
   { timestamps: true },
 )
 
-UserDBSchema.pre('save', async function (next) {
+UserDBSchema.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await hash(this.password, AUTH.saltRounds)
     this.resetPasswordToken = undefined
   }
-
-  next()
 })
 
 UserDBSchema.plugin(paginate)

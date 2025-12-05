@@ -12,18 +12,14 @@ export const deleteArticleService = async (params: { articleId: string; userId: 
       throw new Error('Article not found')
     }
 
-    if (String(article.authorId) !== userId) {
-      throw new Error('Unauthorized to delete this article')
-    }
-
     await ArticleModel.findByIdAndDelete(articleId)
 
     const user = await UserModel.findById(userId)
     if (user) {
-      user.articleIds = user.articleIds.filter(article => article !== articleId)
+      user.articleIds = user.articleIds.filter(article => String(article) !== articleId)
       await user.save()
     }
 
-    return { deleted: true }
+    return true
   })
 }

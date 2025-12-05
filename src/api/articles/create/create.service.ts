@@ -20,7 +20,7 @@ export const createArticleService = async (params: { req: Request; article: TCre
 
     if (article.responseToId) {
       const counterArticle = await ArticleModel.findById(article.responseToId)
-      counterArticle?.responsesIds.push(newArticle.id)
+      counterArticle?.responsesIds.push(newArticle._id)
       counterArticle?.save()
     }
 
@@ -28,7 +28,7 @@ export const createArticleService = async (params: { req: Request; article: TCre
       createMultipleNotificationsService(
         req.user.followerIds.map(followerId => ({
           userId: followerId,
-          data: newArticle.id,
+          data: newArticle._id,
           type: NOTIFICATION_TYPES.newArticle,
         })),
       )

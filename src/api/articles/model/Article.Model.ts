@@ -6,21 +6,32 @@ import paginate from 'mongoose-paginate-v2'
 export const ArticleDBSchema = new Schema(
   {
     title: { type: String, required: true },
+
     slug: { type: String, required: true, unique: true },
+
     content: { type: String, required: true },
+
     html: { type: String, required: true },
+
     excerpt: { type: String, required: true },
+
     authorId: { type: Types.ObjectId, ref: 'User', required: true },
+
     tags: { type: [String], default: [] },
+
     published: { type: Boolean, default: false },
+
     views: { type: Number, default: 0 },
+
     likes: [{ type: Types.ObjectId, ref: DB_SCHEMAS.user, default: [] }],
-    comments: [{ type: Types.ObjectId, ref: DB_SCHEMAS.comment, default: [] }],
+
     debateId: { type: Types.ObjectId, ref: DB_SCHEMAS.debate },
+
     responseToId: {
       type: Types.ObjectId,
       ref: DB_SCHEMAS.article,
     },
+
     responsesIds: [
       {
         type: Types.ObjectId,
