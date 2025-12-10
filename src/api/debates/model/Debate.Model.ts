@@ -46,7 +46,7 @@ export const DebateDBSchema = new Schema(
     stages: {
       type: [
         {
-          userId: { type: Types.ObjectId, ref: DB_SCHEMAS.user },
+          userId: { type: Types.ObjectId, ref: DB_SCHEMAS.user, required: true },
           articleId: { type: Types.ObjectId, ref: DB_SCHEMAS.article },
           _id: false,
         },

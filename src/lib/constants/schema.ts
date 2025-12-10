@@ -56,7 +56,8 @@ export const PaginationSchema = z.object({
         value: z.any(),
       }),
     )
-    .optional(),
+    .optional()
+    .default({}),
 
   populate: z.array(populateSchema).optional().default([]),
 })

@@ -23,10 +23,10 @@ const ArticleBaseSchema = z.object({
   author: objectIdSchema,
   tags: z.array(z.string()).optional(),
   likes: z.array(z.string()),
-  published: z.boolean().optional(),
-  publishedAt: z.date().optional(),
+  publishedAt: z.iso.datetime().optional(),
   responseToId: z.string().optional(),
   responsesIds: z.array(z.string()),
+  debateId: z.string().optional(),
 })
 
 export const ArticleSchema = ArticleBaseSchema.extend({
@@ -40,8 +40,9 @@ export const createArticleSchema = ArticleSchema.pick({
   html: true,
   excerpt: true,
   tags: true,
-  published: true,
+  publishedAt: true,
   responseToId: true,
+  debateId: true,
 })
 
 export const updateArticleSchema = ArticleSchema.partial()

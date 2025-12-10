@@ -3,6 +3,11 @@ import { hash } from 'bcrypt'
 import mongoose, { HydratedDocument, InferSchemaType, PaginateModel, Types, model } from 'mongoose'
 import { USER_ROLES } from '../users.schema'
 import paginate from 'mongoose-paginate-v2'
+import { autoPopulateVirtuals } from 'app/db/plugins/populate'
+import { addStringIds } from 'app/db/plugins/stringId'
+
+mongoose.plugin(autoPopulateVirtuals)
+mongoose.plugin(addStringIds)
 
 export const UserDBSchema = new mongoose.Schema(
   {
@@ -36,7 +41,7 @@ export const UserDBSchema = new mongoose.Schema(
 
     roles: {
       type: [String],
-      enum: Object.values(USER_ROLES),
+      enum: Object.values(USER_ROLES.enum),
       default: [USER_ROLES.enum.reader],
     },
 

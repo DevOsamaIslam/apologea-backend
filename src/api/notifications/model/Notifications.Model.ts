@@ -9,6 +9,8 @@ const NotificationDBSchema = new mongoose.Schema(
     type: { type: String, required: true },
 
     data: { type: Object, required: true },
+
+    readAt: { type: Date, default: null },
   },
   { timestamps: true, versionKey: false },
 )

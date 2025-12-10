@@ -19,7 +19,7 @@ export const ArticleDBSchema = new Schema(
 
     tags: { type: [String], default: [] },
 
-    published: { type: Boolean, default: false },
+    publishedAt: { type: Date, default: null },
 
     views: { type: Number, default: 0 },
 

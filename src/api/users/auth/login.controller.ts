@@ -17,7 +17,7 @@ export const loginController: RequestHandler = async (req, res, next) => {
     )
   }
 
-  const token = signJWT({ id: user.id })
+  const token = signJWT({ id: user._id })
 
   res.cookie('token', token, {
     httpOnly: true,

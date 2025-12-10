@@ -4,6 +4,9 @@ import { DebateModel } from '../model/Debate.Model'
 import { Request } from 'express'
 import { TCreateDebate } from '../debates.schema'
 import { createSlug } from '@helpers'
+import { ServerError } from '@types'
+import { StatusCodes } from 'http-status-codes'
+import { NotificationModel } from 'api/notifications/model/Notifications.Model'
 
 export const createDebateService = async (params: { req: Request; debate: TCreateDebate }) => {
   const { req, debate } = params
@@ -29,11 +32,23 @@ export const createDebateService = async (params: { req: Request; debate: TCreat
 
     const challenged = await UserModel.findById(debate.challengedId)
 
-    if (challenged) {
-      challenged.debateIds.push(newDebate.id)
-      await challenged.save()
+    if (!challenged) {
+      throw new ServerError({
+        message: 'User not found',
+        statusCode: StatusCodes.NOT_FOUND,
+        type: 'error',
+      })
     }
 
+    challenged.debateIds.push(newDebate._id)
+
+    NotificationModel.create({
+      userId: challenged._id.toString(),
+      data: newDebate._id,
+      type: 'newDebate',
+    })
+
+    challenged.save()
     return newDebate
   })
 }

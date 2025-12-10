@@ -1,19 +1,14 @@
-import { ERROR, OPERATORS, PaginationSchema, SUCCESS } from '@constants'
+import { ERROR, PaginationSchema, SUCCESS } from '@constants'
 import { feedback, returnHandler } from '@helpers'
 import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import z from 'zod'
-import { getNotificationsService } from './fetch.service'
+import { markReadNotificationService } from './mark-read-notification.service'
 
 export const fetchNotificationsController: RequestHandler = async (req, _, next) => {
-  ;(req.body as z.infer<typeof PaginationSchema>).filters.userId = {
-    operator: OPERATORS.equals,
-    value: req.user._id,
-  }
-
   const [notifications, error] = await asyncHandler(
-    getNotificationsService(req.body as z.infer<typeof PaginationSchema>),
+    markReadNotificationService(req.params.notificationId as string),
   )
 
   if (error)

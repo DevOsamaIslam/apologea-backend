@@ -1,9 +1,8 @@
-import { asyncHandler } from 'async-handler-ts'
-import { UserModel } from '../model/User.Model'
-import { TRegistrationPayload } from '../users.schema'
-import { runTransaction } from 'lib/helpers/transactions'
 import { uploadGalleryItemService } from 'api/gallery/upload/upload.service'
 import { Request } from 'express'
+import { runTransaction } from 'lib/helpers/transactions'
+import { UserModel } from '../model/User.Model'
+import { TRegistrationPayload } from '../users.schema'
 
 export async function registerUser(params: { input: TRegistrationPayload; req: Request }) {
   const { input, req } = params
@@ -13,7 +12,7 @@ export async function registerUser(params: { input: TRegistrationPayload; req: R
     const data = await uploadGalleryItemService({
       req,
       fieldName: 'photo',
-      userId: user.id,
+      userId: user._id.toString(),
     })
 
     user.photo = data[0].url

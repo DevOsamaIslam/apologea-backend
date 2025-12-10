@@ -21,7 +21,7 @@ export const RegisterUserController: RequestHandler = async (req, res, next) => 
     returnHandler(
       StatusCodes.CREATED,
       {
-        token: sign({ id: data.id }, AUTH.secret, { expiresIn: AUTH.expiry as any }),
+        token: sign({ id: data._id }, AUTH.secret, { expiresIn: AUTH.expiry as any }),
         data,
       },
       feedback('success', SUCCESS.registered),

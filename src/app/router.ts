@@ -6,6 +6,7 @@ import { userRouter } from 'api/users/users.routes'
 import { subscriptionRoutes } from 'api/subscriptions/subscriptions.routes'
 import { NextFunction, Request, Response, Router } from 'express'
 import { protectedRoute } from 'middleware/auth.middleware'
+import { notificationsRouter } from 'api/notifications/notifications.routes'
 
 const router = Router()
 
@@ -18,6 +19,8 @@ router.use('/users', userRouter)
 router.use('/gallery', protectedRoute, galleryRouter)
 
 router.use('/subscriptions', subscriptionRoutes)
+
+router.use('/notifications', notificationsRouter)
 
 router.use((pack: IReturnHandler, _req: Request, res: Response, next: NextFunction) => {
   const { statusCode, data, feedback } = pack

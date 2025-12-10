@@ -4,7 +4,8 @@ export const NotificationTypes = z.enum([
   'newArticle',
   'newDebate',
   'challengeAccepted',
-  'response',
+  'articleResponse',
+  'debateResponse',
 ])
 
 export type TNotificationType = z.infer<typeof NotificationTypes>

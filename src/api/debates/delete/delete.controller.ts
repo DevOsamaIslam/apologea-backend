@@ -23,7 +23,7 @@ export const deleteController: RequestHandler = async (req, res, next) => {
 
   const [deleted, deleteError] = await asyncHandler(
     runTransaction(async () => {
-      await DebateModel.findByIdAndDelete(toDelete.id).exec()
+      await DebateModel.findByIdAndDelete(toDelete._id).exec()
 
       const creator = await UserModel.findById(req.user.id).exec()
 

@@ -1,5 +1,5 @@
 import { asyncHandler } from 'async-handler-ts'
-import mongoose, { Mongoose, ObjectId, Schema } from 'mongoose'
+import mongoose, { Mongoose } from 'mongoose'
 
 type TDatabase = {
   connect: () => Promise<Mongoose | null>
@@ -17,9 +17,3 @@ const dbConfig: TDatabase = {
 }
 
 export default dbConfig
-
-export const addId2schemas = (schema: Schema) => {
-  schema.virtual('id').get(function () {
-    return (this._id as ObjectId).toString()
-  })
-}

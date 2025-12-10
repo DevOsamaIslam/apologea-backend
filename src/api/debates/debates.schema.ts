@@ -27,7 +27,7 @@ export const DebateSchema = z.object({
   next: z.string(),
   creatorVotes: z.array(z.string()).default([]),
   challengedVotes: z.array(z.string()).default([]),
-  completedAt: z.string().datetime().optional(),
+  completedAt: z.iso.datetime().optional(),
 })
 
 export const createDebateSchema = DebateSchema.pick({
@@ -39,7 +39,14 @@ export const createDebateSchema = DebateSchema.pick({
   structure: StageStructureSchema,
 })
 
-export const updateDebateSchema = DebateSchema.partial()
+export const updateDebateSchema = DebateSchema.pick({
+  id: true,
+  title: true,
+  description: true,
+  tags: true,
+})
+  .partial()
+  .required({ id: true })
 
 // Infer TypeScript types from Zod
 export type TCreateDebate = z.infer<typeof createDebateSchema>

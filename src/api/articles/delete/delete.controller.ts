@@ -13,11 +13,6 @@ export const deleteController: RequestHandler = async (req, res, next) => {
   )
 
   if (error) {
-    if (error.message === 'Unauthorized to delete this article') {
-      return next(
-        returnHandler(StatusCodes.UNAUTHORIZED, null, feedback('error', ERROR.unauthorized)),
-      )
-    }
     return next(
       returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
     )
