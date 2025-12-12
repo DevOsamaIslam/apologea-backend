@@ -73,7 +73,6 @@ export interface NewResponseMessage {
 
 // Manager interfaces
 export interface IConnectionManager {
-  initialize(io: SocketIOServer): void
   handleConnection(socket: Socket): void
   handleDisconnection(socket: Socket): void
   handleAuthentication(socket: Socket, userId: string): boolean

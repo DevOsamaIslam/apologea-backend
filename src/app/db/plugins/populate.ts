@@ -5,7 +5,6 @@ interface RefOptions extends SchemaTypeOptions<any> {
 }
 
 export function autoPopulateVirtuals(schema: Schema) {
-  console.log('reached inside')
   function createVirtual(path: string, schemaType: SchemaType) {
     const opts = schemaType.options as RefOptions
     if (!opts?.ref) return

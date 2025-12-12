@@ -18,10 +18,17 @@ export const NotificationSchema = z.object({
   type: NotificationTypes,
   data: z.any(),
   readAt: z.date().optional(),
+
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
 })
 
 export type TNotification = z.infer<typeof NotificationSchema>
 
-export const CreateNotificationSchema = NotificationSchema.omit({ id: true })
+export const CreateNotificationSchema = NotificationSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
 
 export type TCreateNotification = z.infer<typeof CreateNotificationSchema>

@@ -1,10 +1,7 @@
-import { PaginationSchema } from '@constants'
-import { mapToMongooseFilter, runTransaction } from '@helpers'
-import z from 'zod'
-import { NotificationModel } from '../model/Notifications.Model'
-import { TNotificationType } from '../notifications.schema'
+import { runTransaction } from '@helpers'
 import { ServerError } from '@types'
 import { StatusCodes } from 'http-status-codes'
+import { NotificationModel } from '../model/Notifications.Model'
 
 export const markReadNotificationService = async (notificationId: string) => {
   runTransaction(async () => {
