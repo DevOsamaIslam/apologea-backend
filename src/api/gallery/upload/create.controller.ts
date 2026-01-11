@@ -3,15 +3,14 @@ import { feedback, returnHandler } from '@helpers'
 import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { handleFileUpload } from 'lib/helpers/files'
-import { GalleryModel } from '../model/Gallery.Model'
+import { uploadGalleryItemService } from './upload.service'
 
 export const uploadController: RequestHandler = async (req, res, next) => {
-  const [URLs, error] = await asyncHandler(
-    handleFileUpload({
-      fieldName: 'files',
+  const [result, error] = await asyncHandler(
+    uploadGalleryItemService({
       req,
-      targetFolder: req.user.id,
+      fieldName: 'files',
+      userId: req.user.id,
     }),
   )
   if (error)
@@ -19,23 +18,5 @@ export const uploadController: RequestHandler = async (req, res, next) => {
       returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
     )
 
-  if (!URLs?.length)
-    return next(
-      returnHandler(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        error,
-        feedback('error', 'Files not uploaded'),
-      ),
-    )
-
-  const [saved, saveError] = await asyncHandler(
-    GalleryModel.insertMany(URLs.map(url => ({ userId: req.user.id, url }))),
-  )
-
-  if (saveError)
-    return next(
-      returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
-    )
-
-  return next(returnHandler(StatusCodes.CREATED, saved, feedback('success', 'Files uploaded!')))
+  return next(returnHandler(StatusCodes.CREATED, result, feedback('success', SUCCESS.uploaded)))
 }

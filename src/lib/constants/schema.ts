@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose'
 import { z } from 'zod'
 
 export const DB_SCHEMAS = {
@@ -61,4 +62,8 @@ export const PaginationSchema = z.object({
     .default({}),
 
   populate: z.array(populateSchema).optional().default([]),
+})
+
+export const IdSchema = z.string().refine(val => isValidObjectId(val), {
+  message: 'Invalid id',
 })

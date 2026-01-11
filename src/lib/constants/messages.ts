@@ -13,6 +13,7 @@ export const SUCCESS = {
   tokenSent: 'Token sent successfully!',
   authenticated: 'Authenticated successfully!',
   passwordChanged: 'Password changed successfully!',
+  uploaded: 'Uploaded successfully!',
 }
 export const ERROR = {
   key: 'error',

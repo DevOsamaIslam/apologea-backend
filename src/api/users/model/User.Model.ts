@@ -5,9 +5,11 @@ import { USER_ROLES } from '../users.schema'
 import paginate from 'mongoose-paginate-v2'
 import { autoPopulateVirtuals } from 'app/db/plugins/populate'
 import { addStringIds } from 'app/db/plugins/stringId'
+import { sanitize } from 'app/db/plugins/sanitize'
 
 mongoose.plugin(autoPopulateVirtuals)
 mongoose.plugin(addStringIds)
+mongoose.plugin(sanitize)
 
 export const UserDBSchema = new mongoose.Schema(
   {

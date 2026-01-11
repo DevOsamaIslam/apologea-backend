@@ -11,7 +11,7 @@ export const createResourceService = async (params: {
   return runTransaction(async () => {
     const newResource = await ResourceModel.create({
       ...resource,
-      createdBy: userId,
+      creatorId: userId,
     })
 
     return newResource

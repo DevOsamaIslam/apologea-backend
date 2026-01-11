@@ -28,6 +28,6 @@ resourcesRouter.patch(
   updateController,
 )
 
-resourcesRouter.delete('/:id', protectedRoute, deleteController)
+resourcesRouter.delete('/@:id', protectedRoute, deleteController)
 
 export default resourcesRouter

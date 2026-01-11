@@ -1,17 +1,6 @@
+import { IdSchema } from '@constants'
 import { MAX_EXCERPT_LENGTH, MAX_TITLE_LENGTH } from 'app/settings'
-import { Types } from 'mongoose'
 import { z } from 'zod'
-import { TArticleSchema } from './model/Article.Model'
-
-// Optional: DTO type for creating a new article (without `_id`)
-export type CreateArticleDTO = Omit<TArticleSchema, '_id' | 'createdAt' | 'updatedAt'> & {
-  author: Types.ObjectId
-}
-
-// Validate ObjectId
-const objectIdSchema = z
-  .string()
-  .refine(val => Types.ObjectId.isValid(val), { message: 'Invalid ObjectId' })
 
 // Define Zod schema for an article
 const ArticleBaseSchema = z.object({
@@ -20,7 +9,7 @@ const ArticleBaseSchema = z.object({
   excerpt: z.string().max(MAX_EXCERPT_LENGTH),
   content: z.string().min(10),
   html: z.string(),
-  author: objectIdSchema,
+  author: IdSchema,
   tags: z.array(z.string()).optional(),
   likes: z.array(z.string()),
   publishedAt: z.iso.datetime().optional(),

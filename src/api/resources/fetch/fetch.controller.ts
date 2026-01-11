@@ -1,4 +1,4 @@
-import { ERROR, PaginationSchema, SUCCESS, WARNING } from '@constants'
+import { ERROR, OPERATORS, PaginationSchema, SUCCESS, WARNING } from '@constants'
 import { feedback, returnHandler } from '@helpers'
 import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
@@ -7,9 +7,12 @@ import { z } from 'zod'
 import { getResourcesService, getResourceBySlugService } from './fetch.service'
 
 export const getAllController: RequestHandler = async (req, res, next) => {
-  const [resources, error] = await asyncHandler(
-    getResourcesService(req.body as z.infer<typeof PaginationSchema>),
-  )
+  const body = req.body as z.infer<typeof PaginationSchema>
+  // body.filters.private = {
+  //   operator: OPERATORS.equals,
+  //   value: false
+  // }
+  const [resources, error] = await asyncHandler(getResourcesService(body))
 
   if (error)
     return returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR))

@@ -13,7 +13,7 @@ mongoose.set('strictQuery', true)
 
 const corsOptions = {
   origin: '*', // Replace with your frontend's URL
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Specify allowed methods
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTION'], // Specify allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
 }
 

@@ -20,6 +20,8 @@ export const deleteResourceService = async (params: { resourceId: string; userId
 
     resource.deleteOne().exec()
 
+    
+
     return true
   })
 }

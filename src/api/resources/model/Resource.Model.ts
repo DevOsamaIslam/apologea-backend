@@ -15,7 +15,9 @@ export const ResourceDBSchema = new Schema(
 
     tags: { type: [String], default: [] },
 
-    createdBy: { type: Types.ObjectId, ref: DB_SCHEMAS.user, required: true },
+    creatorId: { type: Types.ObjectId, ref: DB_SCHEMAS.user, required: true },
+
+    private: { type: Boolean, default: false },
   },
   { timestamps: true },
 )

@@ -6,16 +6,12 @@ import { getFileExtensionFromName } from './util'
 import { SERVER_ADDRESS } from 'app/settings'
 
 export const handleFileUpload = async ({
-  req,
-  fieldName,
+  files,
   targetFolder,
 }: {
-  req: Request
-  fieldName: string
+  files: fileUpload.UploadedFile | fileUpload.UploadedFile[] | undefined
   targetFolder: string
 }) => {
-  const files = req.files?.[fieldName]
-
   if (!files) return []
 
   const uploadedFiles: string[] = []
@@ -27,7 +23,10 @@ export const handleFileUpload = async ({
   for (const file of Array.isArray(files) ? files : [files]) {
     const uploadedFile = file as fileUpload.UploadedFile
 
-    const filePath = path.join(uploadPath, `${uploadedFile.md5}.${getFileExtensionFromName(uploadedFile.name)}`)
+    const filePath = path.join(
+      uploadPath,
+      `${uploadedFile.md5}.${getFileExtensionFromName(uploadedFile.name)}`,
+    )
 
     // Move the uploaded file to the desired path
     await uploadedFile.mv(path.join('src/public', filePath))
@@ -35,4 +34,13 @@ export const handleFileUpload = async ({
   }
 
   return uploadedFiles
+}
+
+export const handleFileDeletion = async (filePath: string) => {
+  // check if the file exists
+  if (!fs.existsSync(path.join('src/public', filePath))) return false
+
+  // delete the file
+  await fs.promises.unlink(path.join('src/public', filePath))
+  return true
 }

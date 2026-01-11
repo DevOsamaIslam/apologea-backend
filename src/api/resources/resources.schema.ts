@@ -9,6 +9,7 @@ const ResourceSchema = z.object({
   description: z.string().max(MAX_EXCERPT_LENGTH),
   image: z.string().optional(),
   URL: z.url(),
+  private: z.boolean().default(false),
   tags: z.array(z.string()).optional().default([]),
   creatorId: z.string(),
   creator: userSchema.optional(),
@@ -20,10 +21,12 @@ export const createResourceSchema = ResourceSchema.pick({
   image: true,
   URL: true,
   tags: true,
+  private: true,
 })
 
 export const updateResourceSchema = ResourceSchema.partial()
 
 // Infer TypeScript types from Zod
+export type TResource = z.infer<typeof ResourceSchema>
 export type TCreateResource = z.infer<typeof createResourceSchema>
 export type TUpdateResource = z.infer<typeof updateResourceSchema>
