@@ -62,6 +62,11 @@ export const UserDBSchema = new mongoose.Schema(
     followingIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.user, default: [] }],
 
     followerIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.user, default: [] }],
+
+    apologiaQuota: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 )

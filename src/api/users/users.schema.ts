@@ -1,3 +1,4 @@
+import { APOLOGIES_QUOTA } from 'app/settings'
 import { z } from 'zod'
 
 export const USER_ROLES = z.enum(['admin', 'publisher', 'reader', 'member', 'moderator'])
@@ -7,7 +8,7 @@ export const userSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   username: z.string(),
-  email: z.string().email(),
+  email: z.email(),
   photo: z.string().optional(),
   bio: z.string().optional(),
   password: z.string(),
@@ -29,8 +30,10 @@ export const userSchema = z.object({
   followerIds: z.array(z.string()),
   followingIds: z.array(z.string()),
 
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  apologiaQuota: z.number().default(APOLOGIES_QUOTA),
+
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
 })
 
 export const loginInput = z.object({

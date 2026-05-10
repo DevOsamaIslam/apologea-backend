@@ -4,10 +4,13 @@ import { DebateModel } from 'api/debates/model/Debate.Model'
 import { createMultipleNotificationsService } from 'api/notifications/create/create.service'
 import { NOTIFICATION_TYPES, TCreateNotification } from 'api/notifications/notifications.schema'
 import { UserModel } from 'api/users/model/User.Model'
+import { USER_ROLES } from 'api/users/users.schema'
 import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'
 import { TCreateArticle } from '../articles.schema'
 import { ArticleModel } from '../model/Article.Model'
+
+const FREE_APOLOGIES_LIMIT = 5
 
 export const createArticleService = async (params: { userId: string; article: TCreateArticle }) => {
   const { userId, article } = params
@@ -15,12 +18,6 @@ export const createArticleService = async (params: { userId: string; article: TC
   const userNotificationsMap = new Map<string, TCreateNotification>()
 
   return runTransaction(async () => {
-    const newArticle = await ArticleModel.create({
-      ...article,
-      authorId: userId,
-      slug,
-    })
-
     const user = await UserModel.findById(userId)
     if (!user)
       throw new ServerError({
@@ -29,8 +26,29 @@ export const createArticleService = async (params: { userId: string; article: TC
         type: 'error',
       })
 
+    // Check if user is a publisher and enforce free apologies limit
+    if (user.roles.includes(USER_ROLES.enum.publisher)) {
+      // Check if limit exceeded
+      if (user.apologiaQuota >= FREE_APOLOGIES_LIMIT) {
+        throw new ServerError({
+          message: `You have reached your limit of ${FREE_APOLOGIES_LIMIT} free apologies for this period. Please upgrade your subscription.`,
+          statusCode: StatusCodes.TOO_MANY_REQUESTS,
+          type: 'error',
+        })
+      }
+
+      // Increment the count
+      user.apologiaQuota += 1
+    }
+
+    const newArticle = await ArticleModel.create({
+      ...article,
+      authorId: userId,
+      slug,
+    })
+
     user.articleIds.push(newArticle._id)
-    user.save()
+    await user.save()
 
     if (article.debateId) {
       const debate = await DebateModel.findById(article.debateId)

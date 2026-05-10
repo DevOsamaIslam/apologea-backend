@@ -13,7 +13,7 @@ export async function loginUser(credentials: TLoginPayload) {
   if (!user)
     throw new ServerError({
       message: 'User not found',
-      statusCode: StatusCodes.NOT_FOUND,
+      statusCode: StatusCodes.UNAUTHORIZED,
       type: 'error',
     })
 
@@ -21,7 +21,7 @@ export async function loginUser(credentials: TLoginPayload) {
   if (!isPasswordMatch) {
     throw new ServerError({
       message: ERROR.wrongUsernamePassword,
-      statusCode: StatusCodes.NOT_FOUND,
+      statusCode: StatusCodes.UNAUTHORIZED,
       type: 'error',
     })
   }
