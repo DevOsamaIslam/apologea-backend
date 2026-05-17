@@ -9,8 +9,7 @@ import { StatusCodes } from 'http-status-codes'
 import { runTransaction } from 'lib/helpers/transactions'
 import { TCreateArticle } from '../articles.schema'
 import { ArticleModel } from '../model/Article.Model'
-
-const FREE_APOLOGIES_LIMIT = 5
+import { APOLOGIES_QUOTA } from 'app/settings'
 
 export const createArticleService = async (params: { userId: string; article: TCreateArticle }) => {
   const { userId, article } = params
@@ -29,16 +28,16 @@ export const createArticleService = async (params: { userId: string; article: TC
     // Check if user is a publisher and enforce free apologies limit
     if (user.roles.includes(USER_ROLES.enum.publisher)) {
       // Check if limit exceeded
-      if (user.apologiaQuota >= FREE_APOLOGIES_LIMIT) {
+      if (user.apologiaQuota === 0) {
         throw new ServerError({
-          message: `You have reached your limit of ${FREE_APOLOGIES_LIMIT} free apologies for this period. Please upgrade your subscription.`,
+          message: `You have reached your limit of ${APOLOGIES_QUOTA} free apologies for this period. Please upgrade your subscription.`,
           statusCode: StatusCodes.TOO_MANY_REQUESTS,
           type: 'error',
         })
       }
 
       // Increment the count
-      user.apologiaQuota += 1
+      user.apologiaQuota -= 1
     }
 
     const newArticle = await ArticleModel.create({

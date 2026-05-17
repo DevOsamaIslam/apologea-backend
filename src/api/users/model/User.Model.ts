@@ -6,6 +6,7 @@ import paginate from 'mongoose-paginate-v2'
 import { autoPopulateVirtuals } from 'app/db/plugins/populate'
 import { addStringIds } from 'app/db/plugins/stringId'
 import { sanitize } from 'app/db/plugins/sanitize'
+import { APOLOGIES_QUOTA } from 'app/settings'
 
 mongoose.plugin(autoPopulateVirtuals)
 mongoose.plugin(addStringIds)
@@ -65,7 +66,7 @@ export const UserDBSchema = new mongoose.Schema(
 
     apologiaQuota: {
       type: Number,
-      default: 0,
+      default: APOLOGIES_QUOTA,
     },
   },
   { timestamps: true },
