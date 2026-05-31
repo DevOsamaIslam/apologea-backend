@@ -3,9 +3,50 @@ import { z } from 'zod'
 import { PaginationSchema } from '@constants'
 import { mapToMongooseFilter } from '@helpers'
 
+const FUZZY_SEARCH_FIELDS = ['title', 'slug', 'excerpt', 'content', 'tags'] as const
+const SEARCH_FILTER_KEYS = ['search', 'q', 'query'] as const
+
+// Escape user-provided search text so special regex characters are matched literally.
+const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+const createFuzzyRegex = (value: string) => {
+  // Convert each search term into a loose character sequence, e.g. "abc" => "a.*b.*c".
+  const fuzzyValue = value
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(term => term.split('').map(escapeRegex).join('.*'))
+    .join('.*')
+
+  return new RegExp(fuzzyValue, 'i')
+}
+
+const getSearchValue = (filters: z.infer<typeof PaginationSchema>['filters']) => {
+  // Support common client-side names for the same article search filter.
+  const searchKey = SEARCH_FILTER_KEYS.find(key => filters?.[key]?.value)
+
+  if (!searchKey) return null
+
+  const value = filters?.[searchKey]?.value
+
+  if (typeof value !== 'string') return null
+
+  return value.trim() || null
+}
+
 export const getArticlesService = async (params: z.infer<typeof PaginationSchema>) => {
   const { limit, page, sort, filters, populate } = params
   const mappedFilters = mapToMongooseFilter(filters)
+  const searchValue = getSearchValue(filters)
+
+  // Search keys are handled separately through $or and should not remain as direct DB fields.
+  SEARCH_FILTER_KEYS.forEach(key => delete mappedFilters[key])
+
+  if (searchValue) {
+    const fuzzyRegex = createFuzzyRegex(searchValue)
+    // Match the fuzzy search text against article text fields while preserving other filters.
+    mappedFilters.$or = FUZZY_SEARCH_FIELDS.map(field => ({ [field]: fuzzyRegex }))
+  }
 
   return ArticleModel.paginate(mappedFilters, {
     limit,
