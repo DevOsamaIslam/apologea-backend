@@ -26,18 +26,22 @@ export const createArticleService = async (params: { userId: string; article: TC
       })
 
     // Check if user is a publisher and enforce free apologies limit
-    if (user.roles.includes(USER_ROLES.enum.publisher)) {
-      // Check if limit exceeded
-      if (user.apologiaQuota === 0) {
-        throw new ServerError({
-          message: `You have reached your limit of ${APOLOGIES_QUOTA} free apologies for this period. Please upgrade your subscription.`,
-          statusCode: StatusCodes.TOO_MANY_REQUESTS,
-          type: 'error',
-        })
-      }
+    if (!user.roles.includes(USER_ROLES.enum.publisher))
+      throw new ServerError({
+        message: 'You are not a publisher',
+        statusCode: StatusCodes.FORBIDDEN,
+        type: 'error',
+      })
+    // Check if limit exceeded
+    if (user.apologiaQuota === 0) {
+      throw new ServerError({
+        message: `You have reached your limit of ${APOLOGIES_QUOTA} free apologies for this period. Please upgrade your subscription.`,
+        statusCode: StatusCodes.TOO_MANY_REQUESTS,
+        type: 'error',
+      })
 
       // Increment the count
-      user.apologiaQuota -= 1
+      user!.apologiaQuota -= 1
     }
 
     const newArticle = await ArticleModel.create({
