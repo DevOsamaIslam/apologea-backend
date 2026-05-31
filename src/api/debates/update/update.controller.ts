@@ -4,28 +4,34 @@ import { asyncHandler } from 'async-handler-ts'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { TUpdateDebate } from '../debates.schema'
-import { DebateModel } from '../model/Debate.Model'
+import { updateDebateService, voteDebateService } from './update.debate'
 
 export const updateController: RequestHandler = async (req, res, next) => {
   const patch = req.body as TUpdateDebate
 
-  const [debate, error] = await asyncHandler(DebateModel.findById(patch.id).exec())
+  const [debate, error] = await asyncHandler(updateDebateService({ user: req.user, debate: patch }))
 
   if (error)
     return next(
       returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
     )
 
-  if (!debate)
-    return next(
-      returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('warning', WARNING.noData)),
-    )
+  return next(returnHandler(StatusCodes.OK, debate, feedback('success', SUCCESS.updated)))
+}
 
-  Object.entries(patch).forEach(([key, value]) => {
-    // @ts-expect-error
-    debate[key] = value
-  })
-  debate.save()
+// vote controller
+
+export const voteController: RequestHandler = async (req, res, next) => {
+  const id = req.params.id
+
+  const [debate, error] = await asyncHandler(
+    voteDebateService({ debateId: id, user: req.user, recipientId: req.body.recipientId }),
+  )
+
+  if (error)
+    return next(
+      returnHandler(StatusCodes.INTERNAL_SERVER_ERROR, error, feedback('error', ERROR.SWR)),
+    )
 
   return next(returnHandler(StatusCodes.OK, debate, feedback('success', SUCCESS.updated)))
 }

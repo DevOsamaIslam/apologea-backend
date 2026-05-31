@@ -5,7 +5,7 @@ import { createDebateSchema, updateDebateSchema } from './debates.schema'
 import { protectedRoute } from 'middleware/auth.middleware'
 import { getAllController, getOneController } from './fetch/fetch.controller'
 import { createDebateController } from './create/create.controller'
-import { updateController } from './update/update.controller'
+import { updateController, voteController } from './update/update.controller'
 import { deleteController } from './delete/delete.controller'
 
 const debatesRouter = Router()
@@ -22,6 +22,8 @@ debatesRouter.post(
 debatesRouter.post('/:slug', validateRequest(PaginationSchema), getOneController)
 
 debatesRouter.patch('/:id', protectedRoute, validateRequest(updateDebateSchema), updateController)
+
+debatesRouter.patch(`/:id/vote`, protectedRoute, voteController)
 
 debatesRouter.delete('/:id', protectedRoute, deleteController)
 
