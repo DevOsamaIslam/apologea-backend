@@ -15,7 +15,7 @@ export async function registerUser(params: { input: TRegistrationPayload; req: R
       userId: user._id.toString(),
     })
 
-    user.photo = data[0].url
+    user.photo = data[0]?.url
     await user.save()
 
     return user
