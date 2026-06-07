@@ -11,7 +11,7 @@ export const ResourceDBSchema = new Schema(
 
     image: { type: String, default: '' },
 
-    URL: { type: String, required: true },
+    URL: { type: String },
 
     tags: { type: [String], default: [] },
 

@@ -8,7 +8,7 @@ const ResourceSchema = z.object({
   title: z.string().min(3).max(MAX_TITLE_LENGTH),
   description: z.string().max(MAX_EXCERPT_LENGTH),
   image: z.string().optional(),
-  URL: z.url(),
+  URL: z.url().optional(),
   private: z.boolean().default(false),
   tags: z.array(z.string()).optional().default([]),
   creatorId: z.string(),
