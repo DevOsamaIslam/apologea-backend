@@ -48,6 +48,8 @@ export const getArticlesService = async (params: z.infer<typeof PaginationSchema
     mappedFilters.$or = FUZZY_SEARCH_FIELDS.map(field => ({ [field]: fuzzyRegex }))
   }
 
+  mappedFilters.publishedAt = { $ne: null }
+
   return ArticleModel.paginate(mappedFilters, {
     limit,
     page,
