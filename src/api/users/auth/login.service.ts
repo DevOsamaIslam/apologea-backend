@@ -10,9 +10,9 @@ export async function loginUser(credentials: TLoginPayload) {
 
   const user = await UserModel.findOne({ email })
 
-  if (!user)
+  if (!user || !user.verification.verifiedAt)
     throw new ServerError({
-      message: 'User not found',
+      message: 'User not found or not verified',
       statusCode: StatusCodes.UNAUTHORIZED,
       type: 'error',
     })

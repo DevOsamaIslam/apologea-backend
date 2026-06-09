@@ -15,7 +15,11 @@ export const userSchema = z.object({
   roles: z.array(USER_ROLES).default([USER_ROLES.enum.reader]),
   articleIds: z.array(z.string()),
   reputation: z.number().default(0),
-  verified: z.boolean().default(false),
+  verification: z.object({
+    code: z.string().nullable(),
+    verifiedAt: z.iso.datetime().nullable(),
+    lastTry: z.iso.datetime().nullable(),
+  }),
   qualification: z.string().default(''),
   socials: z
     .object({
@@ -37,7 +41,7 @@ export const userSchema = z.object({
 })
 
 export const loginInput = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string(),
 })
 

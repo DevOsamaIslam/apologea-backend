@@ -22,5 +22,9 @@ export const getUserByNameService = async (username: string) => {
 }
 
 export const getUserByEmailService = async (email: string) => {
-  return await asyncHandler(UserModel.findOne({ email }).exec())
+  return UserModel.findOne({ email }).exec()
+}
+
+export const getUserByIdService = async (id: string) => {
+  return UserModel.findById(id).exec()
 }

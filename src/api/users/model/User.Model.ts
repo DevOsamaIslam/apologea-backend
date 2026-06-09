@@ -37,9 +37,17 @@ export const UserDBSchema = new mongoose.Schema(
       default: 0,
     },
 
-    verified: {
-      type: Boolean,
-      default: false,
+    verification: {
+      type: {
+        code: {
+          type: String,
+          default: null,
+        },
+        verifiedAt: { type: Date, default: null },
+        lastTry: { type: Date, default: null },
+      },
+      required: true,
+      default: {},
     },
 
     roles: {
