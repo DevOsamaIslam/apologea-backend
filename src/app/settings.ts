@@ -3,6 +3,8 @@ export const BASE_PATH = '/api/'
 export const CLIENT_ADDRESS = `${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`
 export const REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379'
 
+export const NO_REPLY_EMAIL = 'no-reply@apologea.com'
+
 export const APOLOGIES_QUOTA = 5
 export const MAX_FILE_SIZE = 50 * 1024 * 1024
 
@@ -12,3 +14,5 @@ export const MAX_EXCERPT_LENGTH = 400
 export const MAX_DESCRIPTION_LENGTH = 1000
 
 export const OUTPOST_INTERVAL = 1000 * 60 * 60 * 24
+
+export const RESEND_API = process.env.RESEND_API
