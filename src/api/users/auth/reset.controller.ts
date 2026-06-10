@@ -9,7 +9,7 @@ import { asyncHandler } from 'async-handler-ts'
 export const forgotPasswordController: RequestHandler = async (req, res, next) => {
   const email = req.body.email as string
 
-  const [user, error] = await getUserByEmailService(email)
+  const [user, error] = await asyncHandler(getUserByEmailService(email))
 
   if (!user || error)
     return next(returnHandler(StatusCodes.NOT_FOUND, error, feedback('warning', WARNING.noData)))
