@@ -6,6 +6,7 @@ import { TRegistrationPayload } from '../users.schema'
 import { hash } from 'bcrypt'
 import { AUTH } from '@constants'
 import { EmailDispatcher } from 'lib/email'
+import { generateToken } from '@helpers'
 
 export async function registerUser(params: { input: TRegistrationPayload; req: Request }) {
   const { input, req } = params
@@ -24,7 +25,7 @@ export async function registerUser(params: { input: TRegistrationPayload; req: R
       user.photo = data[0]?.url
     }
 
-    user.verification.code = crypto.randomUUID()
+    user.verification.code = generateToken()
     user.verification.lastTry = new Date()
 
     await user.save()

@@ -8,7 +8,7 @@ import { getArticlesService, getArticleBySlugService } from './fetch.service'
 
 export const getAllController: RequestHandler = async (req, res, next) => {
   const [articles, error] = await asyncHandler(
-    getArticlesService(req.body as z.infer<typeof PaginationSchema>),
+    getArticlesService(req.body as z.infer<typeof PaginationSchema>, req.user),
   )
 
   if (error)
@@ -21,7 +21,9 @@ export const getOneController: RequestHandler = async (req, res, next) => {
   const slug = req.params.slug
   const { populate } = req.body as z.infer<typeof PaginationSchema>
 
-  const [article, error] = await asyncHandler(getArticleBySlugService({ slug, populate }))
+  const [article, error] = await asyncHandler(
+    getArticleBySlugService({ slug, populate, user: req.user }),
+  )
 
   if (error)
     return next(

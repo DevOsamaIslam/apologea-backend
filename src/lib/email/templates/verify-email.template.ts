@@ -7,7 +7,7 @@ export interface IVerifyEmailTemplateData {
 export const verifyEmailTemplate = (data: IVerifyEmailTemplateData): string => {
   const { username, userId, token } = data
 
-  const link = `https://apologea.com/verify?user=${userId}&token=${token}`
+  const link = `https://apologea.com/auth/verify?user=${userId}&token=${token}`
 
   return `
 <!DOCTYPE html>

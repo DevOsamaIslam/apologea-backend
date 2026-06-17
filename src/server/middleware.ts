@@ -1,4 +1,6 @@
 import database from 'app/db'
+import migrations from 'app/migrations'
+import outpost from 'app/outpost'
 import passportConfig from 'app/passport'
 import router from 'app/router'
 import { BASE_PATH } from 'app/settings'
@@ -27,6 +29,10 @@ export default (server: Express) => {
   })
   server.use(passport.initialize())
   passportConfig(passport)
+
+  outpost()
+  migrations()
+
   server.use(fileUploadMiddleware)
   server.use((req, res, next) => {
     if (req.is('multipart/form-data')) next()

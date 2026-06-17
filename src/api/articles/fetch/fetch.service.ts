@@ -2,6 +2,7 @@ import { ArticleModel } from '../model/Article.Model'
 import { z } from 'zod'
 import { PaginationSchema } from '@constants'
 import { mapToMongooseFilter } from '@helpers'
+import { TUserDocument } from '@api/users/model/User.Model'
 
 const FUZZY_SEARCH_FIELDS = ['title', 'slug', 'excerpt', 'content', 'tags'] as const
 const SEARCH_FILTER_KEYS = ['search', 'q', 'query'] as const
@@ -34,7 +35,10 @@ const getSearchValue = (filters: z.infer<typeof PaginationSchema>['filters']) =>
   return value.trim() || null
 }
 
-export const getArticlesService = async (params: z.infer<typeof PaginationSchema>) => {
+export const getArticlesService = async (
+  params: z.infer<typeof PaginationSchema>,
+  user?: TUserDocument,
+) => {
   const { limit, page, sort, filters, populate } = params
   const mappedFilters = mapToMongooseFilter(filters)
   const searchValue = getSearchValue(filters)
@@ -55,14 +59,22 @@ export const getArticlesService = async (params: z.infer<typeof PaginationSchema
     page,
     sort,
     populate,
+    select: user ? '' : '-content -html',
   })
 }
 
-export const getArticleBySlugService = async (params: { slug: string; populate: any }) => {
-  const { slug, populate } = params
-  const article = await ArticleModel.findOne({ slug }).populate(populate).exec()
+export const getArticleBySlugService = async (params: {
+  slug: string
+  populate: any
+  user: TUserDocument
+}) => {
+  const { slug, populate, user } = params
+  const article = await ArticleModel.findOne({ slug })
+    .populate(populate)
+    .select(user ? '' : '-content -html')
+    .exec()
 
-  if (article) {
+  if (article && user?._id !== article.authorId) {
     article.views++
     await article.save()
   }
