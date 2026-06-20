@@ -6,6 +6,7 @@ import router from 'app/router'
 import { BASE_PATH } from 'app/settings'
 import cors from 'cors'
 import express, { Express } from 'express'
+import { addLoginMiddleware } from 'middleware/auth.middleware'
 import { fileUploadMiddleware } from 'middleware/fileUpload.middleware'
 import mongoose from 'mongoose'
 import passport from 'passport'
@@ -29,6 +30,7 @@ export default (server: Express) => {
   })
   server.use(passport.initialize())
   passportConfig(passport)
+  server.use(addLoginMiddleware)
 
   outpost()
   migrations()
