@@ -5,18 +5,16 @@ import { USER_ROLES } from '../users.schema'
 import paginate from 'mongoose-paginate-v2'
 import { autoPopulateVirtuals } from 'app/db/plugins/populate'
 import { addStringIds } from 'app/db/plugins/stringId'
-import { sanitize } from 'app/db/plugins/sanitize'
 import { APOLOGIES_QUOTA } from 'app/settings'
+import { sensitiveFieldsPlugin } from 'app/db/plugins/sanitize'
 
 mongoose.plugin(autoPopulateVirtuals)
 mongoose.plugin(addStringIds)
-mongoose.plugin(sanitize)
+mongoose.plugin(sensitiveFieldsPlugin)
 
 export const UserDBSchema = new mongoose.Schema(
   {
-    firstName: { type: String, trim: true },
-
-    lastName: { type: String, trim: true },
+    name: { type: String, trim: true },
 
     username: { type: String, required: true, trim: true, unique: true },
 

@@ -1,7 +1,11 @@
 import express, { Router } from 'express'
 import { loginController } from './auth/login.controller'
 import { RegisterUserController } from './auth/register.controller'
-import { getOneUserController, getUsersController } from './fetch/fetch.controller'
+import {
+  getOneUserController,
+  getUserByIdController,
+  getUsersController,
+} from './fetch/fetch.controller'
 import { updateUserController } from './update/update.controller'
 import { loginInput, registrationInput } from './users.schema'
 import { deleteUserController } from './delete/delete.controller'
@@ -25,6 +29,8 @@ userRouter
   .post(getOneUserController)
   .patch(protectedRoute, updateUserController)
   .delete(protectedRoute, deleteUserController)
+
+userRouter.get('/id@:id', protectedRoute, getUserByIdController)
 
 // register user
 userRouter.post('/register', validateRequest(registrationInput), RegisterUserController)

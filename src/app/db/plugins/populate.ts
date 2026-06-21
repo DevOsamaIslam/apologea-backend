@@ -7,9 +7,9 @@ interface RefOptions extends SchemaTypeOptions<any> {
 export function autoPopulateVirtuals(schema: Schema) {
   function createVirtual(path: string, schemaType: SchemaType) {
     const opts = schemaType.options as RefOptions
-    if (!opts?.ref) return
 
-    if (!path.endsWith('Id')) return // only transform XId → X
+    if (!opts?.ref) return
+    if (!path.endsWith('Id')) return
 
     const virtualName = path.replace(/Id$/, '')
 
@@ -21,27 +21,29 @@ export function autoPopulateVirtuals(schema: Schema) {
     })
   }
 
-  // Handle normal paths + nested subSchemas
-  schema.eachPath((path: string, schemaType: SchemaType) => {
-    const opts = schemaType.options as RefOptions
+  function walkSchema(currentSchema: Schema, prefix = '') {
+    currentSchema.eachPath((path: string, schemaType: SchemaType) => {
+      const fullPath = prefix ? `${prefix}.${path}` : path
 
-    // direct field with ref
-    if (opts?.ref) {
-      createVirtual(path, schemaType)
-    }
+      const opts = schemaType.options as RefOptions
 
-    // arrays / subDocs:
-    // schemaType['schema'] exists when the field is an array of subDocuments
-    const subSchema = (schemaType as any).schema as Schema | undefined
-    if (subSchema) {
-      subSchema.eachPath((subPath: string, subType: SchemaType) => {
-        const fullPath = `${path}.${subPath}`
-        const subOpts = subType.options as RefOptions
+      if (opts?.ref) {
+        createVirtual(fullPath, schemaType)
+      }
 
-        if (subOpts?.ref) {
-          createVirtual(fullPath, subType)
-        }
-      })
-    }
-  })
+      const anyType = schemaType as any
+
+      // Array of subdocuments
+      if (anyType.schema) {
+        walkSchema(anyType.schema, fullPath)
+      }
+
+      // Single nested subdocument
+      if (anyType.$embeddedSchemaType?.schema) {
+        walkSchema(anyType.$embeddedSchemaType.schema, fullPath)
+      }
+    })
+  }
+
+  walkSchema(schema)
 }

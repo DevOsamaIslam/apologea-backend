@@ -5,8 +5,7 @@ export const USER_ROLES = z.enum(['admin', 'publisher', 'reader', 'member', 'mod
 
 export const userSchema = z.object({
   id: z.string(),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
+  name: z.string().optional(),
   username: z.string(),
   email: z.email(),
   photo: z.string().optional(),
