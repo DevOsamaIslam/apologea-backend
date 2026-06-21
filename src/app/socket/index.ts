@@ -11,6 +11,7 @@ class SocketServer {
     if (!this.io) {
       this.io = new Server(httpServer, {
         cors: { origin: '*' },
+        path: '/ws/'
       })
 
       this.io.on('connection', (socket: Socket) => {
