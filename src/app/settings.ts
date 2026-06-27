@@ -5,7 +5,7 @@ export const REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379'
 
 export const NO_REPLY_EMAIL = 'no-reply@apologea.com'
 
-export const APOLOGIES_QUOTA = 5
+export const APOLOGIES_QUOTA = 500
 export const MAX_FILE_SIZE = 50 * 1024 * 1024
 
 export const MIN_TITLE_LENGTH = 5
