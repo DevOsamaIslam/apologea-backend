@@ -6,7 +6,7 @@ module.exports = {
       cwd: "/home/linuxuser/apologea-backend",
 
       script: "npm",
-      args: "run dev",
+      args: "start",
     }
   ]
 };
