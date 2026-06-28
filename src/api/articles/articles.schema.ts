@@ -12,7 +12,7 @@ const ArticleBaseSchema = z.object({
   author: IdSchema,
   tags: z.array(z.string()).optional(),
   likes: z.array(z.string()),
-  publishedAt: z.iso.datetime().optional(),
+  publishedAt: z.iso.datetime().nullable(),
   responseToId: z.string().optional(),
   responsesIds: z.array(z.string()),
   debateId: z.string().optional(),
