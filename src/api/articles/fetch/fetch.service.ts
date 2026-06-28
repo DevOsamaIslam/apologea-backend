@@ -52,7 +52,27 @@ export const getArticlesService = async (
     mappedFilters.$or = FUZZY_SEARCH_FIELDS.map(field => ({ [field]: fuzzyRegex }))
   }
 
-  mappedFilters.publishedAt = { $ne: null }
+  // Enforce draft visibility rules unconditionally at the database level.
+  // Drafts (publishedAt: null) should only be returned if they belong to the currently logged in user.
+  if (user) {
+    const originalOrFields = mappedFilters.$or
+    delete mappedFilters.$or
+
+    const visibilityCondition = {
+      $or: [
+        { publishedAt: { $ne: null } },
+        { publishedAt: null, authorId: user._id },
+      ],
+    }
+
+    if (originalOrFields) {
+      mappedFilters.$and = [visibilityCondition, { $or: originalOrFields }]
+    } else {
+      mappedFilters.$and = [visibilityCondition]
+    }
+  } else {
+    mappedFilters.publishedAt = { $ne: null }
+  }
 
   return ArticleModel.paginate(mappedFilters, {
     limit,
