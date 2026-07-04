@@ -3,5 +3,5 @@ export const AUTH = {
   secret: process.env.AUTH_SECRET || 'adf54dssd4f56d4ff5ds4ds4f5sd45fds8fd',
   expiry: process.env.AUTH_EXPIRY || '7D',
   saltRounds: 10,
-  passwordResetTokenExpiry: 1000 * 60 * 60,
+  passwordResetTokenExpiry: 1000 * 60 * 60 * 24, // 1 day
 }

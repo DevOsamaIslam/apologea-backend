@@ -28,3 +28,7 @@ export const getUserByEmailService = async (email: string) => {
 export const getUserByIdService = async (id: string) => {
   return UserModel.findById(id).exec()
 }
+
+export const getUserByTokenService = async (token: string) => {
+  return UserModel.findOne({ "resetPassword.token": token }).exec()
+}

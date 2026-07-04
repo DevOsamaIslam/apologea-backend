@@ -19,6 +19,10 @@ export const userSchema = z.object({
     verifiedAt: z.iso.datetime().nullable(),
     lastTry: z.iso.datetime().nullable(),
   }),
+  resetPassword: z.object({
+    token: z.string().nullable(),
+    expiresAt: z.iso.datetime().nullable(),
+  }),
   qualification: z.string().default(''),
   socials: z
     .object({
@@ -68,3 +72,16 @@ export const registrationInput = userSchema
   })
 
 export type TRegistrationPayload = z.infer<typeof registrationInput>
+
+export const ForgotPasswordPayload = z.object({
+  email: z.email(),
+})
+
+export const VerifyTokenPayload = z.object({
+  token: z.string(),
+})
+
+export const ResetPasswordPayload = z.object({
+  token: z.string(),
+  password: z.string(),
+})

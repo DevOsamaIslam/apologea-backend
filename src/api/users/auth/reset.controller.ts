@@ -1,41 +1,40 @@
 import { ERROR, SUCCESS, WARNING } from '@constants'
-import { feedback, returnHandler } from '@helpers'
+import { feedback, generateToken, returnHandler } from '@helpers'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { getUserByEmailService } from '../fetch/fetch.service'
-import { resetPasswordService, verifyTokenService } from './reset.service'
+import { forgotPasswordService, resetPasswordService, verifyTokenService } from './reset.service'
 import { asyncHandler } from 'async-handler-ts'
 
 export const forgotPasswordController: RequestHandler = async (req, res, next) => {
   const email = req.body.email as string
 
-  const [user, error] = await asyncHandler(getUserByEmailService(email))
+  const [user, error] = await asyncHandler(forgotPasswordService({ email }))
 
   if (!user || error)
     return next(returnHandler(StatusCodes.NOT_FOUND, error, feedback('warning', WARNING.noData)))
 
-  return next(returnHandler(StatusCodes.OK, user, feedback('success', SUCCESS.key)))
+  return next(returnHandler(StatusCodes.OK, null, feedback('success', SUCCESS.key)))
 }
 
 export const verifyTokenController: RequestHandler = async (req, res, next) => {
-  const userId = req.params.userId
-  const token = req.params.token
+  const token = req.body.token
 
-  const [user, error] = await asyncHandler(verifyTokenService({ token, userId }))
+  const [isSuccess, error] = await asyncHandler(verifyTokenService({ token }))
 
-  if (!user || error)
+  if (!isSuccess || error)
     return next(
       returnHandler(StatusCodes.UNAUTHORIZED, error, feedback('warning', ERROR.unauthorized)),
     )
 
-  return next(returnHandler(StatusCodes.OK, user, feedback('success', SUCCESS.authenticated)))
+  return next(returnHandler(StatusCodes.OK, isSuccess, feedback('success', SUCCESS.authenticated)))
 }
 
 export const resetPasswordController: RequestHandler = async (req, res, next) => {
-  const userId = req.body.userId as string
-  const newPassword = req.body.newPassword as string
+  const token = req.body.token as string
+  const newPassword = req.body.password as string
 
-  const [user, error] = await asyncHandler(resetPasswordService({ newPassword, userId }))
+  const [user, error] = await asyncHandler(resetPasswordService({ newPassword, token }))
 
   if (!user || error)
     return next(

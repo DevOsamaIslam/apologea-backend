@@ -24,7 +24,14 @@ export const UserDBSchema = new mongoose.Schema(
 
     password: { type: String, required: true }, // Hashed password
 
-    resetPasswordToken: { type: String },
+    resetPassword: {
+      type: {
+        token: { type: String, default: null },
+        expiresAt: { type: Date, default: null },
+      },
+      _id: false,
+      default: {}
+    },
 
     articleIds: [{ type: Types.ObjectId, ref: DB_SCHEMAS.article, default: [] }],
 
@@ -81,7 +88,7 @@ export const UserDBSchema = new mongoose.Schema(
 UserDBSchema.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await hash(this.password, AUTH.saltRounds)
-    this.resetPasswordToken = undefined
+    this.resetPassword = { token: null, expiresAt: null }
   }
 })
 

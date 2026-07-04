@@ -1,10 +1,12 @@
 export interface IResetPasswordTemplateData {
-  userName: string
+  username: string
   token: string
 }
 
 export const resetPasswordTemplate = (data: IResetPasswordTemplateData): string => {
-  const { userName, token } = data
+  const { username, token } = data
+
+  const link = `https://apologea.com/auth/reset?token=${token}`
 
   return `
 <!DOCTYPE html>
@@ -167,7 +169,7 @@ export const resetPasswordTemplate = (data: IResetPasswordTemplateData): string 
     </div>
 
     <div class="content">
-      <div class="greeting">Hello ${userName},</div>
+      <div class="greeting">Hello ${username},</div>
 
       <div class="message">
         We received a request to reset your password. Click the button below to choose
@@ -181,12 +183,12 @@ export const resetPasswordTemplate = (data: IResetPasswordTemplateData): string 
       </div>
 
       <div class="button-container">
-        <a href="${token}" class="button">Reset My Password</a>
+        <a href="${link}" class="button">Reset My Password</a>
       </div>
 
       <div class="link-fallback">
         If the button doesn't work, copy and paste this link into your browser:<br>
-        <a href="${token}">${token}</a>
+        <a href="${link}">${link}</a>
       </div>
 
       <hr class="divider">

@@ -7,7 +7,7 @@ import {
   getUsersController,
 } from './fetch/fetch.controller'
 import { updateUserController } from './update/update.controller'
-import { loginInput, registrationInput } from './users.schema'
+import { ForgotPasswordPayload, loginInput, registrationInput, ResetPasswordPayload, VerifyTokenPayload } from './users.schema'
 import { deleteUserController } from './delete/delete.controller'
 import { protectedRoute } from 'middleware/auth.middleware'
 import { validateRequest } from 'middleware/request.middleware'
@@ -15,6 +15,7 @@ import { pingController } from './auth/ping.controller'
 import { followController } from './follow/follow.controller'
 import { unfollowController } from './follow/unfollow.controller'
 import { verifyEmailController } from './auth/verify.controller'
+import { forgotPasswordController, resetPasswordController, verifyTokenController } from './auth/reset.controller'
 
 export const userRouter = Router()
 
@@ -43,3 +44,9 @@ userRouter.get('/verify', verifyEmailController)
 // Follow/unfollow routes
 userRouter.post('/@:userId/follow', protectedRoute, followController)
 userRouter.delete('/@:userId/unfollow', protectedRoute, unfollowController)
+
+userRouter.post('/forgot', validateRequest(ForgotPasswordPayload), forgotPasswordController)
+
+userRouter.get('/verify-reset', validateRequest(VerifyTokenPayload), verifyTokenController)
+
+userRouter.post('/reset', validateRequest(ResetPasswordPayload), resetPasswordController)

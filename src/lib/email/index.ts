@@ -46,13 +46,13 @@ class EmailDispatcher {
     )
   }
 
-  sendResetPassword(params: { user: TUser; token: string }) {
+  sendResetPassword(params: { user: TUserDocument; token: string }) {
     const { user, token } = params
 
     return this.send(
       user.email,
       'Reset your password',
-      resetPasswordTemplate({ userName: user.username, token }),
+      resetPasswordTemplate({ username: user.username, token }),
     )
   }
 }

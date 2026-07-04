@@ -24,6 +24,7 @@
     "async-handler-ts": "^1.0.6",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
+    "date-fns": "^4.4.0",
     "decode-formdata": "^0.9.0",
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
