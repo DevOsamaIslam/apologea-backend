@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { PaginationSchema } from '@constants'
 import { mapToMongooseFilter } from '@helpers'
 import { TUserDocument } from '@api/users/model/User.Model'
+import { registerView, getViewerId } from '../views/views.service'
 
 const FUZZY_SEARCH_FIELDS = ['title', 'slug', 'excerpt', 'content', 'tags'] as const
 const SEARCH_FILTER_KEYS = ['search', 'q', 'query'] as const
@@ -87,16 +88,19 @@ export const getArticleBySlugService = async (params: {
   slug: string
   populate: any
   user: TUserDocument
+  ip: string
 }) => {
-  const { slug, populate, user } = params
+  const { slug, populate, user, ip } = params
   const article = await ArticleModel.findOne({ slug })
     .populate(populate)
     .select(user ? '' : '-content -html')
     .exec()
 
   if (article && user?._id !== article.authorId) {
-    article.views++
-    await article.save()
+    // Attempt to register a unique view — Redis deduplication handles
+    // the "already counted" logic, so we don't need a pre-check here.
+    const viewerId = getViewerId(ip, user?._id?.toString())
+    registerView(slug, viewerId)
   }
 
   return article

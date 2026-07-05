@@ -11,6 +11,7 @@ import { fileUploadMiddleware } from 'middleware/fileUpload.middleware'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import path from 'path'
+import { initViewFlusher } from 'api/articles/views/views.service'
 
 mongoose.set('strictQuery', true)
 
@@ -34,6 +35,9 @@ export default (server: Express) => {
 
   outpost()
   migrations()
+
+  // Initialise the background view flusher (connects Redis and starts periodic flush)
+  initViewFlusher()
 
   server.use(fileUploadMiddleware)
   server.use((req, res, next) => {

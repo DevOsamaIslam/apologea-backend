@@ -22,7 +22,7 @@ export const getOneController: RequestHandler = async (req, res, next) => {
   const { populate } = req.body as z.infer<typeof PaginationSchema>
 
   const [article, error] = await asyncHandler(
-    getArticleBySlugService({ slug, populate, user: req.user }),
+    getArticleBySlugService({ slug, populate, user: req.user, ip: req.ip ?? req.socket.remoteAddress ?? '' }),
   )
 
   if (error)

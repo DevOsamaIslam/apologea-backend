@@ -2,7 +2,7 @@ import { asyncHandler } from 'async-handler-ts'
 import { Mongoose } from 'mongoose'
 import * as redis from 'redis'
 
-const client = redis.createClient({ url: '' })
+export const client = redis.createClient({ url: '' })
 
 export const hookCache = async (dbClient: Mongoose) => {
   const exec = dbClient.Query.prototype.exec
@@ -11,7 +11,9 @@ export const hookCache = async (dbClient: Mongoose) => {
   if (err) throw new Error(err.message)
 
   dbClient.Query.prototype.exec = async function () {
-    const key = JSON.stringify(Object.assign({}, this.getQuery(), { _collection: this.model.collection.name }))
+    const key = JSON.stringify(
+      Object.assign({}, this.getQuery(), { _collection: this.model.collection.name }),
+    )
 
     const cachedData = await client.get(key)
 
