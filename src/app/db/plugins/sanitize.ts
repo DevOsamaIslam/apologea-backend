@@ -5,7 +5,7 @@ interface SensitiveFieldsOptions {
 }
 
 export function sensitiveFieldsPlugin(schema: Schema, options: SensitiveFieldsOptions = {}): void {
-  const sensitiveFields = options.fields ?? ['password', 'resetPasswordToken', 'verification']
+  const sensitiveFields = options.fields ?? ['password', 'resetPassword', 'verification']
 
   const transform = (
     doc: Document & {
