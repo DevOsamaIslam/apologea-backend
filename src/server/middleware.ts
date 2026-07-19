@@ -23,7 +23,6 @@ const corsOptions = {
 
 export default (server: Express) => {
   server.use(cors(corsOptions))
-  server.use(express.static(path.join(__dirname, '../public')))
   database.connect().then(dbClient => {
     // add database depending middleware here
     // hookCache(dbClient)

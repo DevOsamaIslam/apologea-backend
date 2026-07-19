@@ -18,7 +18,7 @@ export const handleFileUpload = async ({
 
   // Ensure the target folder exists, create it if it doesn't
   const uploadPath = path.join('uploads', targetFolder)
-  await fs.promises.mkdir(path.join('src/public', uploadPath), { recursive: true })
+  await fs.promises.mkdir(path.join(uploadPath), { recursive: true })
 
   for (const file of Array.isArray(files) ? files : [files]) {
     const uploadedFile = file as fileUpload.UploadedFile
@@ -29,7 +29,7 @@ export const handleFileUpload = async ({
     )
 
     // Move the uploaded file to the desired path
-    await uploadedFile.mv(path.join('src/public', filePath))
+    await uploadedFile.mv(path.join(filePath))
     uploadedFiles.push('https://' + path.join(SERVER_ADDRESS, filePath))
   }
 
