@@ -22,11 +22,13 @@ const corsOptions = {
 }
 
 export default (server: Express) => {
-  server.use(cors(corsOptions))
+  // server.use(cors(corsOptions))
   server.use(express.static(path.join(__dirname, '../public')))
   database.connect().then(dbClient => {
     // add database depending middleware here
     // hookCache(dbClient)
+    // Initialise the background view flusher (connects Redis and starts periodic flush)
+    initViewFlusher()
     database.setDebug(true)
   })
   server.use(passport.initialize())
@@ -36,14 +38,13 @@ export default (server: Express) => {
   outpost()
   migrations()
 
-  // Initialise the background view flusher (connects Redis and starts periodic flush)
-  initViewFlusher()
+
 
   server.use(fileUploadMiddleware)
   server.use((req, res, next) => {
     if (req.is('multipart/form-data')) next()
     else {
-      express.json()(req, res, next)
+      express.json({ limit: '1mb' })(req, res, next)
     }
   })
   server.use(BASE_PATH, router)
