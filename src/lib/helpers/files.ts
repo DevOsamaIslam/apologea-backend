@@ -30,7 +30,7 @@ export const handleFileUpload = async ({
 
     // Move the uploaded file to the desired path
     await uploadedFile.mv(path.join('src/public', filePath))
-    uploadedFiles.push('http://' + path.join(SERVER_ADDRESS, filePath))
+    uploadedFiles.push('https://' + path.join(SERVER_ADDRESS, filePath))
   }
 
   return uploadedFiles
